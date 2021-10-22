@@ -1,38 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import { createStackNavigator } from '@react-navigation/stack';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 import Splash from './src/screens/Splash';
-import Home from './src/screens/Home';
-import Goals from './src/screens/Goals';
+import HomeTabs from './src/screens/HomeTabs';
+import Login from './src/screens/Login';
+import Signup from './src/screens/Signup';
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator()
-
-const HomeTabs = () => {
-  <Tab.Navigator
-  // screenOptions={({route}) => ({
-  //   tabBarIcon: ({focused, size, color}) => {
-  //     let iconName;
-  //     if (route.name === 'Goals') {
-  //       iconName = 'bullseye';
-  //       size = focused ? 25 : 20;
-  //     } else if (route.name === 'Done') {
-  //       iconName = 'clipboard-check';
-  //       size = focused ? 25 : 20;
-  //     }
-  //     return <FontAwesome5 name={iconName} size={size} color={color} />;
-  //   },
-  // })}
-  >
-    <Tab.Screen
-    name = "Goals"
-    component = {Goals}
-    />
-  </Tab.Navigator>
-}
 
 export default function App() {
   return (
@@ -46,12 +23,15 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="HomeTabs"
+          component={HomeTabs}
           options={{
-            headerLeft: ()=> null
+            headerShown: false,
+            headerLeft: () => null,
           }}
         />
+        <Stack.Screen name="Login" component={Login} options = {{headerBackTitleVisible: false}}/>
+        <Stack.Screen name="Signup" component={Signup} options = {{headerBackTitleVisible: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
