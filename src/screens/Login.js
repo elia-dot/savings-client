@@ -15,7 +15,7 @@ export default function Login({ navigation }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
-  const user = useSelector((state) => state.userReducer);
+  const user = useSelector(({userReducer}) => userReducer.user);
 
   console.log(user);
 
@@ -30,6 +30,7 @@ export default function Login({ navigation }) {
   };
   return (
     <View style={styles.body}>
+      <Text>Hello{user}</Text>
       <Image source={require('../../assets/logo.png')} style={styles.img} />
       <Text style={styles.label}>Email:</Text>
       <TextInput

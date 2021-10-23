@@ -13,18 +13,17 @@ export const login = (data) => async (dispatch) => {
       'Content-type': 'application/json',
     },
   };
-  const body = JSON.stringify(data)
   try {
-    const res = await axios.post(`${baseUrl}/login`, body, config);
+    const res = await axios.post(`${baseUrl}/login`, data, config);
     dispatch({
       type: LOGIN,
-      payload: res.data.data.user,
+      payload: res.data.data,
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
     dispatch({
       type: LOGIN_FAILED,
-      payload: error,
+      payload: error.response.data.error,
     });
   }
 };
