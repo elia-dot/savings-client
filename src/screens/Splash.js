@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   btnText : {
     color :'white',
     fontSize: 25,
-    fontWeight: '500'
+    fontWeight: '500',
+    textAlign: 'center'
   }
 });
