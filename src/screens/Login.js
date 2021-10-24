@@ -15,7 +15,7 @@ export default function Login({ navigation }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
-  const user = useSelector((state) => state.userReducer);
+  const {user} = useSelector((state) => state.userReducer);
 
   console.log(user);
 
