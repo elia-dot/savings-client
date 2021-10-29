@@ -7,8 +7,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearProgress } from 'react-native-elements';
 
-export default function Signup({navigation}) {
+import { useAuth } from '../context/authContext';
+import Alert from '../components/Overlay';
+
+export default function Signup({ navigation }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,6 +21,45 @@ export default function Signup({navigation}) {
     passwordConfirmd: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isError, setIsError] = useState(false);
+
+  const { signup, setIsAuth } = useAuth();
+
+  const handleSignup = async () => {
+    setLoading(true);
+    if (
+      formData.name === '' ||
+      formData.email === '' ||
+      formData.password === '' ||
+      formData.passwordConfirmd === ''
+    ) {
+      setErrorMsg('Please fill all the fields!');
+      setIsError(true);
+      setLoading(false);
+      return;
+    } else if (formData.password !== formData.passwordConfirmd) {
+      setErrorMsg('Passwords do not match!');
+      setIsError(true);
+      setLoading(false);
+      return;
+    } else if (formData.password.length < 6) {
+      setErrorMsg('Password must br atleast 6 characters!');
+      setIsError(true);
+      setLoading(false);
+      return;
+    }
+    const res = await signup(formData);
+    if (res.data) {
+      await AsyncStorage.setItem('token', res.data.token);
+      setIsAuth(true);
+    } else {
+      setErrorMsg(res.errors);
+      setIsError(true);
+    }
+    setLoading(false);
+  };
 
   const navigateToLogin = () => {
     navigation.navigate('Login');
@@ -23,7 +67,7 @@ export default function Signup({navigation}) {
 
   return (
     <View style={styles.body}>
-
+       <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
       <Text style={styles.label}>Name:</Text>
       <TextInput
         style={styles.input}
@@ -53,7 +97,7 @@ export default function Signup({navigation}) {
           setFormData({ ...formData, password: value.toLowerCase() })
         }
       />
-       <Text style={styles.label}>Confirm Password:</Text>
+      <Text style={styles.label}>Confirm Password:</Text>
       <TextInput
         style={styles.input}
         placeholder="Confirm Password"
@@ -64,15 +108,16 @@ export default function Signup({navigation}) {
           setFormData({ ...formData, passwordConfirmd: value.toLowerCase() })
         }
       />
-        <CheckBox
+      <CheckBox
         title="Show Password"
         checked={showPassword}
         checkedColor="#9cc95a"
         containerStyle={{ backgroundColor: 'none', padding: 0, borderWidth: 0 }}
         onPress={() => setShowPassword(!showPassword)}
       />
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnText}>Log In</Text>
+      <TouchableOpacity style={styles.btn} onPress={() => handleSignup()}>
+        <Text style={styles.btnText}>{loading ? 'Please wait...' : 'Sign Up'}</Text>
+        {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
       </TouchableOpacity>
 
       <Text style={styles.text}>
@@ -94,7 +139,7 @@ const styles = StyleSheet.create({
   body: {
     padding: 25,
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   img: {
     width: 100,

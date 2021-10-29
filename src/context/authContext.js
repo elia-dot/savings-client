@@ -19,10 +19,24 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
-  const login = async (data) => {
-    const config = {
-      'Content-Type': 'application/json',
-    };
+  const config = {
+    'Content-Type': 'application/json',
+  };
+
+  const signup = async (data) => {
+    try {
+      const res = await axios.post(`${baseUrl}/users/signup`, data, config);
+      return res;
+    } catch (error) {
+      if (error.response) {
+        return error.response.data;
+      } else {
+        console.log(error);
+      }
+    }
+  }
+
+  const login = async (data) => {    
     try {
       const res = await axios.post(`${baseUrl}/users/login`, data, config);
       return res;
@@ -60,6 +74,6 @@ export const AuthProvider = ({ children }) => {
     }, 2000);
   };
 
-  const value = { login, logOut, loading, isAuth, setIsAuth, token };
+  const value = { login, signup, logOut, loading, isAuth, setIsAuth, token };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

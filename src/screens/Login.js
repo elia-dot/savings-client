@@ -77,7 +77,7 @@ export default function Login({ navigation }) {
         onPress={() => setShowPassword(!showPassword)}
       />
       <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
-        <Text style={styles.btnText}>{loading ? 'Wait...' : 'Log In'}</Text>
+        <Text style={styles.btnText}>{loading ? 'Please wait...' : 'Log In'}</Text>
         {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
       </TouchableOpacity>
 
