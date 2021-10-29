@@ -1,18 +1,12 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import { LinearProgress } from 'react-native-elements';
 
 export default function Splash({ navigation }) {
   return (
     <View style={styles.body}>
       <Image source={require('../../assets/logo.png')} style={styles.img} />
-      <View style={styles.btnsGroup}>
-        <TouchableOpacity style = {styles.btn} onPress = {() => navigation.navigate('Login')}>
-          <Text style = {styles.btnText}>Log In</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style = {styles.btn} onPress = {() => navigation.navigate('Signup')}>
-          <Text style = {styles.btnText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
+      <LinearProgress color="#9cc95a" style = {{width: '50%', marginTop: 20}}/>
     </View>
   );
 }
@@ -29,19 +23,19 @@ const styles = StyleSheet.create({
   },
   btnsGroup: {
     flexDirection: 'row',
-    marginTop: 200
+    marginTop: 200,
   },
-  btn : {
+  btn: {
     margin: 20,
     backgroundColor: '#9cc95a',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
   },
-  btnText : {
-    color :'white',
+  btnText: {
+    color: 'white',
     fontSize: 25,
     fontWeight: '500',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });

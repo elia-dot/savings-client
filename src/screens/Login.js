@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   StyleSheet,
   Text,
@@ -8,23 +9,37 @@ import {
   Image,
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/actions';
+import { LinearProgress } from 'react-native-elements';
+
+import { useAuth } from '../context/authContext';
+import Alert from '../components/Overlay';
 
 export default function Login({ navigation }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isError, setIsError] = useState(false);
 
-  const { user, isAuthenticated, errors } = useSelector(
-    (state) => state.userReducer
-  );
+  const { login, setIsAuth } = useAuth();
 
-  console.log(user);
-
-  const dispatch = useDispatch();
-
-  const handleLogin = () => {
-    dispatch(login(formData));
+  const handleLogin = async () => {
+    setLoading(true);
+    if (formData.email === '' || formData.password === '') {
+      setErrorMsg('Please fill all the fields!');
+      setIsError(true);
+      setLoading(false)
+      return;
+    }
+    const res = await login(formData);
+    if (res.data) {
+      await AsyncStorage.setItem('token', res.data.token);
+      setIsAuth(true);
+    } else {
+      setErrorMsg(res.error);
+      setIsError(true);
+    }
+    setLoading(false);
   };
 
   const navigateToRegister = () => {
@@ -32,8 +47,8 @@ export default function Login({ navigation }) {
   };
   return (
     <View style={styles.body}>
-      {/* <Text>Hello{user}</Text> */}
       <Image source={require('../../assets/logo.png')} style={styles.img} />
+      <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
       <Text style={styles.label}>Email:</Text>
       <TextInput
         style={styles.input}
@@ -62,7 +77,8 @@ export default function Login({ navigation }) {
         onPress={() => setShowPassword(!showPassword)}
       />
       <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
-        <Text style={styles.btnText}>Log In</Text>
+        <Text style={styles.btnText}>{loading ? 'Wait...' : 'Log In'}</Text>
+        {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
       </TouchableOpacity>
 
       <Text style={styles.text}>

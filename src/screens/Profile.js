@@ -1,12 +1,19 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useAuth } from '../context/authContext';
 
 export default function Profile() {
-    return (
-        <View>
-            <Text></Text>
-        </View>
-    )
+  const { logOut } = useAuth();
+  const handleLogOut = async () => {
+    await logOut();
+  };
+  return (
+    <View>
+      <TouchableOpacity onPress={handleLogOut}>
+        <Text>LogOut</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
