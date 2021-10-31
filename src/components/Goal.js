@@ -3,12 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { useAuth } from '../context/authContext';
 import { capitalize } from '../utils/capitalize';
+import { deleteGoal } from '../api';
 
 export default function Goal({ goal }) {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const createdAt = moment(goal.createdAt).fromNow();
 
   const calculateProgress = () => {
@@ -17,19 +20,40 @@ export default function Goal({ goal }) {
   };
   const progress = calculateProgress();
 
+  const { mutateAsync } = useMutation(deleteGoal);
+
+  const handleDelete = async () => {
+    await mutateAsync(goal._id);
+    queryClient.invalidateQueries('goals');
+  };
+
   return (
     <View style={styles.body}>
       <View style={styles.goalDetails}>
-        <View style={styles.icon}>
-          <FontAwesome5
-            name={user.icon ? iconName : 'question'}
-            color="#9cc95a"
-            size = {20}
-          />
+        <View style={styles.goalName}>
+          <View style={styles.icon}>
+            <FontAwesome5
+              name={goal.icon ? goal.icon : 'question'}
+              color="#9cc95a"
+              size={20}
+            />
+          </View>
+          <View>
+            <Text style={styles.goalTitle}>{capitalize(goal.title)}</Text>
+            <Text>{createdAt}</Text>
+          </View>
         </View>
         <View>
-          <Text style={styles.goalTitle}>{capitalize(goal.title)}</Text>
-          <Text>{createdAt}</Text>
+          <View style={styles.goalsActions}>
+            <FontAwesome5 name="pen" color="#9cc95a" size={20} />
+            <FontAwesome5
+              name="trash"
+              color="#9cc95a"
+              size={20}
+              style={{ marginLeft: 15 }}
+              onPress={handleDelete}
+            />
+          </View>
         </View>
       </View>
       <LinearProgress
@@ -56,6 +80,16 @@ const styles = StyleSheet.create({
   goalDetails: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  goalName: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  goalsActions: {
+    display: 'flex',
+    flexDirection: 'row',
   },
   icon: {
     backgroundColor: '#f4f9ec',
@@ -64,7 +98,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 15,
     marginRight: 15,
-    borderRadius: 10
+    borderRadius: 10,
   },
   goalTitle: {
     fontSize: 20,
