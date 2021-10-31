@@ -21,7 +21,7 @@ export default function Login({ navigation }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [isError, setIsError] = useState(false);
 
-  const { login, setIsAuth } = useAuth();
+  const { login, setIsAuth, loadUser } = useAuth();
 
   const handleLogin = async () => {
     setLoading(true);
@@ -33,7 +33,8 @@ export default function Login({ navigation }) {
     }
     const res = await login(formData);
     if (res.data) {
-      await AsyncStorage.setItem('token', res.data.token);
+      await AsyncStorage.multiSet([['token', res.data.token], ['userId', res.data.data.user._id]]);
+      loadUser()
       setIsAuth(true);
     } else {
       setErrorMsg(res.error);

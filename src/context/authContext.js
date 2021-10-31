@@ -11,9 +11,10 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     loadUser();
@@ -34,9 +35,9 @@ export const AuthProvider = ({ children }) => {
         console.log(error);
       }
     }
-  }
+  };
 
-  const login = async (data) => {    
+  const login = async (data) => {
     try {
       const res = await axios.post(`${baseUrl}/users/login`, data, config);
       return res;
@@ -50,8 +51,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logOut = async () => {
+    let keys = ['token', 'userId'];
     try {
-      await AsyncStorage.removeItem('token');
+      await AsyncStorage.multiRemove(keys);
       setIsAuth(false);
     } catch (error) {
       console.log(error);
@@ -59,21 +61,38 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loadUser = async () => {
-    setTimeout(async () => {
-      try {
-        const savedToken = await AsyncStorage.getItem('token');
-        if (savedToken !== null) {
-          setToken(savedToken);
-          setIsAuth(true);
-        }
-      } catch (error) {
-        console.log('error reading async storage', error);
-      } finally {
-        setLoading(false);
+    try {
+      const savedToken = await AsyncStorage.getItem('token');
+      const id = await AsyncStorage.getItem('userId');
+      if (id) {
+        const currentUser = await axios.get(`${baseUrl}/users/${id}`);
+        setUser(currentUser.data.data.data);
       }
-    }, 2000);
+      if (savedToken !== null) {
+        setToken(savedToken);
+        setIsAuth(true);
+      }
+    } catch (error) {
+      console.log('error reading async storage', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const value = { login, signup, logOut, loading, isAuth, setIsAuth, token };
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const value = {
+    login,
+    signup,
+    logOut,
+    loading,
+    isAuth,
+    setIsAuth,
+    token,
+    user,
+    loadUser,
+  };
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

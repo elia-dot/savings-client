@@ -25,7 +25,7 @@ export default function Signup({ navigation }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [isError, setIsError] = useState(false);
 
-  const { signup, setIsAuth } = useAuth();
+  const { signup, setIsAuth, loadUser } = useAuth();
 
   const handleSignup = async () => {
     setLoading(true);
@@ -52,12 +52,16 @@ export default function Signup({ navigation }) {
     }
     const res = await signup(formData);
     if (res.data) {
-      await AsyncStorage.setItem('token', res.data.token);
+      await AsyncStorage.multiSet([
+        ['token', res.data.token],
+        ['userId', res.data.data.user._id],
+      ]);
       setIsAuth(true);
     } else {
       setErrorMsg(res.errors);
       setIsError(true);
     }
+    loadUser();
     setLoading(false);
   };
 
@@ -67,7 +71,7 @@ export default function Signup({ navigation }) {
 
   return (
     <View style={styles.body}>
-       <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
+      <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
       <Text style={styles.label}>Name:</Text>
       <TextInput
         style={styles.input}
@@ -116,7 +120,9 @@ export default function Signup({ navigation }) {
         onPress={() => setShowPassword(!showPassword)}
       />
       <TouchableOpacity style={styles.btn} onPress={() => handleSignup()}>
-        <Text style={styles.btnText}>{loading ? 'Please wait...' : 'Sign Up'}</Text>
+        <Text style={styles.btnText}>
+          {loading ? 'Please wait...' : 'Sign Up'}
+        </Text>
         {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
       </TouchableOpacity>
 
