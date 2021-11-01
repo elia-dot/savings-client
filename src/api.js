@@ -1,5 +1,4 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'https://goals-65106.herokuapp.com';
 
@@ -23,9 +22,41 @@ export const createGoal = async (data) => {
 
 export const deleteGoal = async (id) => {
   try {
-    const res = await axios.delete(`${baseUrl}/goals/${id}`)
-    return res
+    const res = await axios.delete(`${baseUrl}/goals/${id}`);
+    return res;
   } catch (error) {
     console.log(error.response.data);
   }
-}
+};
+
+export const update = async ({ data, id }) => {
+  try {
+    const res = await axios.patch(`${baseUrl}/goals/${id}`, data);
+    return res;
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};
+
+export const getAllSavings = async (id) => {
+  try {
+    const res = await axios.get(`${baseUrl}/savings/users/${id}`);
+    return res.data.data;
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};
+
+export const createSaving = async (data) => {
+  const res = await axios.post(`${baseUrl}/savings`, data, config);
+  return res;
+};
+
+export const deleteSaving = async (id) => {
+  try {
+    const res = await axios.delete(`${baseUrl}/savings/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};

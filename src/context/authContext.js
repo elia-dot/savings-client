@@ -15,10 +15,15 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState(null);
+  const [saving, setSaving] = useState(null);
 
   useEffect(() => {
     loadUser();
   }, []);
+
+  useEffect(() => {
+    user && setSaving(user.saving);
+  }, [user]);
 
   const config = {
     'Content-Type': 'application/json',
@@ -89,10 +94,8 @@ export const AuthProvider = ({ children }) => {
     token,
     user,
     loadUser,
+    saving,
+    setSaving
   };
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

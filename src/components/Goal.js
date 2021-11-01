@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -8,10 +8,13 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useAuth } from '../context/authContext';
 import { capitalize } from '../utils/capitalize';
 import { deleteGoal } from '../api';
+import GoalForm from '../components/GoalForm';
 
 export default function Goal({ goal }) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const [showModal, setShowModal] = useState(false);
+
   const createdAt = moment(goal.createdAt).fromNow();
 
   const calculateProgress = () => {
@@ -21,14 +24,27 @@ export default function Goal({ goal }) {
   const progress = calculateProgress();
 
   const { mutateAsync } = useMutation(deleteGoal);
+  
+
+  const confirmDelete = () => {
+    Alert.alert('Delete Goal', 'Are you sure you want to delete this goal?', [
+      { text: 'Cancel' },
+      { text: 'Delete', onPress: () => handleDelete() },
+    ]);
+  };
 
   const handleDelete = async () => {
     await mutateAsync(goal._id);
     queryClient.invalidateQueries('goals');
   };
 
+  const updateGoal = () => {
+    setShowModal(true);
+  };
+
   return (
     <View style={styles.body}>
+      <GoalForm showModal={showModal} setShowModal={setShowModal} goal={goal} />
       <View style={styles.goalDetails}>
         <View style={styles.goalName}>
           <View style={styles.icon}>
@@ -45,13 +61,18 @@ export default function Goal({ goal }) {
         </View>
         <View>
           <View style={styles.goalsActions}>
-            <FontAwesome5 name="pen" color="#9cc95a" size={20} />
+            <FontAwesome5
+              name="pen"
+              color="#9cc95a"
+              size={20}
+              onPress={updateGoal}
+            />
             <FontAwesome5
               name="trash"
               color="#9cc95a"
               size={20}
               style={{ marginLeft: 15 }}
-              onPress={handleDelete}
+              onPress={confirmDelete}
             />
           </View>
         </View>

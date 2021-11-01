@@ -24,8 +24,8 @@ export default function HomeTabs() {
           } else if (route.name === 'Savings') {
             iconName = 'piggy-bank';
             size = focused ? 25 : 20;
-          } else if (route.name === 'Profile') {
-            iconName = 'user-alt';
+          } else if (route.name === 'Settings') {
+            iconName = 'cog';
             size = focused ? 25 : 20;
           }
           return <FontAwesome5 name={iconName} size={size} color={color} />;
@@ -34,7 +34,7 @@ export default function HomeTabs() {
     >
       <Tab.Screen name="Goals" component={Goals} />
       <Tab.Screen name="Savings" component={Savings} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Settings" component={Profile} />
     </Tab.Navigator>
   );
 }
