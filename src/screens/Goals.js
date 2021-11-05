@@ -33,7 +33,7 @@ export default function Goals() {
       <View>
         <View style={styles.totalSavings}>
           <Text style={styles.title}>
-            {capitalize(user.name)}, you've already saved:
+            {capitalize(user.name)}, You've already saved:
           </Text>
           <Text style={styles.savings}>
             {saving.toLocaleString()}
