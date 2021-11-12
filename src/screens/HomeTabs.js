@@ -32,9 +32,9 @@ export default function HomeTabs() {
         },
       })}
     >
-      <Tab.Screen name="Goals" component={Goals} />
-      <Tab.Screen name="Savings" component={Savings} />
-      <Tab.Screen name="Settings" component={Profile} />
+      <Tab.Screen name="Goals" component={Goals} options = {{headerTitleAlign: 'center'}}/>
+      <Tab.Screen name="Savings" component={Savings} options = {{headerTitleAlign: 'center'}}/>
+      <Tab.Screen name="Settings" component={Profile} options = {{headerTitleAlign: 'center'}}/>
     </Tab.Navigator>
   );
 }

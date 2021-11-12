@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 
+
 export default function Splash({ navigation }) {
   return (
     <View style={styles.body}>

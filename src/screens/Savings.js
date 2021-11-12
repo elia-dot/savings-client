@@ -48,7 +48,7 @@ export default function Savings() {
   }, [goalData]);
 
   const openSavingModal = () => {
-    refetch()
+    refetch();
     if (goals.length === 0) {
       setErrorMsg('You have to set atleast one goal to start saving!');
       setIsError(true);
@@ -58,7 +58,7 @@ export default function Savings() {
   };
 
   const save = async () => {
-    if (formData.amount === '') {
+    if (formData.amount === '' || !formData.target) {
       setErrorMsg('Please fill all the fields!');
       setIsError(true);
       setLoading(false);
@@ -168,6 +168,7 @@ export default function Savings() {
               }
               style={styles.picker}
             >
+              <Picker.Item label="Select Goal" value="Select Goal" key={0} />
               {goals.map((g) => (
                 <Picker.Item label={g.title} value={g._id} key={g._id} />
               ))}

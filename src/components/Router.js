@@ -17,9 +17,9 @@ export const Router = () => {
     return <Splash />;
   }
   return (
-    <NavigationContainer >
+    <NavigationContainer>
       {isAuth ? (
-        <Stack.Navigator initialRouteName = "HomeTabs">
+        <Stack.Navigator initialRouteName="HomeTabs">
           <Stack.Screen
             name="HomeTabs"
             component={HomeTabs}
@@ -30,16 +30,19 @@ export const Router = () => {
           />
         </Stack.Navigator>
       ) : (
-        <Stack.Navigator initialRouteName = "Login">
+        <Stack.Navigator
+          initialRouteName="Login"
+         
+        >
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{ headerBackTitleVisible: false, title: 'Log In' }}
+            options={{ headerBackTitleVisible: false, title: 'Log In',  headerTitleAlign: 'center' }}
           />
           <Stack.Screen
             name="Signup"
             component={Signup}
-            options={{ headerBackTitleVisible: false, title: 'Sign Up' }}
+            options={{ headerBackTitleVisible: false, title: 'Sign Up', headerTitleAlign: 'center' }}
           />
         </Stack.Navigator>
       )}

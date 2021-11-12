@@ -65,7 +65,7 @@ const EditProfile = ({ showEdit, setShowEdit, type }) => {
 
             <TouchableOpacity style={styles.submit}>
               <Text style={styles.btnText} onPress={changeCurrency}>
-                SUBMIT
+                Save
               </Text>
               {isLoading && (
                 <LinearProgress color="#fff" style={{ marginTop: 1 }} />
