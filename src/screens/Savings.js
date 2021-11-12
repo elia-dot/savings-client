@@ -10,11 +10,12 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { FAB, LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { createSaving, getAllSavings } from '../api';
+import { createSaving, getAllSavings, getAllGoals } from '../api';
 import Saving from '../components/Saving';
 import { useAuth } from '../context/authContext';
 import Alert from '../components/Overlay';
@@ -24,17 +25,37 @@ export default function Savings() {
   const [savings, setSavings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ amount: '' });
   const [errorMsg, setErrorMsg] = useState('');
   const [isError, setIsError] = useState(false);
   const [savingsOrder, setSavingsOrder] = useState(null);
   const [dateOrder, setDateOrder] = useState(null);
+  const [goals, setGoals] = useState([]);
+
+  const [formData, setFormData] = useState({ amount: '', target: goals[0] });
   const queryClient = useQueryClient();
 
   const userId = user._id.toString();
 
   const { data } = useQuery(['savings', userId], () => getAllSavings(userId));
   const { mutateAsync } = useMutation(createSaving);
+
+  const { data: goalData, refetch } = useQuery(['goals', userId], () =>
+    getAllGoals(userId)
+  );
+
+  useEffect(() => {
+    goalData && setGoals(goalData.data);
+  }, [goalData]);
+
+  const openSavingModal = () => {
+    refetch()
+    if (goals.length === 0) {
+      setErrorMsg('You have to set atleast one goal to start saving!');
+      setIsError(true);
+    } else {
+      setShowModal(true);
+    }
+  };
 
   const save = async () => {
     if (formData.amount === '') {
@@ -122,6 +143,7 @@ export default function Savings() {
   }, [data]);
   return (
     <View style={styles.body}>
+      <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
       <Modal visible={showModal} animationType="slide">
         <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -134,8 +156,22 @@ export default function Savings() {
               placeholderTextColor="#cccccc"
               value={formData.amount.toString()}
               keyboardType="decimal-pad"
-              onChangeText={(value) => setFormData({ amount: value })}
+              onChangeText={(value) =>
+                setFormData({ ...formData, amount: value })
+              }
             />
+            <Text style={styles.label}>Select Goal:</Text>
+            <Picker
+              selectedValue={formData.target}
+              onValueChange={(itemValue, itemIndex) =>
+                setFormData({ ...formData, target: itemValue })
+              }
+              style={styles.picker}
+            >
+              {goals.map((g) => (
+                <Picker.Item label={g.title} value={g._id} key={g._id} />
+              ))}
+            </Picker>
             <TouchableOpacity style={styles.createBtn} onPress={() => save()}>
               <Text style={styles.btnText}>
                 {loading ? 'Please wait...' : 'Submit'}
@@ -200,9 +236,7 @@ export default function Savings() {
         color="#9cc95a"
         size="large"
         icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
-        onPress={() => {
-          setShowModal(true);
-        }}
+        onPress={openSavingModal}
         style={styles.fab}
       />
     </View>
@@ -259,15 +293,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontSize: 25,
     padding: 10,
-    marginBottom: 25,
     textAlign: 'left',
+    marginBottom: 50,
+  },
+  picker: {
+    marginTop: -84,
   },
   createBtn: {
     backgroundColor: '#9cc95a',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    marginTop: 100,
+    marginTop: 50,
   },
   cancelBtn: {
     backgroundColor: '#f4f9ec',

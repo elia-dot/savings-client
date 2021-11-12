@@ -16,6 +16,8 @@ export const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState(null);
   const [saving, setSaving] = useState(null);
+  const [currency, setCurrency] = useState('');
+  const [goals, setGoals] = useState([]);
 
   useEffect(() => {
     loadUser();
@@ -23,6 +25,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     user && setSaving(user.saving);
+    user && setGoals(user.goals);
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      if (user.preferences.currency === 'USD') setCurrency('$');
+      else if (user.preferences.currency === 'NIS') setCurrency('\u20AA');
+      else setCurrency('\u20AC');
+    }
   }, [user]);
 
   const config = {
@@ -95,7 +106,11 @@ export const AuthProvider = ({ children }) => {
     user,
     loadUser,
     saving,
-    setSaving
+    setSaving,
+    currency,
+    setCurrency,
+    goals,
+    setGoals,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

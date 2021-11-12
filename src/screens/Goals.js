@@ -12,7 +12,7 @@ import { getAllGoals } from '../api';
 import GoalForm from '../components/GoalForm';
 
 export default function Goals() {
-  const { user, saving } = useAuth();
+  const { user, saving, currency } = useAuth();
   const [goals, setGoals] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -37,7 +37,7 @@ export default function Goals() {
           </Text>
           <Text style={styles.savings}>
             {saving.toLocaleString()}
-            <Text style={styles.currency}> $</Text>
+            <Text style={styles.currency}> {currency}</Text>
           </Text>
         </View>
       </View>

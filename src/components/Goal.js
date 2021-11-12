@@ -1,30 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 import { useAuth } from '../context/authContext';
 import { capitalize } from '../utils/capitalize';
-import { deleteGoal } from '../api';
+import { deleteGoal, getAllSavings } from '../api';
 import GoalForm from '../components/GoalForm';
 
 export default function Goal({ goal }) {
-  const { user } = useAuth();
+  const { user, currency } = useAuth();
   const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
+  const [goalSaving, setGoalSavings] = useState([]);
+  const [savingSum, setSavingSum] = useState(0);
 
   const createdAt = moment(goal.createdAt).fromNow();
 
+  const userId = user._id.toString();
+  const { data } = useQuery(['savings', userId], () => getAllSavings(userId));
+
+  useEffect(() => {
+    if (data) {
+      const filteredSavings = data.data.filter(
+        (saving) => saving.target._id === goal._id
+      );
+      setGoalSavings(filteredSavings);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    let sum = 0;
+    goalSaving.forEach((goal) => {
+      sum += goal.amount;
+    });
+    setSavingSum(sum);
+  }, [goalSaving])
+
   const calculateProgress = () => {
-    if ((user.saving * 1) / (goal.price * 1) >= 1) return 1;
-    return (user.saving * 1) / (goal.price * 1);
+    if ((savingSum * 1) / (goal.price * 1) >= 1) return 1;
+    return (savingSum * 1) / (goal.price * 1);
   };
   const progress = calculateProgress();
 
   const { mutateAsync } = useMutation(deleteGoal);
-  
 
   const confirmDelete = () => {
     Alert.alert('Delete Goal', 'Are you sure you want to delete this goal?', [
@@ -84,8 +105,12 @@ export default function Goal({ goal }) {
         style={styles.progressBar}
       />
       <View style={styles.progressNumbers}>
-        <Text>{user.saving.toLocaleString()}$</Text>
-        <Text>{goal.price.toLocaleString()}$</Text>
+        <Text>
+          {savingSum.toLocaleString()} {currency}
+        </Text>
+        <Text>
+          {goal.price.toLocaleString()} {currency}
+        </Text>
       </View>
     </View>
   );

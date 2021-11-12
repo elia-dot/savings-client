@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -19,7 +19,7 @@ export default function Saving({ saving }) {
       'Are you sure you want to delete this saving?',
       [{ text: 'Cancel' }, { text: 'Delete', onPress: () => handleDelete() }]
     );
-    setSaving((prev) => prev - saving.amount)
+    setSaving((prev) => prev - saving.amount);
   };
 
   const handleDelete = async () => {
@@ -29,7 +29,10 @@ export default function Saving({ saving }) {
 
   return (
     <TouchableOpacity style={styles.body} onPress={confirmDelete}>
-      <Text>{saving.amount.toLocaleString()}$</Text>
+      <View>
+        <Text>{saving.amount.toLocaleString()}$</Text>
+        <Text style={{ color: '#888' }}>{saving.target.title}</Text>
+      </View>
       <Text>{createdAt}</Text>
     </TouchableOpacity>
   );
@@ -41,6 +44,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 15,
     borderBottomColor: '#9cc95a',
     borderBottomWidth: 0.5,

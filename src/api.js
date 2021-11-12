@@ -60,3 +60,12 @@ export const deleteSaving = async (id) => {
     console.log(error.response.data);
   }
 };
+
+export const updateCurrency = async ({ id, currency }) => {
+  try {
+    const res = await axios.patch(`${baseUrl}/users/${id}`, currency, config);
+    return res;
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};
