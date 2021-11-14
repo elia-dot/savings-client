@@ -45,7 +45,7 @@ export default function Signup({ navigation }) {
       setLoading(false);
       return;
     } else if (formData.password.length < 6) {
-      setErrorMsg('Password must br atleast 6 characters!');
+      setErrorMsg('Password must be at least 6 characters!');
       setIsError(true);
       setLoading(false);
       return;
