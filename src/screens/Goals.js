@@ -2,30 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { FAB, Divider } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useQuery } from 'react-query';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Goal from '../components/Goal';
 import NoGoals from '../components/NoGoals';
-import { useAuth } from '../context/authContext';
 import { capitalize } from '../utils/capitalize';
-import { getAllGoals } from '../api';
 import GoalForm from '../components/GoalForm';
+import colors from '../globals/styles/colors';
 
 export default function Goals() {
-  const { user, saving, currency } = useAuth();
-  const [goals, setGoals] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
-  const userId = user._id.toString();
-
-  const { data, isLoading } = useQuery(['goals', userId], () =>
-    getAllGoals(userId)
-  );
-
-  useEffect(() => {
-    data && setGoals(data.data);
-  }, [data]);
-
+  const dispatch = useDispatch();
+  const { goals } = useSelector((state) => state.goals);
   return (
     <View style={styles.body}>
       <GoalForm showModal={showModal} setShowModal={setShowModal} goal={null} />
@@ -90,6 +78,6 @@ const styles = StyleSheet.create({
   },
   currency: {
     fontSize: 25,
-    color: '#9cc95a',
+    color: colors.primary,
   },
 });

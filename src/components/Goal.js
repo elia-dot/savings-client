@@ -3,49 +3,27 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useAuth } from '../context/authContext';
 import { capitalize } from '../utils/capitalize';
-import { deleteGoal, getAllSavings } from '../api';
 import GoalForm from '../components/GoalForm';
+import colors from '../globals/styles/colors';
+import { deleteGoal } from '../api';
 
 export default function Goal({ goal }) {
-  const { user, currency } = useAuth();
-  const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
-  const [goalSaving, setGoalSavings] = useState([]);
-  const [savingSum, setSavingSum] = useState(0);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { error } = useSelector((state) => state.goal);
 
   const createdAt = moment(goal.createdAt).fromNow();
 
-  const userId = user._id.toString();
-  const { data } = useQuery(['savings', userId], () => getAllSavings(userId));
-
-  useEffect(() => {
-    if (data) {
-      const filteredSavings = data.data.filter(
-        (saving) => saving.target._id === goal._id
-      );
-      setGoalSavings(filteredSavings);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    let sum = 0;
-    goalSaving.forEach((goal) => {
-      sum += goal.amount;
-    });
-    setSavingSum(sum);
-  }, [goalSaving])
-
   const calculateProgress = () => {
-    if ((savingSum * 1) / (goal.price * 1) >= 1) return 1;
-    return (savingSum * 1) / (goal.price * 1);
+    if ((user.savings * 1) / (goal.price * 1) >= 1) return 1;
+    return (user.saving * 1) / (goal.price * 1);
   };
-  const progress = calculateProgress();
 
-  const { mutateAsync } = useMutation(deleteGoal);
+  const progress = calculateProgress();
 
   const confirmDelete = () => {
     Alert.alert('Delete Goal', 'Are you sure you want to delete this goal?', [
@@ -54,9 +32,8 @@ export default function Goal({ goal }) {
     ]);
   };
 
-  const handleDelete = async () => {
-    await mutateAsync(goal._id);
-    queryClient.invalidateQueries('goals');
+  const handleDelete = () => {
+    dispatch(deleteGoal(goal._id));
   };
 
   const updateGoal = () => {
@@ -71,7 +48,7 @@ export default function Goal({ goal }) {
           <View style={styles.icon}>
             <FontAwesome5
               name={goal.icon ? goal.icon : 'question'}
-              color="#9cc95a"
+              color={colors.primary}
               size={20}
             />
           </View>
@@ -84,13 +61,13 @@ export default function Goal({ goal }) {
           <View style={styles.goalsActions}>
             <FontAwesome5
               name="pen"
-              color="#9cc95a"
+              color={colors.primary}
               size={20}
               onPress={updateGoal}
             />
             <FontAwesome5
               name="trash"
-              color="#9cc95a"
+              color={colors.primary}
               size={20}
               style={{ marginLeft: 15 }}
               onPress={confirmDelete}
@@ -101,16 +78,12 @@ export default function Goal({ goal }) {
       <LinearProgress
         value={progress}
         variant="determinate"
-        color="#9cc95a"
+        color={colors.primary}
         style={styles.progressBar}
       />
       <View style={styles.progressNumbers}>
-        <Text>
-          {savingSum.toLocaleString()} {currency}
-        </Text>
-        <Text>
-          {goal.price.toLocaleString()} {currency}
-        </Text>
+        <Text>{goal.price.toLocaleString()}</Text>
+        <Text>{user.saving.toLocaleString()}</Text>
       </View>
     </View>
   );
@@ -138,7 +111,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   icon: {
-    backgroundColor: '#f4f9ec',
+    backgroundColor: colors.secondary,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

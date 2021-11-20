@@ -4,6 +4,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import EditProfile from '../components/EditProfile';
 
 import { useAuth } from '../context/authContext';
+import colors from '../globals/styles/colors';
 
 export default function Profile() {
   const { user, logOut, currency, setCurrency } = useAuth();
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
   },
   row: {
     backgroundColor: '#fff',
-    borderBottomColor: '#9cc95a',
+    borderBottomColor: colors.primary,
     borderBottomWidth: 0.5,
     padding: 15,
     display: 'flex',
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   centeredRow: {
     padding: 20,
     backgroundColor: '#fff',
-    borderBottomColor: '#9cc95a',
+    borderBottomColor: colors.primary,
     borderBottomWidth: 0.5,
     display: 'flex',
     alignItems: 'center',
@@ -83,14 +84,14 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     textTransform: 'uppercase',
-    color: '#9cc95a',
+    color: colors.primary,
     fontWeight: '400',
     marginTop: 15,
     marginBottom: 5,
     marginLeft: '5%',
   },
   section: {
-    borderColor: '#9cc95a',
+    borderColor: colors.primary,
     borderWidth: 0.5,
     width: '90%',
     marginLeft: '5%',

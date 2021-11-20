@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { deleteSaving } from '../api';
 import { useAuth } from '../context/authContext';
+import colors from '../globals/styles/colors';
 
 export default function Saving({ saving }) {
   const queryClient = useQueryClient();
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
-    borderBottomColor: '#9cc95a',
+    borderBottomColor: colors.primary,
     borderBottomWidth: 0.5,
   },
 });
