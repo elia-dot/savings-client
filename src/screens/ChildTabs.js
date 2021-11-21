@@ -14,7 +14,7 @@ import Goal from '../components/Goal';
 const ChildTabs = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
+  
   const handleLogout = () => {
     dispatch(logout());
   };

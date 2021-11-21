@@ -5,5 +5,7 @@ export const LOAD_ERROR = 'LOAD_ERROR'
 export const LOGOUT = 'LOGOUT'
 
 export const GET_ALL_GOALS = 'GET_ALL_GOALS'
+export const CREATE_GOAL = 'CREATE_GOAL'
+export const UPDATE_GOAL = 'UPDATE_GOAL'
 export const DELETE_GOAL = 'DELETE_GOAL'
 export const GOALS_ERROR = 'GOALS_ERROR'

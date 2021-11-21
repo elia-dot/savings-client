@@ -9,21 +9,23 @@ import {
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
+import { useDispatch } from 'react-redux';
 
-
-import { createGoal, update } from '../api';
 import Alert from '../globals/components/Overlay';
 import colors from '../globals/styles/colors';
+import { updateGoal } from '../redux/actions/goals';
 
 const GoalForm = ({ showModal, setShowModal, goal }) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: goal?.title || '',
     price: goal?.price || '',
     icon: goal?.icon || '',
   });
-  const [errorMsg, setErrorMsg] = useState('');
-  const [isError, setIsError] = useState(false);
+
+  const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
+  const [isAlert, setIsAlert] = useState(false);
 
   const categories = [
     { label: 'Other', value: 'question', key: '0' },
@@ -32,35 +34,29 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
     { label: 'Vacation', value: 'plane', key: '3' },
   ];
 
-  const createNewGoal = async () => {
-    const res = await mutateAsync(formData);
-    queryClient.invalidateQueries('goals');
-    if (res.data.status === 'fail') {
-      setErrorMsg(res.data.error);
-    }
-  };
+  const createNewGoal = async () => {};
 
-  const updateGoal = async () => {
-    const res = await updateAsync({ id: goal._id, data: formData });
-    queryClient.invalidateQueries('goals');
-    if (res.data.status === 'fail') {
-      setErrorMsg(res.data.error);
-    }
+  const updateGoal = () => {
+    dispatch(updateGoal(goal._id, formData));
   };
 
   const handlePress = async () => {
+    setLoading(true);
     if (
       formData.title === '' ||
       formData.price === '' ||
       formData.icon === ''
     ) {
-      setErrorMsg('Please fill all the fields!');
-      setIsError(true);
+      setErrorMsg({
+        title: 'Missing Details',
+        message: 'Please fill all the fields!',
+      });
+      setIsAlert(true);
       setLoading(false);
       return;
     }
-    setLoading(true);
     setErrorMsg('');
+
     if (goal) {
       await updateGoal();
     } else {
@@ -75,28 +71,36 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
     setLoading(false);
     setShowModal(false);
   };
+
   return (
     <View>
       <Modal visible={showModal} animationType="slide">
-        <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
+        <Alert
+          message={errorMsg.message}
+          title={errorMsg.title}
+          type="fail"
+          isAlert={isAlert}
+          setIsAlert={setIsAlert}
+        />
         <View style={styles.modalBody}>
-          <Text style={styles.modalTitle}>Let's create your saving goal!</Text>
+          <Text style={styles.modalTitle}>
+            {goal ? 'עדכן פרטי מטרה' : 'צור את המטרה הראשונה שלך'}
+          </Text>
           <View style={styles.form}>
-            <Text>{errorMsg}</Text>
-            <Text style={styles.label}>Title:</Text>
+            <Text style={styles.label}>שם:</Text>
             <TextInput
               style={styles.input}
-              placeholder="Goal title"
+              placeholder="שם המטרה"
               placeholderTextColor="#cccccc"
               value={formData.title}
               onChangeText={(value) =>
                 setFormData({ ...formData, title: value.toLowerCase() })
               }
             />
-            <Text style={styles.label}>Price:</Text>
+            <Text style={styles.label}>מחיר:</Text>
             <TextInput
               style={styles.input}
-              placeholder="Goal price"
+              placeholder="מחיר המטרה"
               placeholderTextColor="#cccccc"
               value={formData.price.toString()}
               keyboardType="number-pad"
@@ -104,13 +108,13 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
                 setFormData({ ...formData, price: value })
               }
             />
-            <Text style={styles.label}>Category:</Text>
+            <Text style={styles.label}>קטגוריה:</Text>
             <RNPickerSelect
               items={categories}
               onValueChange={(value) =>
                 setFormData({ ...formData, icon: value })
               }
-              placeholder={{ label: 'Please select category', value: null }}
+              placeholder={{ label: 'בחר קטגוריה', value: null }}
               style={pickerSelectStyles}
             />
 
@@ -120,11 +124,11 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
             >
               {goal ? (
                 <Text style={styles.btnText}>
-                  {loading ? 'Please wait...' : 'Update Goal'}
+                  {loading ? 'מעדכן מטרה...' : 'עדכן מטרה'}
                 </Text>
               ) : (
                 <Text style={styles.btnText}>
-                  {loading ? 'Please wait...' : 'Create Goal'}
+                  {loading ? 'יוצר מטרה...' : 'צור מטרה'}
                 </Text>
               )}
               {loading && (
@@ -135,7 +139,7 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
               style={styles.cancelBtn}
               onPress={() => setShowModal(false)}
             >
-              <Text style={[styles.btnText, styles.cancelBtnText]}>Cancel</Text>
+              <Text style={[styles.btnText, styles.cancelBtnText]}>ביטול</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -150,8 +154,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   modalTitle: {
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: '500',
+    textAlign: 'center',
   },
   form: {
     marginTop: 100,

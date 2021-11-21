@@ -1,7 +1,13 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { GET_ALL_GOALS, DELETE_GOAL, GOALS_ERROR } from './types';
+import {
+  GET_ALL_GOALS,
+  CREATE_GOAL,
+  UPDATE_GOAL,
+  DELETE_GOAL,
+  GOALS_ERROR,
+} from './types';
 
 const baseUrl = 'https://goals-65106.herokuapp.com';
 
@@ -9,21 +15,22 @@ const config = {
   'Content-Type': 'application/json',
 };
 
-const getAllGoals = () => async (dispatch) => {
+export const getAllGoals = () => async (dispatch) => {
   let userId;
   try {
     userId = await AsyncStorage.getItem('userId');
   } catch (error) {
-    console.log(error);
+    console.log('goals error', error);
   }
   try {
     const res = await axios(`${baseUrl}/goals/users/${userId}`);
+    console.log(res.data.data.data);
     dispatch({
       type: GET_ALL_GOALS,
       payload: res.data.data.data,
     });
   } catch (error) {
-    console.log(error);
+    console.log('goals error', error);
     dispatch({
       type: GOALS_ERROR,
       payload: error.response.data.error,
@@ -31,15 +38,37 @@ const getAllGoals = () => async (dispatch) => {
   }
 };
 
-const deleteGoal = (goalId) => async (dispatch) => {
+export const createGoal = () => async (dispatch) => {};
+
+export const updateGoal = (goalId, data) => async (dispatch) => {
+  try {
+    const res = await axios.patch(`${baseUrl}/goals/${goalId}`, data, config);
+    console.log(res.data.data.data);
+    dispatch({
+      type: UPDATE_GOAL,
+      payload: res.data.data.data,
+    });
+  } catch (error) {
+    console.log(error.response.data.error);
+    dispatch({
+      type: GOALS_ERROR,
+      payload: error.response.data.error,
+    });
+  }
+};
+
+export const deleteGoal = (goalId) => async (dispatch) => {
   try {
     const res = await axios.delete(`${baseUrl}/goals/${goalId}`);
-    console.log(res.data);
     dispatch({
       type: DELETE_GOAL,
       payload: goalId,
     });
   } catch (error) {
     console.log('error', error);
+    dispatch({
+      type: GOALS_ERROR,
+      payload: error.response.data.error,
+    });
   }
 };

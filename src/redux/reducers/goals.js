@@ -1,9 +1,15 @@
-import { GET_ALL_GOALS, DELETE_GOAL, GOALS_ERROR } from '../actions/types';
+import {
+  GET_ALL_GOALS,
+  CREATE_GOAL,
+  UPDATE_GOAL,
+  DELETE_GOAL,
+  GOALS_ERROR,
+} from '../actions/types';
 
 const initialState = {
   goals: null,
   loading: true,
-  error: null
+  error: null,
 };
 
 export default function (state = initialState, action) {
@@ -19,6 +25,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         goals: goals.filter((goal) => goal._id !== payload),
+        loading: false,
+      };
+    case UPDATE_GOAL:
+      return {
+        ...state,
+        goals: goals.map((goal) => (goal._id === payload._id ? payload : goal)),
         loading: false,
       };
     case GOALS_ERROR:

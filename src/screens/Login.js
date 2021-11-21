@@ -25,7 +25,7 @@ export default function Login({ navigation }) {
   const [isAlert, setIsAlert] = useState(false);
 
   const dispacth = useDispatch();
-  const { error, user, isAuthenticated } = useSelector((state) => state.auth);
+  const { error} = useSelector((state) => state.auth);
   const handleLogin = async () => {
     setLoading(true);
     if (formData.email === '' || formData.password === '') {
