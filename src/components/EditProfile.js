@@ -5,6 +5,7 @@ import { useMutation } from 'react-query';
 
 import { updateCurrency } from '../api';
 import { useAuth } from '../context/authContext';
+import colors from '../globals/styles/colors';
 
 const EditProfile = ({ showEdit, setShowEdit, type }) => {
   const { currency, setCurrency, user } = useAuth();
@@ -65,7 +66,7 @@ const EditProfile = ({ showEdit, setShowEdit, type }) => {
 
             <TouchableOpacity style={styles.submit}>
               <Text style={styles.btnText} onPress={changeCurrency}>
-                SUBMIT
+                Save
               </Text>
               {isLoading && (
                 <LinearProgress color="#fff" style={{ marginTop: 1 }} />
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     width: '85%',
   },
   submit: {
-    backgroundColor: '#9cc95a',
+    backgroundColor: colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,

@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
-import { useMutation, useQueryClient } from 'react-query';
+
 
 import { createGoal, update } from '../api';
-import Alert from '../components/Overlay';
+import Alert from '../globals/components/Overlay';
+import colors from '../globals/styles/colors';
 
 const GoalForm = ({ showModal, setShowModal, goal }) => {
   const [loading, setLoading] = useState(false);
@@ -23,10 +24,6 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
   });
   const [errorMsg, setErrorMsg] = useState('');
   const [isError, setIsError] = useState(false);
-
-  const { mutateAsync } = useMutation(createGoal);
-  const { mutateAsync: updateAsync } = useMutation(update);
-  const queryClient = useQueryClient();
 
   const categories = [
     { label: 'Other', value: 'question', key: '0' },
@@ -162,11 +159,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     marginBottom: 5,
-    color: '#9cc95a',
+    color: colors.primary,
   },
   input: {
     backgroundColor: '#eee',
-    borderBottomColor: '#9cc95a',
+    borderBottomColor: colors.primary,
     borderBottomWidth: 1,
     fontSize: 25,
     padding: 10,
@@ -174,7 +171,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   createBtn: {
-    backgroundColor: '#9cc95a',
+    backgroundColor: colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
@@ -194,7 +191,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cancelBtnText: {
-    color: '#9cc95a',
+    color: colors.primary,
   },
 });
 

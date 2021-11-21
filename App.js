@@ -1,21 +1,25 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { StyleSheet, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { Provider } from 'react-redux';
 
-
-import { AuthProvider } from './src/context/authContext';
 import { Router } from './src/components/Router';
-
-const queryClient = new QueryClient();
+import store from './src/redux/store';
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router/>
-      </AuthProvider>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <StatusBar />
+      <View style = {styles.app}>
+      <Router />
+      </View>
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  app: {
+    flex: 1,
+    direction:'rtl'
+  }
+});

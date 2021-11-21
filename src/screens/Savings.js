@@ -18,8 +18,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { createSaving, getAllSavings, getAllGoals } from '../api';
 import Saving from '../components/Saving';
 import { useAuth } from '../context/authContext';
-import Alert from '../components/Overlay';
-import { capitalize } from '../utils/capitalize';
+import Alert from '../globals/components/Overlay';
+import colors from '../globals/styles/colors';
 
 export default function Savings() {
   const { user, setSaving } = useAuth();
@@ -67,7 +67,7 @@ export default function Savings() {
   };
 
   const save = async () => {
-    if (formData.amount === '' || value === null) {
+    if (formData.amount === '' || !formData.target) {
       setErrorMsg('Please fill all the fields!');
       setIsError(true);
       setLoading(false);
@@ -171,16 +171,18 @@ export default function Savings() {
               }
             />
             <Text style={styles.label}>Select Goal:</Text>
-
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={goals}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setGoals}
-            />
-
+            <Picker
+              selectedValue={formData.target}
+              onValueChange={(itemValue, itemIndex) =>
+                setFormData({ ...formData, target: itemValue })
+              }
+              style={styles.picker}
+            >
+              <Picker.Item label="Select Goal" value="Select Goal" key={0} />
+              {goals.map((g) => (
+                <Picker.Item label={g.title} value={g._id} key={g._id} />
+              ))}
+            </Picker>
             <TouchableOpacity style={styles.createBtn} onPress={() => save()}>
               <Text style={styles.btnText}>
                 {loading ? 'Please wait...' : 'Submit'}
@@ -263,11 +265,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 15,
-    borderBottomColor: '#9cc95a',
+    borderBottomColor: colors.primary,
     borderBottomWidth: 1,
   },
   headerText: {
-    color: '#9cc95a',
+    color: colors.primary,
     fontWeight: '600',
   },
   title: {
@@ -294,11 +296,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     marginBottom: 5,
-    color: '#9cc95a',
+    color: colors.primary,
   },
   input: {
     backgroundColor: '#eee',
-    borderBottomColor: '#9cc95a',
+    borderBottomColor: colors.primary,
     borderBottomWidth: 1,
     fontSize: 25,
     padding: 10,
@@ -309,7 +311,7 @@ const styles = StyleSheet.create({
     marginTop: -84,
   },
   createBtn: {
-    backgroundColor: '#9cc95a',
+    backgroundColor: colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
@@ -329,6 +331,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cancelBtnText: {
-    color: '#9cc95a',
+    color: colors.primary,
   },
 });

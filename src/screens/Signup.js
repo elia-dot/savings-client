@@ -11,7 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearProgress } from 'react-native-elements';
 
 import { useAuth } from '../context/authContext';
-import Alert from '../components/Overlay';
+import Alert from '../globals/components/Overlay';
+import colors from '../globals/styles/colors';
 
 export default function Signup({ navigation }) {
   const [formData, setFormData] = useState({
@@ -45,7 +46,7 @@ export default function Signup({ navigation }) {
       setLoading(false);
       return;
     } else if (formData.password.length < 6) {
-      setErrorMsg('Password must br at least 6 characters!');
+      setErrorMsg('Password must be at least 6 characters!');
       setIsError(true);
       setLoading(false);
       return;
@@ -157,11 +158,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     marginBottom: 5,
-    color: '#9cc95a',
+    color: colors.primary,
   },
   input: {
     backgroundColor: '#fff',
-    borderBottomColor: '#9cc95a',
+    borderBottomColor: colors.primary,
     borderBottomWidth: 1,
     fontSize: 25,
     padding: 10,
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   btn: {
-    backgroundColor: '#9cc95a',
+    backgroundColor: colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   link: {
-    color: '#9cc95a',
+    color: colors.primary,
     fontWeight: '600',
     fontSize: 20,
   },

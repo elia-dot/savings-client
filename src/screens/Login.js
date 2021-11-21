@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -10,35 +11,46 @@ import {
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { LinearProgress } from 'react-native-elements';
+import validator from 'validator';
 
-import { useAuth } from '../context/authContext';
-import Alert from '../components/Overlay';
+import Alert from '../globals/components/Overlay';
+import { login } from '../redux/actions/auth';
+import colors from '../globals/styles/colors';
 
 export default function Login({ navigation }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
+  const [isAlert, setIsAlert] = useState(false);
 
-  const { login, setIsAuth, loadUser } = useAuth();
-
+  const dispacth = useDispatch();
+  const { error, user, isAuthenticated } = useSelector((state) => state.auth);
   const handleLogin = async () => {
     setLoading(true);
     if (formData.email === '' || formData.password === '') {
-      setErrorMsg('Please fill all the fields!');
-      setIsError(true);
-      setLoading(false)
+      setErrorMsg({
+        title: 'Missing Details',
+        message: 'Please fill all the fields!',
+      });
+      setIsAlert(true);
+      setLoading(false);
       return;
     }
-    const res = await login(formData);
-    if (res.data) {
-      await AsyncStorage.multiSet([['token', res.data.token], ['userId', res.data.data.user._id]]);
-      loadUser()
-      setIsAuth(true);
-    } else {
-      setErrorMsg(res.error);
-      setIsError(true);
+
+    let data = { password: formData.password };
+    //check if its username or email
+    validator.isEmail(formData.email)
+      ? (data.email = formData.email)
+      : (data.username = formData.email);
+
+    await dispacth(login(data));
+    if (error) {
+      setErrorMsg({
+        title: 'Incorent Details',
+        message: 'Please check your input and try again',
+      });
+      setIsAlert(true);
     }
     setLoading(false);
   };
@@ -49,20 +61,26 @@ export default function Login({ navigation }) {
   return (
     <View style={styles.body}>
       <Image source={require('../../assets/logo.png')} style={styles.img} />
-      <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
-      <Text style={styles.label}>Email:</Text>
+      <Alert
+        message={errorMsg.message}
+        title={errorMsg.title}
+        type="fail"
+        isAlert={isAlert}
+        setIsAlert={setIsAlert}
+      />
+      <Text style={styles.label}>שם משתמש/מייל</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="שם משתמש או מייל"
         value={formData.email}
         onChangeText={(value) =>
           setFormData({ ...formData, email: value.toLowerCase() })
         }
       />
-      <Text style={styles.label}>Password:</Text>
+      <Text style={styles.label}>סיסמא:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="סיסמא"
         value={formData.password}
         textContentType="password"
         secureTextEntry={!showPassword}
@@ -71,28 +89,26 @@ export default function Login({ navigation }) {
         }
       />
       <CheckBox
-        title="Show Password"
+        title="הצג סיסמא"
         checked={showPassword}
         checkedColor="#9cc95a"
         containerStyle={{ backgroundColor: 'none', padding: 0, borderWidth: 0 }}
         onPress={() => setShowPassword(!showPassword)}
       />
       <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
-        <Text style={styles.btnText}>{loading ? 'Please wait...' : 'Log In'}</Text>
+        <Text style={styles.btnText}>{loading ? 'מתחבר...' : 'התחבר'}</Text>
         {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
       </TouchableOpacity>
-
-      <Text style={styles.text}>
-        Don't have an account yet?{' '}
-        <TouchableOpacity
-          onPress={() => {
-            navigateToRegister();
-          }}
-        >
-          <Text style={styles.link}>Sign up</Text>
-        </TouchableOpacity>
-        !
-      </Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigateToRegister();
+        }}
+      >
+        <Text style={styles.text}>
+        משתמש חדש?{'  '}
+          <Text style={styles.link}>הירשם{'  '}</Text>
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -112,11 +128,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     marginBottom: 5,
-    color: '#9cc95a',
+    color: colors.primary,
   },
   input: {
     backgroundColor: '#fff',
-    borderBottomColor: '#9cc95a',
+    borderBottomColor: colors.primary,
     borderBottomWidth: 1,
     fontSize: 25,
     padding: 10,
@@ -124,7 +140,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   btn: {
-    backgroundColor: '#9cc95a',
+    backgroundColor: colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
@@ -142,9 +158,9 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   link: {
-    color: '#9cc95a',
-    fontWeight: '600',
-    fontSize: 20,
+    color: colors.primary,
+    fontSize: 23,
+    fontWeight: '600'
   },
   checkboxContainer: {
     flexDirection: 'row',
