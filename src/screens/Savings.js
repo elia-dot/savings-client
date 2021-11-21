@@ -10,7 +10,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { FAB, LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -19,6 +19,7 @@ import { createSaving, getAllSavings, getAllGoals } from '../api';
 import Saving from '../components/Saving';
 import { useAuth } from '../context/authContext';
 import Alert from '../components/Overlay';
+import { capitalize } from '../utils/capitalize';
 
 export default function Savings() {
   const { user, setSaving } = useAuth();
@@ -30,8 +31,10 @@ export default function Savings() {
   const [savingsOrder, setSavingsOrder] = useState(null);
   const [dateOrder, setDateOrder] = useState(null);
   const [goals, setGoals] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
 
-  const [formData, setFormData] = useState({ amount: '', target: goals[0] });
+  const [formData, setFormData] = useState({ amount: '' });
   const queryClient = useQueryClient();
 
   const userId = user._id.toString();
@@ -44,11 +47,17 @@ export default function Savings() {
   );
 
   useEffect(() => {
-    goalData && setGoals(goalData.data);
+    if (goalData) {
+      const goalsValue = goalData.data.map((goal) => ({
+        label: capitalize(goal.title),
+        value: goal._id,
+      }));
+      setGoals(goalsValue);
+    }
   }, [goalData]);
 
   const openSavingModal = () => {
-    refetch()
+    refetch();
     if (goals.length === 0) {
       setErrorMsg('You have to set atleast one goal to start saving!');
       setIsError(true);
@@ -58,13 +67,14 @@ export default function Savings() {
   };
 
   const save = async () => {
-    if (formData.amount === '') {
+    if (formData.amount === '' || value === null) {
       setErrorMsg('Please fill all the fields!');
       setIsError(true);
       setLoading(false);
       return;
     }
     setLoading(true);
+    formData.target = value;
     const res = await mutateAsync(formData);
     queryClient.invalidateQueries('savings');
     if (res.data.status === 'fail') {
@@ -161,17 +171,16 @@ export default function Savings() {
               }
             />
             <Text style={styles.label}>Select Goal:</Text>
-            <Picker
-              selectedValue={formData.target}
-              onValueChange={(itemValue, itemIndex) =>
-                setFormData({ ...formData, target: itemValue })
-              }
-              style={styles.picker}
-            >
-              {goals.map((g) => (
-                <Picker.Item label={g.title} value={g._id} key={g._id} />
-              ))}
-            </Picker>
+
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={goals}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setGoals}
+            />
+
             <TouchableOpacity style={styles.createBtn} onPress={() => save()}>
               <Text style={styles.btnText}>
                 {loading ? 'Please wait...' : 'Submit'}
