@@ -14,7 +14,6 @@ export default function Goal({ goal }) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { error } = useSelector((state) => state.goals);
 
   const createdAt = moment(goal.createdAt).fromNow();
 

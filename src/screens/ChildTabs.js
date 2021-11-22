@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,18 +6,26 @@ import {
   View,
   FlatList,
 } from 'react-native';
+
 import colors from '../globals/styles/colors';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { getAllGoals } from '../redux/actions/goals';
 import { logout } from '../redux/actions/auth';
 import Goal from '../components/Goal';
+
 const ChildTabs = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { goals } = useSelector((state) => state.goals);
   
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  useEffect(() => {
+    dispatch(getAllGoals());
+  }, [dispatch]);
+
   return (
     <View style={styles.body}>
       <View style={styles.top}>
@@ -35,7 +43,7 @@ const ChildTabs = () => {
         <Text style={styles.goalTitle}>המטרות שלי</Text>
       </View>
       <FlatList
-        data={user.goals}
+        data={goals}
         renderItem={({ item }) => <Goal goal={item} />}
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10, marginStart: 15 }}

@@ -36,7 +36,7 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
 
   const createNewGoal = async () => {};
 
-  const updateGoal = () => {
+  const update = () => {
     dispatch(updateGoal(goal._id, formData));
   };
 
@@ -58,9 +58,9 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
     setErrorMsg('');
 
     if (goal) {
-      await updateGoal();
+      update();
     } else {
-      await createNewGoal();
+      createNewGoal();
     }
 
     setFormData({

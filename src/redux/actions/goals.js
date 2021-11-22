@@ -24,7 +24,6 @@ export const getAllGoals = () => async (dispatch) => {
   }
   try {
     const res = await axios(`${baseUrl}/goals/users/${userId}`);
-    console.log(res.data.data.data);
     dispatch({
       type: GET_ALL_GOALS,
       payload: res.data.data.data,
@@ -43,23 +42,21 @@ export const createGoal = () => async (dispatch) => {};
 export const updateGoal = (goalId, data) => async (dispatch) => {
   try {
     const res = await axios.patch(`${baseUrl}/goals/${goalId}`, data, config);
-    console.log(res.data.data.data);
     dispatch({
       type: UPDATE_GOAL,
       payload: res.data.data.data,
     });
   } catch (error) {
-    console.log(error.response.data.error);
     dispatch({
       type: GOALS_ERROR,
-      payload: error.response.data.error,
+      payload: error,
     });
   }
 };
 
 export const deleteGoal = (goalId) => async (dispatch) => {
   try {
-    const res = await axios.delete(`${baseUrl}/goals/${goalId}`);
+    await axios.delete(`${baseUrl}/goals/${goalId}`);
     dispatch({
       type: DELETE_GOAL,
       payload: goalId,

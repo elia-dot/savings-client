@@ -24,13 +24,13 @@ export default function (state = initialState, action) {
     case DELETE_GOAL:
       return {
         ...state,
-        goals: goals.filter((goal) => goal._id !== payload),
+        goals: state.goals.filter((goal) => goal._id !== payload),
         loading: false,
       };
     case UPDATE_GOAL:
       return {
         ...state,
-        goals: goals.map((goal) => (goal._id === payload._id ? payload : goal)),
+        goals: state.goals.map((goal) => (goal._id === payload._id ? payload : goal)),
         loading: false,
       };
     case GOALS_ERROR:
