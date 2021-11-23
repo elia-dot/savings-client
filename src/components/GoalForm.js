@@ -13,20 +13,23 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Alert from '../globals/components/Overlay';
 import colors from '../globals/styles/colors';
+import { finishLoading, startLoading } from '../redux/actions/globals';
 import { createGoal, updateGoal } from '../redux/actions/goals';
 
-const GoalForm = ({ showModal, setShowModal, goal, loading, setLoading }) => {
+const GoalForm = ({ showModal, setShowModal, goal }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.globals);
   const [formData, setFormData] = useState({
     title: goal?.title || '',
     price: goal?.price || '',
     icon: goal?.icon || '',
   });
 
+  //TODO fill the inputs
+
   const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
   const [isAlert, setIsAlert] = useState(false);
-  console.log(loading);
 
   const categories = [
     { label: 'Other', value: 'question', key: '0' },
@@ -36,15 +39,18 @@ const GoalForm = ({ showModal, setShowModal, goal, loading, setLoading }) => {
   ];
 
   const createNewGoal = async () => {
-    dispatch(createGoal(user._id, formData));
+    dispatch(startLoading());
+    await dispatch(createGoal(user._id, formData));
+    dispatch(finishLoading());
   };
 
-  const update = () => {
-    dispatch(updateGoal(goal._id, formData));
+  const update = async () => {
+    dispatch(startLoading());
+    await dispatch(updateGoal(goal._id, formData));
+    dispatch(finishLoading());
   };
 
   const handlePress = async () => {
-    setLoading(true);
     if (
       formData.title === '' ||
       formData.price === '' ||
@@ -61,18 +67,18 @@ const GoalForm = ({ showModal, setShowModal, goal, loading, setLoading }) => {
     setErrorMsg('');
 
     if (goal) {
-      update();
+      await update();
     } else {
-      createNewGoal();
+      await createNewGoal();
     }
 
     setFormData({
-      title: goal?.title || '',
-      price: goal?.price || '',
-      icon: goal?.icon || '',
+      title: '',
+      price: '',
+      icon: '',
     });
+
     setShowModal(false);
-    setLoading(false);
   };
 
   return (

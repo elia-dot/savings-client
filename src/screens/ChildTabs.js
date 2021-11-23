@@ -5,9 +5,8 @@ import {
   TouchableOpacity,
   View,
   FlatList,
-  ActivityIndicator,
 } from 'react-native';
-import { FAB, Overlay } from 'react-native-elements';
+import { FAB } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import colors from '../globals/styles/colors';
@@ -18,36 +17,29 @@ import Goal from '../components/Goal';
 import GoalForm from '../components/GoalForm';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import NoGoals from '../components/NoGoals';
+import Loader from '../globals/components/Loader';
+import { finishLoading, startLoading } from '../redux/actions/globals';
 
 const ChildTabs = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const { goals, loading: loadingGoals } = useSelector((state) => state.goals);
+  const { goals } = useSelector((state) => state.goals);
 
   const handleLogout = () => {
     dispatch(logout());
   };
 
   useEffect(() => {
+    dispatch(startLoading());
     dispatch(getAllGoals());
+    dispatch(finishLoading());
   }, [dispatch]);
 
   return (
     <View style={styles.body}>
-      <Overlay
-        isVisible={loadingGoals || loading}
-        overlayStyle={{ backgroundColor: 'none' }}
-      >
-        <ActivityIndicator size="large" color={colors.primary} />
-      </Overlay>
-      <GoalForm
-        showModal={showModal}
-        setShowModal={setShowModal}
-        loading={loading}
-        setLoading={setLoading}
-      />
+      <Loader />
+      <GoalForm showModal={showModal} setShowModal={setShowModal} />
       <View style={styles.top}>
         <Text style={styles.greet}>בוקר טוב {user.name.split(' ')[0]}</Text>
         <Text style={styles.topText}>

@@ -9,3 +9,6 @@ export const CREATE_GOAL = 'CREATE_GOAL'
 export const UPDATE_GOAL = 'UPDATE_GOAL'
 export const DELETE_GOAL = 'DELETE_GOAL'
 export const GOALS_ERROR = 'GOALS_ERROR'
+
+export const START_LOADING = 'START_LOADING'
+export const FINISH_LOADING = 'FINISH_LOADING'

@@ -10,13 +10,10 @@ import { capitalize } from '../utils/capitalize';
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
 
-
 export default function Goals() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { goals } = useSelector((state) => state.goals);
-
- 
 
   return (
     <View style={styles.body}>

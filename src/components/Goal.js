@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { LinearProgress } from 'react-native-elements';
@@ -9,6 +9,8 @@ import { capitalize } from '../utils/capitalize';
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
 import { deleteGoal } from '../redux/actions/goals';
+import Loader from '../globals/components/Loader';
+import {startLoading, finishLoading} from '../redux/actions/globals'
 
 export default function Goal({ goal }) {
   const [showModal, setShowModal] = useState(false);
@@ -31,8 +33,11 @@ export default function Goal({ goal }) {
     ]);
   };
 
-  const handleDelete = () => {
-    dispatch(deleteGoal(goal._id));
+  const handleDelete = async () => {
+    dispatch(startLoading())
+    await dispatch(deleteGoal(goal._id));
+    dispatch(finishLoading())
+    
   };
 
   const updateGoal = () => {
@@ -42,6 +47,7 @@ export default function Goal({ goal }) {
   return (
     <View style={styles.body}>
       <GoalForm showModal={showModal} setShowModal={setShowModal} goal={goal} />
+      <Loader />
       <View style={styles.goalDetails}>
         <View style={styles.goalName}>
           <View style={styles.icon}>
