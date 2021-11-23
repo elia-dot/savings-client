@@ -9,15 +9,15 @@ import {
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Alert from '../globals/components/Overlay';
 import colors from '../globals/styles/colors';
-import { updateGoal } from '../redux/actions/goals';
+import { createGoal, updateGoal } from '../redux/actions/goals';
 
-const GoalForm = ({ showModal, setShowModal, goal }) => {
+const GoalForm = ({ showModal, setShowModal, goal, loading, setLoading }) => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const { user } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     title: goal?.title || '',
     price: goal?.price || '',
@@ -26,6 +26,7 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
 
   const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
   const [isAlert, setIsAlert] = useState(false);
+  console.log(loading);
 
   const categories = [
     { label: 'Other', value: 'question', key: '0' },
@@ -34,7 +35,9 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
     { label: 'Vacation', value: 'plane', key: '3' },
   ];
 
-  const createNewGoal = async () => {};
+  const createNewGoal = async () => {
+    dispatch(createGoal(user._id, formData));
+  };
 
   const update = () => {
     dispatch(updateGoal(goal._id, formData));
@@ -68,8 +71,8 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
       price: goal?.price || '',
       icon: goal?.icon || '',
     });
-    setLoading(false);
     setShowModal(false);
+    setLoading(false);
   };
 
   return (
@@ -84,7 +87,7 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
         />
         <View style={styles.modalBody}>
           <Text style={styles.modalTitle}>
-            {goal ? 'עדכן פרטי מטרה' : 'צור את המטרה הראשונה שלך'}
+            {goal ? 'עדכן פרטי מטרה' : 'צור מטרה חדשה'}
           </Text>
           <View style={styles.form}>
             <Text style={styles.label}>שם:</Text>

@@ -7,7 +7,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  goals: null,
+  goals: [],
   loading: true,
   error: null,
 };
@@ -21,6 +21,12 @@ export default function (state = initialState, action) {
         goals: payload,
         loading: false,
       };
+    case CREATE_GOAL:
+      return {
+        ...state,
+        goals: [payload, ...state.goals],
+        loading: false,
+      };
     case DELETE_GOAL:
       return {
         ...state,
@@ -30,7 +36,9 @@ export default function (state = initialState, action) {
     case UPDATE_GOAL:
       return {
         ...state,
-        goals: state.goals.map((goal) => (goal._id === payload._id ? payload : goal)),
+        goals: state.goals.map((goal) =>
+          goal._id === payload._id ? payload : goal
+        ),
         loading: false,
       };
     case GOALS_ERROR:

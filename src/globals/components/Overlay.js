@@ -7,6 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import colors from '../styles/colors';
 
 export default function Alert({ title, message, type, isAlert, setIsAlert }) {
+
   return (
     <View>
       <Overlay

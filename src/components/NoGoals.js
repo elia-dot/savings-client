@@ -3,17 +3,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import { FAB } from 'react-native-elements';
 
 import GoalForm from '../components/GoalForm';
+import colors from '../globals/styles/colors';
 
 export default function NoGoals() {
   const [showModal, setShowModal] = useState(false);
   return (
     <View style={styles.body}>
-      <GoalForm showModal={showModal} setShowModal={setShowModal} goal={null} />
-      <Text style={styles.text}> You haven't created any goal yet</Text>
+      <GoalForm showModal={showModal} setShowModal={setShowModal}  />
+      <Text style={styles.text}> עדיין לא יצרת מטרות</Text>
       <FAB
-        color="#9cc95a"
+        color={colors.primary}
         size="large"
-        title="Create Your First Goal"
+        title="צור מטרה ראשונה"
         onPress={() => {
           setShowModal(true);
         }}

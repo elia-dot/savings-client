@@ -29,7 +29,7 @@ export const getAllGoals = () => async (dispatch) => {
       payload: res.data.data.data,
     });
   } catch (error) {
-    console.log('goals error', error);
+    console.log(error);
     dispatch({
       type: GOALS_ERROR,
       payload: error.response.data.error,
@@ -37,7 +37,21 @@ export const getAllGoals = () => async (dispatch) => {
   }
 };
 
-export const createGoal = () => async (dispatch) => {};
+export const createGoal = (userId, data) => async (dispatch) => {
+  try {
+    const res = await axios.post(`${baseUrl}/goals/${userId}`,data, config);
+    dispatch({
+      type: CREATE_GOAL,
+      payload: res.data.data.data,
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: GOALS_ERROR,
+      payload: error,
+    });
+  }
+};
 
 export const updateGoal = (goalId, data) => async (dispatch) => {
   try {
@@ -65,7 +79,7 @@ export const deleteGoal = (goalId) => async (dispatch) => {
     console.log('error', error);
     dispatch({
       type: GOALS_ERROR,
-      payload: error.response.data.error,
+      payload: error,
     });
   }
 };

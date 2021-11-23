@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { capitalize } from '../utils/capitalize';
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
-import { deleteGoal } from '../api';
+import { deleteGoal } from '../redux/actions/goals';
 
 export default function Goal({ goal }) {
   const [showModal, setShowModal] = useState(false);
