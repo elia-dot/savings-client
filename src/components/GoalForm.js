@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -21,12 +21,15 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
   const { user } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.globals);
   const [formData, setFormData] = useState({
-    title: goal?.title || '',
-    price: goal?.price || '',
-    icon: goal?.icon || '',
+    title: '',
+    price: '',
+    icon: '',
   });
 
-  //TODO fill the inputs
+  useEffect(() => {
+    if (goal)
+      setFormData({ title: goal.title, price: goal.price, icon: goal.icon });
+  }, [goal]);
 
   const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
   const [isAlert, setIsAlert] = useState(false);
@@ -57,11 +60,10 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
       formData.icon === ''
     ) {
       setErrorMsg({
-        title: 'Missing Details',
-        message: 'Please fill all the fields!',
+        title: 'חסרים פרטים',
+        message: 'נא מלא את כל השדות',
       });
       setIsAlert(true);
-      setLoading(false);
       return;
     }
     setErrorMsg('');

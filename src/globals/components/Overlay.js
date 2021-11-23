@@ -32,14 +32,14 @@ export default function Alert({ title, message, type, isAlert, setIsAlert }) {
             style={[styles.button, styles.fail]}
             onPress={() => setIsAlert(false)}
           >
-            <Text style={styles.buttonText}>DISMISS</Text>
+            <Text style={styles.buttonText}>הבנתי</Text>
           </TouchableOpacity>
         ) : type === 'success' ? (
           <TouchableOpacity
             style={[styles.button, styles.success]}
             onPress={() => setIsAlert(false)}
           >
-            <Text style={styles.buttonText}>DISMISS</Text>
+            <Text style={styles.buttonText}>הבנתי</Text>
           </TouchableOpacity>
         ) : null}
       </Overlay>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingBottom: 20,
     position: 'relative',
-    width: 250,
+    width: 280,
   },
   icon: {
     position: 'absolute',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   overlayText: {
     textAlign: 'center',
     fontSize: 20,
-    marginBottom: 25,
+    marginBottom: 35,
   },
   overlayTitle: {
     fontSize: 25,

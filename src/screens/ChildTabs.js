@@ -19,6 +19,7 @@ import { Divider } from 'react-native-elements/dist/divider/Divider';
 import NoGoals from '../components/NoGoals';
 import Loader from '../globals/components/Loader';
 import { finishLoading, startLoading } from '../redux/actions/globals';
+import { getHour } from '../utils/getHour';
 
 const ChildTabs = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,9 @@ const ChildTabs = () => {
       <Loader />
       <GoalForm showModal={showModal} setShowModal={setShowModal} />
       <View style={styles.top}>
-        <Text style={styles.greet}>בוקר טוב {user.name.split(' ')[0]}</Text>
+        <Text style={styles.greet}>
+          {getHour()}, {user.name.split(' ')[0]}
+        </Text>
         <Text style={styles.topText}>
           החיסכון שלך: {(user.saving + user.profit).toLocaleString()}
         </Text>
@@ -93,7 +96,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   top: {
-    backgroundColor: colors.primary,
+    backgroundColor:
+      'linear-gradient(83deg, rgba(156,201,90,1) 0%, rgba(232,243,216,1) 44%, rgba(156,201,90,1) 100%)',
     height: 300,
     display: 'flex',
     alignItems: 'center',

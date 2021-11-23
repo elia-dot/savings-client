@@ -10,7 +10,7 @@ export default function NoGoals() {
   return (
     <View style={styles.body}>
       <GoalForm showModal={showModal} setShowModal={setShowModal}  />
-      <Text style={styles.text}> עדיין לא יצרת מטרות</Text>
+      <Text style={styles.text}> רשימת המטרות שלך ריקה</Text>
       <FAB
         color={colors.primary}
         size="large"
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontSize: 35,
+    fontSize: 30,
     marginBottom: 50,
   },
 });
