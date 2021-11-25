@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllGoals } from '../redux/actions/goals';
 import { finishLoading, startLoading } from '../redux/actions/globals';
 import { getHour } from '../utils/getHour';
-import Goals from './Goals';
 import ChildScreens from './ChildScreens';
+import currency from '../globals/styles/currency';
 
 const ChildTabs = () => {
   const dispatch = useDispatch();
@@ -26,13 +26,9 @@ const ChildTabs = () => {
           {getHour()}, {user.name.split(' ')[0]}
         </Text>
         <Text style={styles.topText}>
-          החיסכון שלך: {(user.saving + user.profit).toLocaleString()}
+          עד עכשיו חסכת {(user.saving + user.profit).toLocaleString()}
+          {currency.NIS}
         </Text>
-        {user.profit > 0 && (
-          <Text style={styles.topText}>
-            מתוכם: {user.profit.toLocaleString()} ריבית
-          </Text>
-        )}
       </View>
       <ChildScreens />
     </View>
@@ -47,10 +43,11 @@ const styles = StyleSheet.create({
   },
   top: {
     backgroundColor: colors.primary,
-    height: 280,
+    height: 250,
     display: 'flex',
     alignItems: 'center',
     paddingTop: 100,
+    zIndex: -99,
   },
   greet: {
     color: '#fff',

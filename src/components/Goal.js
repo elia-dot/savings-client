@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import moment from 'moment';
 import { LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,18 +9,24 @@ import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
 import { deleteGoal } from '../redux/actions/goals';
 import Loader from '../globals/components/Loader';
-import {startLoading, finishLoading} from '../redux/actions/globals'
+import { startLoading, finishLoading } from '../redux/actions/globals';
+import currency from '../globals/styles/currency';
 
 export default function Goal({ goal }) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
-  const createdAt = moment(goal.createdAt).fromNow();
-
   const calculateProgress = () => {
     if ((user.savings * 1) / (goal.price * 1) >= 1) return 1;
     return (user.saving * 1) / (goal.price * 1);
+  };
+
+  const moneyLeft = () => {
+    if (goal.price - (user.saving + user.profit) < 0) return 'מטרה הושלמה';
+    return `${(goal.price - (user.saving + user.profit)).toLocaleString()}${
+      currency.NIS
+    } נשארו`;
   };
 
   const progress = calculateProgress();
@@ -34,10 +39,9 @@ export default function Goal({ goal }) {
   };
 
   const handleDelete = async () => {
-    dispatch(startLoading())
+    dispatch(startLoading());
     await dispatch(deleteGoal(goal._id));
-    dispatch(finishLoading())
-    
+    dispatch(finishLoading());
   };
 
   const updateGoal = () => {
@@ -59,7 +63,7 @@ export default function Goal({ goal }) {
           </View>
           <View>
             <Text style={styles.goalTitle}>{capitalize(goal.title)}</Text>
-            <Text>{createdAt}</Text>
+            <Text>{moneyLeft()}</Text>
           </View>
         </View>
         <View>
@@ -88,7 +92,7 @@ export default function Goal({ goal }) {
       />
       <View style={styles.progressNumbers}>
         <Text>{goal.price.toLocaleString()}</Text>
-        <Text>{user.saving.toLocaleString()}</Text>
+        <Text>{(user.saving + user.profit).toLocaleString()}</Text>
       </View>
     </View>
   );
@@ -110,6 +114,7 @@ const styles = StyleSheet.create({
   goalName: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   goalsActions: {
     display: 'flex',

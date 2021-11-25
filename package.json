@@ -25,6 +25,7 @@
     "react-native-dropdown-picker": "^5.2.3",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-pager-view": "5.0.12",
     "react-native-paper": "^4.10.1",
     "react-native-picker-select": "^8.0.4",
     "react-native-safe-area-context": "^3.2.0",
@@ -36,9 +37,7 @@
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.0",
-    "remote-redux-devtools": "^0.5.16",
-    "validator": "^13.7.0",
-    "react-native-pager-view": "5.0.12"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import { FAB, Divider } from 'react-native-elements';
+import { FAB } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -30,16 +30,6 @@ export default function Goals() {
     <View style={styles.body}>
       <Loader />
       <GoalForm showModal={showModal} setShowModal={setShowModal} />
-      <View style={styles.goalTitleContainer}>
-        <Text style={styles.goalTitle}>המטרות שלי</Text>
-      </View>
-      <Divider
-        color={colors.primary}
-        width={2}
-        inset={true}
-        insetType="middle"
-        style={{ marginBottom: 20 }}
-      />
       {goals.length === 0 && <NoGoals />}
       <FlatList
         data={goals}
@@ -68,16 +58,7 @@ export default function Goals() {
 const styles = StyleSheet.create({
   body: {
     flex: 1,
+    paddingTop : 50
   },
-  goalTitleContainer: {
-    paddingHorizontal: 30,
-    paddingTop: 30,
-    paddingBottom: 15,
-  },
-  goalTitle: {
-    color: colors.primary,
-    fontSize: 30,
-    fontWeight: '700',
-    textAlign: 'center',
-  },
+  
 });

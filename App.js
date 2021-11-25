@@ -10,8 +10,8 @@ export default function App() {
   return (
     <Provider store={store}>
       <StatusBar />
-      <View style = {styles.app}>
-      <Router />
+      <View style={styles.app}>
+        <Router />
       </View>
     </Provider>
   );
@@ -20,5 +20,6 @@ export default function App() {
 const styles = StyleSheet.create({
   app: {
     flex: 1,
-  }
+    direction: 'rtl',
+  },
 });

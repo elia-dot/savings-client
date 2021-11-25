@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Goals from './Goals';
 import Tasks from '../components/Tasks';
 import colors from '../globals/styles/colors';
+import History from '../components/History';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -15,12 +16,16 @@ const ChildScreens = () => {
           backgroundColor: colors.primary,
           borderTopWidth: 0.5,
           borderTopColor: colors.secondary,
+          direction: 'ltr',
         },
         tabBarActiveTintColor: colors.secondary,
+        tabBarIndicatorStyle: { backgroundColor: colors.secondary },
+        tabBarLabelStyle: {fontWeight: '700', fontSize: 18}
       }}
     >
       <Tab.Screen name="מטרות" component={Goals} />
       <Tab.Screen name="מטלות" component={Tasks} />
+      <Tab.Screen name="עובר ושב" component={History} />
     </Tab.Navigator>
   );
 };
