@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 3,
+    marginBottom: 6,
     overflow: 'hidden',
   },
   textAmount: {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     paddingHorizontal: 5,
-    paddingVertical: 15,
+    paddingVertical: 10,
     width: '20%',
     position: 'relative',
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   description: {
     paddingHorizontal: 5,
-    paddingVertical: 15,
+    paddingVertical: 10,
     borderRightColor: colors.primary,
     borderLeftColor: colors.primary,
     borderEndWidth: 0.3,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   created: {
     paddingHorizontal: 5,
-    paddingVertical: 15,
+    paddingVertical: 10,
     width: '30%',
   },
   createdText: {
