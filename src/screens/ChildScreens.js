@@ -24,7 +24,7 @@ const ChildScreens = () => {
       }}
     >
       <Tab.Screen name="מטרות" component={Goals} />
-      <Tab.Screen name="מטלות" component={Tasks} />
+      <Tab.Screen name="משימות" component={Tasks} />
       <Tab.Screen name="עובר ושב" component={History} />
     </Tab.Navigator>
   );

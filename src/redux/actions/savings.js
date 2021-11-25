@@ -10,10 +10,9 @@ const config = {
 export const getHistory = (userId) => async (dispatch) => {
     try {
         const res = await axios.get(`${baseUrl}/savings/users/${userId}`)
-        console.log(res.data.data);
         dispatch({
             type: GET_HISTORY,
-            payload: res.data.data
+            payload: res.data.data.data
         }) 
     } catch (error) {
         console.log(error);
