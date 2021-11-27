@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -15,13 +15,13 @@ import NoGoals from '../components/NoGoals';
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
 import Loader from '../globals/components/Loader';
+import { logout } from '../redux/actions/auth';
 
 export default function Goals() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { goals } = useSelector((state) => state.goals);
 
-  
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -31,9 +31,12 @@ export default function Goals() {
       <Loader />
       <GoalForm showModal={showModal} setShowModal={setShowModal} />
       {goals.length === 0 && <NoGoals />}
+      
       <FlatList
         data={goals}
-        renderItem={({ item }) => <Goal goal={item} />}
+        renderItem={({ item }) => {
+          return <Goal goal={item} />;
+        }}
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10, marginStart: 15 }}
       />
@@ -58,7 +61,6 @@ export default function Goals() {
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    paddingTop : 50
+    paddingTop: 50,
   },
-  
 });

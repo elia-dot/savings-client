@@ -72,12 +72,11 @@ export const loadUser = () => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    await AsyncStorage.multiRemove(['userId','type' ]);
+    await AsyncStorage.multiRemove(['userId', 'type']);
+    dispatch({
+      type: LOGOUT,
+    });
   } catch (error) {
     console.log(error);
   }
- 
-  dispatch({
-    type : LOGOUT
-  })
 };
