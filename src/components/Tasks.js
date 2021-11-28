@@ -1,14 +1,29 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, FlatList, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import Task from './Task';
 
 const Tasks = () => {
-    return (
-        <View>
-            <Text>מטלות</Text>
-        </View>
-    )
-}
+  const { tasks } = useSelector((state) => state.tasks);
 
-export default Tasks
+  return (
+    <View style={styles.body}>
+      <FlatList
+        data={tasks}
+        renderItem={({ item }) => <Task task={item} />}
+        keyExtractor={(item) => item._id}
+        style={{ paddingHorizontal: 10, marginStart: 15 }}
+      />
+    </View>
+  );
+};
 
-const styles = StyleSheet.create({})
+export default Tasks;
+
+const styles = StyleSheet.create({
+  body: {
+    flex: 1,
+    paddingTop: 15,
+    overflow: 'hidden'
+  },
+});

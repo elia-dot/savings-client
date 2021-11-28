@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import colors from '../globals/styles/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllGoals } from '../redux/actions/goals';
+import { getTasks } from '../redux/actions/tasks';
 import { finishLoading, startLoading } from '../redux/actions/globals';
 import { getHour } from '../utils/getHour';
 import ChildScreens from './ChildScreens';
@@ -16,6 +17,7 @@ const ChildTabs = () => {
   useEffect(() => {
     dispatch(startLoading());
     dispatch(getAllGoals());
+    dispatch(getTasks(user._id));
     dispatch(finishLoading());
   }, [dispatch]);
 
