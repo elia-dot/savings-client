@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 import colors from '../globals/styles/colors';
+import currency from '../globals/styles/currency';
 
 const Task = ({ task }) => {
   return (
@@ -22,7 +23,10 @@ const Task = ({ task }) => {
         <Text style={styles.taskText}>{task.title}</Text>
       </View>
       <View style={[styles.taskColumn]}>
-        <Text>{task.price}</Text>
+        <Text>
+          {task.price}
+          {currency.NIS}
+        </Text>
       </View>
     </View>
   );
@@ -46,7 +50,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   taskDesc: {
-    width: '70%',
+    width: '68%',
   },
   taskText: {
     textAlign: 'left',

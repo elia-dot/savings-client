@@ -24,3 +24,11 @@ export const getTasks = (userId) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const comleteTask = (taskId) => async (dispatch) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+} 
