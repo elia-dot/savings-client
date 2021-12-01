@@ -15,23 +15,19 @@ import NoGoals from '../components/NoGoals';
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
 import Loader from '../globals/components/Loader';
-import { logout } from '../redux/actions/auth';
 
 export default function Goals() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const { goals } = useSelector((state) => state.goals);
+  const { goals, loading } = useSelector((state) => state.goals);
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
 
   return (
     <View style={styles.body}>
       <Loader />
       <GoalForm showModal={showModal} setShowModal={setShowModal} />
-      {goals.length === 0 && <NoGoals />}
-      
+      {!loading && goals.length === 0 && <NoGoals />}
+
       <FlatList
         data={goals}
         renderItem={({ item }) => {
@@ -51,9 +47,6 @@ export default function Goals() {
           }}
         />
       )}
-      <TouchableOpacity onPress={handleLogout}>
-        <Text>logout</Text>
-      </TouchableOpacity>
     </View>
   );
 }

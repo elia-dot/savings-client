@@ -67,21 +67,23 @@ export default function Goal({ goal }) {
           </View>
         </View>
         <View>
-          <View style={styles.goalsActions}>
-            <FontAwesome5
-              name="pen"
-              color={colors.primary}
-              size={20}
-              onPress={updateGoal}
-            />
-            <FontAwesome5
-              name="trash"
-              color={colors.primary}
-              size={20}
-              style={{ marginLeft: 15 }}
-              onPress={confirmDelete}
-            />
-          </View>
+          {user.type === 'parent' && (
+            <View style={styles.goalsActions}>
+              <FontAwesome5
+                name="pen"
+                color={colors.primary}
+                size={20}
+                onPress={updateGoal}
+              />
+              <FontAwesome5
+                name="trash"
+                color={colors.primary}
+                size={20}
+                style={{ marginLeft: 15 }}
+                onPress={confirmDelete}
+              />
+            </View>
+          )}
         </View>
       </View>
       <LinearProgress

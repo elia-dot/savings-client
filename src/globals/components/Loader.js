@@ -7,6 +7,7 @@ import colors from '../styles/colors';
 
 const Loader = () => {
   const { loading } = useSelector((state) => state.globals);
+
   return (
     <Overlay isVisible={loading} overlayStyle={{ backgroundColor: 'none' }}>
       <ActivityIndicator size="large" color={colors.primary} />

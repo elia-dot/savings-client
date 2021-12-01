@@ -25,6 +25,7 @@
     "react-native-dropdown-picker": "^5.2.3",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-material-menu": "^2.0.0",
     "react-native-pager-view": "5.0.12",
     "react-native-paper": "^4.10.1",
     "react-native-picker-select": "^8.0.4",
