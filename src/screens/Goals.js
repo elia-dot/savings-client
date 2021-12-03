@@ -19,9 +19,10 @@ import Loader from '../globals/components/Loader';
 export default function Goals() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const { goals } = useSelector((state) => state.goals);
+  const { goals, error } = useSelector((state) => state.goals);
+  console.log(goals);
+  console.log(error);
 
-  
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -30,24 +31,28 @@ export default function Goals() {
     <View style={styles.body}>
       <Loader />
       <GoalForm showModal={showModal} setShowModal={setShowModal} />
-      {goals.length === 0 && <NoGoals />}
-      <FlatList
-        data={goals}
-        renderItem={({ item }) => <Goal goal={item} />}
-        keyExtractor={(item) => item._id}
-        style={{ paddingHorizontal: 10, marginStart: 15 }}
-      />
-      {goals.length > 0 && (
-        <FAB
-          placement="left"
-          color={colors.primary}
-          size="large"
-          icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
-          onPress={() => {
-            setShowModal(true);
-          }}
-        />
+      {goals.length === 0 ? (
+        <NoGoals />
+      ) : (
+        <>
+          <FlatList
+            data={goals}
+            renderItem={({ item }) => <Goal goal={item} />}
+            keyExtractor={(item) => item._id}
+            style={{ paddingHorizontal: 10, marginStart: 15 }}
+          />
+          <FAB
+            placement="left"
+            color={colors.primary}
+            size="large"
+            icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
+            onPress={() => {
+              setShowModal(true);
+            }}
+          />
+        </>
       )}
+
       <TouchableOpacity onPress={handleLogout}>
         <Text>logout</Text>
       </TouchableOpacity>
@@ -58,7 +63,6 @@ export default function Goals() {
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    paddingTop : 50
+    paddingTop: 50,
   },
-  
 });
