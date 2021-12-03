@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,7 +14,6 @@ export default function Goals() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { goals, loading } = useSelector((state) => state.goals);
-
 
   return (
     <View style={styles.body}>

@@ -3,6 +3,8 @@ export const LOGIN_FAILED = 'LOGIN_FAILED'
 export const LOAD_USER = 'LOAD_USER'
 export const LOAD_ERROR = 'LOAD_ERROR'
 export const LOGOUT = 'LOGOUT'
+export const ADD_CHILD = 'ADD_CHILD'
+export const ADD_CHILD_ERROR = 'ADD_CHILD_ERROR'
 
 export const GET_ALL_GOALS = 'GET_ALL_GOALS'
 export const CREATE_GOAL = 'CREATE_GOAL'

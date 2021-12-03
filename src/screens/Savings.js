@@ -10,7 +10,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { FAB, LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';

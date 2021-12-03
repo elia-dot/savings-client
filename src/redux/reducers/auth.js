@@ -4,6 +4,8 @@ import {
   LOAD_USER,
   LOAD_ERROR,
   LOGOUT,
+  ADD_CHILD_ERROR,
+  ADD_CHILD,
 } from '../actions/types';
 
 const initialState = {
@@ -43,6 +45,18 @@ export default function (state = initialState, action) {
         ...state,
         user: null,
         isAuthenticated: false,
+        loading: false,
+      };
+    case ADD_CHILD:
+      return {
+        ...state,
+        user: { ...state.user, children: [...state.user.children, payload] },
+        loading: false,
+      };
+    case ADD_CHILD_ERROR:
+      return {
+        ...state,
+        error: payload,
         loading: false,
       };
     case LOGOUT:
