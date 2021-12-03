@@ -17,6 +17,7 @@ export const Router = () => {
   useEffect(() => {
     dispatch(loadUser());
   }, [dispatch]);
+  
   const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
   
   if (loading) {

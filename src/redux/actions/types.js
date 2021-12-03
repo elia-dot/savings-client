@@ -3,6 +3,8 @@ export const LOGIN_FAILED = 'LOGIN_FAILED'
 export const LOAD_USER = 'LOAD_USER'
 export const LOAD_ERROR = 'LOAD_ERROR'
 export const LOGOUT = 'LOGOUT'
+export const ADD_CHILD = 'ADD_CHILD'
+export const ADD_CHILD_ERROR = 'ADD_CHILD_ERROR'
 
 export const GET_ALL_GOALS = 'GET_ALL_GOALS'
 export const CREATE_GOAL = 'CREATE_GOAL'
@@ -11,6 +13,12 @@ export const DELETE_GOAL = 'DELETE_GOAL'
 export const GOALS_ERROR = 'GOALS_ERROR'
 
 export const GET_HISTORY = 'GET_HISTORY'
+
+export const GET_TASKS = 'GET_TASKS' 
+export const CREATE_TASK = 'CREATE_TASK' 
+export const COMPLETE_TASK = 'COMPLETE_TASK'
+export const UPDATE_TASK = 'UPDATE_TASK'
+export const DELETE_TASK = 'DELETE_TASK'
 
 export const START_LOADING = 'START_LOADING'
 export const FINISH_LOADING = 'FINISH_LOADING'

@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,43 +13,33 @@ import Loader from '../globals/components/Loader';
 export default function Goals() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const { goals, error } = useSelector((state) => state.goals);
-  console.log(goals);
-  console.log(error);
-
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  const { goals, loading } = useSelector((state) => state.goals);
 
   return (
     <View style={styles.body}>
       <Loader />
       <GoalForm showModal={showModal} setShowModal={setShowModal} />
-      {goals.length === 0 ? (
-        <NoGoals />
-      ) : (
-        <>
-          <FlatList
-            data={goals}
-            renderItem={({ item }) => <Goal goal={item} />}
-            keyExtractor={(item) => item._id}
-            style={{ paddingHorizontal: 10, marginStart: 15 }}
-          />
-          <FAB
-            placement="left"
-            color={colors.primary}
-            size="large"
-            icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
-            onPress={() => {
-              setShowModal(true);
-            }}
-          />
-        </>
-      )}
+      {!loading && goals.length === 0 && <NoGoals />}
 
-      <TouchableOpacity onPress={handleLogout}>
-        <Text>logout</Text>
-      </TouchableOpacity>
+      <FlatList
+        data={goals}
+        renderItem={({ item }) => {
+          return <Goal goal={item} />;
+        }}
+        keyExtractor={(item) => item._id}
+        style={{ paddingHorizontal: 10, marginStart: 15 }}
+      />
+      {goals.length > 0 && (
+        <FAB
+          placement="left"
+          color={colors.primary}
+          size="large"
+          icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
+          onPress={() => {
+            setShowModal(true);
+          }}
+        />
+      )}
     </View>
   );
 }
