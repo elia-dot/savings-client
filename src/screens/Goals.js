@@ -20,8 +20,6 @@ export default function Goals({ route }) {
 
   const userGoal = route.params ? route.params.user : user;
 
-  // console.log(route.params.user);
-
   useEffect(() => {
     const id = route.params ? route.params.userId : user._id;
     const getUserData = async () => {
@@ -36,7 +34,9 @@ export default function Goals({ route }) {
     <View style={styles.body}>
       <Loader />
       <GoalForm showModal={showModal} setShowModal={setShowModal} />
-      {!loading && goals.length === 0 && <NoGoals />}
+      {!loading && goals.length === 0 && (
+        <NoGoals name={route.params.user.name} />
+      )}
 
       <FlatList
         data={goals}

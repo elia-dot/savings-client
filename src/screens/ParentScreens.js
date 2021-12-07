@@ -45,16 +45,19 @@ const ParentScreens = ({ route }) => {
         name="מטרות"
         component={Goals}
         initialParams={{ userId: route.params.userId, user: child }}
+        options={{ headerShown: false, headerLeft: () => null }}
       />
       <Tab.Screen
         name="עובר ושב"
         component={History}
         initialParams={{ userId: route.params.userId, user: child }}
+        options={{ headerShown: false, headerLeft: () => null }}
       />
       <Tab.Screen
         name="משימות"
         component={Tasks}
         initialParams={{ userId: route.params.userId, user: child }}
+        options={{ headerShown: false, headerLeft: () => null }}
       />
     </Tab.Navigator>
   );

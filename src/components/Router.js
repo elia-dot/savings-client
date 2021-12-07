@@ -10,22 +10,24 @@ import ChildTabs from '../screens/ChildTabs';
 import Login from '../screens/Login';
 import Signup from '../screens/Signup';
 import { loadUser } from '../redux/actions/auth';
+import GoBackButton from '../globals/components/GoBackButton';
 
 const Stack = createStackNavigator();
 
 export const Router = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(loadUser());
   }, [dispatch]);
-  
+
   const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
-  
+
   if (loading) {
     return <Splash />;
   }
   return (
-    <NavigationContainer >
+    <NavigationContainer>
       {isAuthenticated && user.type === 'parent' ? (
         <Stack.Navigator>
           <Stack.Screen
@@ -36,12 +38,13 @@ export const Router = () => {
               headerLeft: () => null,
             }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="ParentScreens"
             component={ParentScreens}
             options={{
-              headerShown: false,
-              headerLeft: () => null,
+              headerBackTitleVisible: false,
+              headerTitle: '',
+              headerLeft: () => <GoBackButton />,
             }}
           />
         </Stack.Navigator>
