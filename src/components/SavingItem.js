@@ -4,7 +4,6 @@ import moment from 'moment';
 import colors from '../globals/styles/colors';
 
 const SavingItem = ({ item }) => {
-  console.log(item);
   const created = moment(item.createdAt).format('DD/MM/YYYY');
   return (
     <View style={styles.item}>

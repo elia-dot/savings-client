@@ -1,15 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
 import colors from '../globals/styles/colors';
+import { startLoading, finishLoading } from '../redux/actions/globals';
+import { getTasks } from '../redux/actions/tasks';
 import Task from './Task';
 
-const Tasks = () => {
+const Tasks = ({ route }) => {
   const { tasks } = useSelector((state) => state.tasks);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [filteredTasks, setFilteredTasks] = useState(tasks);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const buttons = ['הכל', 'הושלמו', 'לא הושלמו'];
+
+  useEffect(() => {
+    const id = route.params?.userId || user._id;
+    console.log(id);
+    const getUserData = async () => {
+      dispatch(startLoading());
+      await dispatch(getTasks(id));
+      dispatch(finishLoading());
+    };
+    getUserData();
+  }, [route.params, dispatch]);
 
   useEffect(() => {
     let filtered;

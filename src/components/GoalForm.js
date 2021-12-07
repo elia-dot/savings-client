@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
@@ -30,6 +32,8 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
     if (goal)
       setFormData({ title: goal.title, price: goal.price, icon: goal.icon });
   }, [goal]);
+
+  const priceRef = useRef();
 
   const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
   const [isAlert, setIsAlert] = useState(false);
@@ -83,6 +87,61 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
     setShowModal(false);
   };
 
+  const renderInputs = () => (
+    <ScrollView style={styles.form}>
+      <Text style={styles.label}>שם:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="שם המטרה"
+        autoFocus
+        onSubmitEditing={() => priceRef.current.focus()}
+        returnKeyType="next"
+        placeholderTextColor="#cccccc"
+        value={formData.title}
+        onChangeText={(value) =>
+          setFormData({ ...formData, title: value.toLowerCase() })
+        }
+      />
+      <Text style={styles.label}>מחיר:</Text>
+      <TextInput
+        style={styles.input}
+        ref = {priceRef}
+        returnKeyType="done"
+        placeholder="מחיר המטרה"
+        placeholderTextColor="#cccccc"
+        value={formData.price.toString()}
+        keyboardType="number-pad"
+        onChangeText={(value) => setFormData({ ...formData, price: value })}
+      />
+      <Text style={styles.label}>קטגוריה:</Text>
+      <RNPickerSelect
+        items={categories}
+        onValueChange={(value) => setFormData({ ...formData, icon: value })}
+        placeholder={{ label: 'בחר קטגוריה', value: null }}
+        style={pickerSelectStyles}
+      />
+
+      <TouchableOpacity style={styles.createBtn} onPress={() => handlePress()}>
+        {goal ? (
+          <Text style={styles.btnText}>
+            {loading ? 'מעדכן מטרה...' : 'עדכן מטרה'}
+          </Text>
+        ) : (
+          <Text style={styles.btnText}>
+            {loading ? 'יוצר מטרה...' : 'צור מטרה'}
+          </Text>
+        )}
+        {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.cancelBtn}
+        onPress={() => setShowModal(false)}
+      >
+        <Text style={[styles.btnText, styles.cancelBtnText]}>ביטול</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+
   return (
     <View>
       <Modal visible={showModal} animationType="slide">
@@ -97,62 +156,13 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
           <Text style={styles.modalTitle}>
             {goal ? 'עדכן פרטי מטרה' : 'צור מטרה חדשה'}
           </Text>
-          <View style={styles.form}>
-            <Text style={styles.label}>שם:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="שם המטרה"
-              placeholderTextColor="#cccccc"
-              value={formData.title}
-              onChangeText={(value) =>
-                setFormData({ ...formData, title: value.toLowerCase() })
-              }
-            />
-            <Text style={styles.label}>מחיר:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="מחיר המטרה"
-              placeholderTextColor="#cccccc"
-              value={formData.price.toString()}
-              keyboardType="number-pad"
-              onChangeText={(value) =>
-                setFormData({ ...formData, price: value })
-              }
-            />
-            <Text style={styles.label}>קטגוריה:</Text>
-            <RNPickerSelect
-              items={categories}
-              onValueChange={(value) =>
-                setFormData({ ...formData, icon: value })
-              }
-              placeholder={{ label: 'בחר קטגוריה', value: null }}
-              style={pickerSelectStyles}
-            />
-
-            <TouchableOpacity
-              style={styles.createBtn}
-              onPress={() => handlePress()}
-            >
-              {goal ? (
-                <Text style={styles.btnText}>
-                  {loading ? 'מעדכן מטרה...' : 'עדכן מטרה'}
-                </Text>
-              ) : (
-                <Text style={styles.btnText}>
-                  {loading ? 'יוצר מטרה...' : 'צור מטרה'}
-                </Text>
-              )}
-              {loading && (
-                <LinearProgress color="#fff" style={{ marginTop: 1 }} />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelBtn}
-              onPress={() => setShowModal(false)}
-            >
-              <Text style={[styles.btnText, styles.cancelBtnText]}>ביטול</Text>
-            </TouchableOpacity>
-          </View>
+          {Platform.OS === 'android' ? (
+            renderInputs()
+          ) : (
+            <KeyboardAvoidingView behavior="padding">
+              {renderInputs()}
+            </KeyboardAvoidingView>
+          )}
         </View>
       </Modal>
     </View>

@@ -15,13 +15,7 @@ const config = {
   'Content-Type': 'application/json',
 };
 
-export const getAllGoals = () => async (dispatch) => {
-  let userId;
-  try {
-    userId = await AsyncStorage.getItem('userId');
-  } catch (error) {
-    console.log('goals error', error);
-  }
+export const getAllGoals = (userId) => async (dispatch) => {
   try {
     const res = await axios(`${baseUrl}/goals/users/${userId}`);
     dispatch({
@@ -29,7 +23,7 @@ export const getAllGoals = () => async (dispatch) => {
       payload: res.data.data.data,
     });
   } catch (error) {
-    console.log(error);
+    console.log('error:',error);
     dispatch({
       type: GOALS_ERROR,
       payload: error.response.data.error,
@@ -42,7 +36,7 @@ export const createGoal = (userId, data) => async (dispatch) => {
     const res = await axios.post(`${baseUrl}/goals/${userId}`,data, config);
     dispatch({
       type: CREATE_GOAL,
-      payload: res.data.data.data,
+      payload: res.data.data,
     });
   } catch (error) {
     console.log(error);

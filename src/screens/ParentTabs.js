@@ -14,7 +14,7 @@ import { logout } from '../redux/actions/auth';
 import colors from '../globals/styles/colors';
 import AddChild from '../components/AddChild';
 
-const ParentTab = () => {
+const ParentTab = ({ navigation }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState(false);
@@ -27,7 +27,7 @@ const ParentTab = () => {
   useEffect(() => {
     user && setChildren(user.children);
   }, [user]);
-  console.log(children);
+
   return (
     <View style={styles.body}>
       {<AddChild showModal={showModal} setShowModal={setShowModal} />}
@@ -35,7 +35,16 @@ const ParentTab = () => {
         data={children}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnText}>{item.name}</Text>
+            <Text
+              style={styles.btnText}
+              onPress={() =>
+                navigation.navigate('ParentScreens', {
+                  userId: item._id,
+                })
+              }
+            >
+              {item.name}
+            </Text>
           </TouchableOpacity>
         )}
         keyExtractor={(item) => item._id}

@@ -11,7 +11,6 @@ import History from '../components/History';
 const Tab = createMaterialTopTabNavigator();
 
 const ChildScreens = () => {
-  const { user } = useSelector((state) => state.auth);
   const { tasks } = useSelector((state) => state.tasks);
   const [tasksCount, setTasksCount] = useState(0);
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,8 +21,8 @@ import { finishLoading, startLoading } from '../redux/actions/globals';
 
 const AddChild = ({ showModal, setShowModal }) => {
   const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.auth);
-  // const { loading } = useSelector((state) => state.globals);
+  const { error } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.globals);
   const [isAlert, setIsAlert] = useState(false);
   const [addChildRes, setAddChildRes] = useState({
     message: '',
@@ -33,6 +35,10 @@ const AddChild = ({ showModal, setShowModal }) => {
     password: '',
     profit: '',
   });
+  const nameRef = useRef();
+  const passwordRef = useRef();
+  const usernameRef = useRef();
+  const profitRef = useRef();
 
   useEffect(() => {
     if (error === 'this username already exsits') {
@@ -42,24 +48,103 @@ const AddChild = ({ showModal, setShowModal }) => {
         message: 'שם המשתמש תפוס. נא בחר שם משתמש אחר',
         type: 'fail',
       });
-      return;
-    }
-    if (error === 'Child password must be different from the parent password') {
+    } else if (
+      error === 'Child password must be different from the parent password'
+    ) {
       setIsAlert(true);
       setAddChildRes({
         title: 'שגיאה!',
         message: 'אנא בחר סיסמא שונה מהסיסמא שלך',
         type: 'fail',
       });
-      return;
+    } else {
+      setFormData({
+        name: '',
+        username: '',
+        password: '',
+        profit: '',
+      });
+      setShowModal(false);
     }
   }, [error]);
 
   const handlePress = async () => {
+    dispatch(startLoading());
     await dispatch(addChild(formData));
-    if (!loading && !error) setShowModal(false);
+    dispatch(finishLoading());
   };
-  console.log(loading);
+
+  const renderInputs = () => (
+    <ScrollView style={styles.form}>
+      <Text style={styles.label}>שם:</Text>
+      <TextInput
+        style={styles.input}
+        ref={nameRef}
+        autoFocus
+        onSubmitEditing={() => usernameRef.current.focus()}
+        blurOnSubmit={false}
+        placeholder="שם הילד"
+        returnKeyType="next"
+        placeholderTextColor="#cccccc"
+        value={formData.name}
+        onChangeText={(value) => setFormData({ ...formData, name: value })}
+      />
+      <Text style={styles.label}>בחר שם משתמש:</Text>
+      <TextInput
+        style={styles.input}
+        ref={usernameRef}
+        onSubmitEditing={() => passwordRef.current.focus()}
+        blurOnSubmit={false}
+        placeholder="שם משתמש"
+        returnKeyType="next"
+        placeholderTextColor="#cccccc"
+        value={formData.username}
+        onChangeText={(value) =>
+          setFormData({ ...formData, username: value.toLowerCase() })
+        }
+      />
+
+      <Text style={styles.label}>בחר סיסמא:</Text>
+      <TextInput
+        style={styles.input}
+        ref={passwordRef}
+        onSubmitEditing={() => profitRef.current.focus()}
+        blurOnSubmit={false}
+        placeholder="סיסמא"
+        placeholderTextColor="#cccccc"
+        textContentType="password"
+        returnKeyType="next"
+        value={formData.password}
+        onChangeText={(value) => setFormData({ ...formData, password: value })}
+      />
+
+      <Text style={styles.label}>אחוז ריבית חודשית:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="0-100"
+        ref={profitRef}
+        keyboardType="numeric"
+        placeholderTextColor="#cccccc"
+        value={formData.profit}
+        returnKeyType="done"
+        onChangeText={(value) => setFormData({ ...formData, profit: value })}
+      />
+
+      <TouchableOpacity style={styles.createBtn} onPress={handlePress}>
+        <Text style={styles.btnText}>
+          {loading ? 'מעדכן חשבון...' : 'עדכן'}
+        </Text>
+
+        {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.cancelBtn}
+        onPress={() => setShowModal(false)}
+      >
+        <Text style={[styles.btnText, styles.cancelBtnText]}>ביטול</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
 
   return (
     <View>
@@ -74,70 +159,13 @@ const AddChild = ({ showModal, setShowModal }) => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.modalBody}>
             <Text style={styles.modalTitle}>הוסף חשבון ילד</Text>
-            <View style={styles.form}>
-              <Text style={styles.label}>שם:</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="שם הילד"
-                placeholderTextColor="#cccccc"
-                value={formData.name}
-                onChangeText={(value) =>
-                  setFormData({ ...formData, name: value })
-                }
-              />
-              <Text style={styles.label}>בחר שם משתמש:</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="שם משתמש"
-                placeholderTextColor="#cccccc"
-                value={formData.username}
-                onChangeText={(value) =>
-                  setFormData({ ...formData, username: value })
-                }
-              />
-
-              <Text style={styles.label}>בחר סיסמא:</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="סיסמא"
-                placeholderTextColor="#cccccc"
-                textContentType="password"
-                value={formData.password}
-                onChangeText={(value) =>
-                  setFormData({ ...formData, password: value })
-                }
-              />
-
-              <Text style={styles.label}>אחוז ריבית חודשית:</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="0-100"
-                keyboardType="numeric"
-                placeholderTextColor="#cccccc"
-                value={formData.profit}
-                onChangeText={(value) =>
-                  setFormData({ ...formData, profit: value })
-                }
-              />
-
-              <TouchableOpacity style={styles.createBtn} onPress={handlePress}>
-                <Text style={styles.btnText}>
-                  {loading ? 'מעדכן חשבון...' : 'עדכן'}
-                </Text>
-
-                {loading && (
-                  <LinearProgress color="#fff" style={{ marginTop: 1 }} />
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.cancelBtn}
-                onPress={() => setShowModal(false)}
-              >
-                <Text style={[styles.btnText, styles.cancelBtnText]}>
-                  ביטול
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {Platform.OS === 'android' ? (
+              renderInputs()
+            ) : (
+              <KeyboardAvoidingView behavior="padding">
+                {renderInputs()}
+              </KeyboardAvoidingView>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -158,7 +186,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   form: {
-    marginTop: 100,
+    marginTop: 70,
   },
   label: {
     fontSize: 15,
@@ -179,7 +207,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    marginTop: 100,
+    marginTop: 50,
   },
   cancelBtn: {
     backgroundColor: '#f4f9ec',

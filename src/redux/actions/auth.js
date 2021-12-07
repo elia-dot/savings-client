@@ -8,6 +8,7 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   ADD_CHILD,
+  GET_CHILD,
   ADD_CHILD_ERROR,
 } from './types';
 
@@ -97,5 +98,17 @@ export const addChild = (data) => async (dispatch) => {
       type: ADD_CHILD_ERROR,
       payload: error.response.data.error,
     });
+  }
+};
+
+export const getChild = (id) => async (dispatch) => {
+  try {
+    const res = await axios(`${baseUrl}/users/child/${id}`);
+    dispatch({
+      type: GET_CHILD,
+      payload: res.data.data.data,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };

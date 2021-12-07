@@ -6,6 +6,7 @@ import {
   LOGOUT,
   ADD_CHILD_ERROR,
   ADD_CHILD,
+  GET_CHILD,
 } from '../actions/types';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   user: null,
   error: null,
   loading: true,
+  child: null,
 };
 
 export default function (state = initialState, action) {
@@ -50,7 +52,15 @@ export default function (state = initialState, action) {
     case ADD_CHILD:
       return {
         ...state,
+        error: null,
         user: { ...state.user, children: [...state.user.children, payload] },
+        loading: false,
+      };
+    case GET_CHILD:
+      return {
+        ...state,
+        error: null,
+        child: payload,
         loading: false,
       };
     case ADD_CHILD_ERROR:

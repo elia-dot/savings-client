@@ -18,7 +18,7 @@ export const getTasks = (userId) => async (dispatch) => {
     const res = await axios(`${baseUrl}/tasks/users/${userId}`);
     dispatch({
       type: GET_TASKS,
-      payload: res.data.data.data,
+      payload: res.data.data,
     });
   } catch (error) {
     console.log(error);

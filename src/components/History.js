@@ -1,17 +1,26 @@
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { getHistory } from '../redux/actions/savings';
 import SavingItem from './SavingItem';
+import { startLoading, finishLoading } from '../redux/actions/globals';
 
-const History = () => {
+
+const History = ({ route }) => {
   const dispatch = useDispatch();
   const { history } = useSelector((state) => state.savings);
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(getHistory(user._id));
-  }, [dispatch]);
+    const id = route.params?.userId || user._id;
+    const getUserData = async () => {
+      dispatch(startLoading());
+      await dispatch(getHistory(id));
+      dispatch(finishLoading());
+    };
+    getUserData();
+  }, [route.params ,dispatch]);
 
   return (
     <View style={styles.body}>

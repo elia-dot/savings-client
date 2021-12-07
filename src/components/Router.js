@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Splash from '../screens/Splash';
 import ParentTabs from '../screens/ParentTabs';
+import ParentScreens from '../screens/ParentScreens';
 import ChildTabs from '../screens/ChildTabs';
 import Login from '../screens/Login';
 import Signup from '../screens/Signup';
@@ -28,8 +29,16 @@ export const Router = () => {
       {isAuthenticated && user.type === 'parent' ? (
         <Stack.Navigator>
           <Stack.Screen
-            name="HomeTabs"
+            name="ParentTabs"
             component={ParentTabs}
+            options={{
+              headerShown: false,
+              headerLeft: () => null,
+            }}
+          />
+           <Stack.Screen
+            name="ParentScreens"
+            component={ParentScreens}
             options={{
               headerShown: false,
               headerLeft: () => null,

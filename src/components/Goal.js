@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -12,10 +12,9 @@ import Loader from '../globals/components/Loader';
 import { startLoading, finishLoading } from '../redux/actions/globals';
 import currency from '../globals/styles/currency';
 
-export default function Goal({ goal }) {
+export default function Goal({ goal, user }) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
 
   const calculateProgress = () => {
     if ((user.savings * 1) / (goal.price * 1) >= 1) return 1;
@@ -23,10 +22,12 @@ export default function Goal({ goal }) {
   };
 
   const moneyLeft = () => {
-    if (goal.price - (user.saving + user.profit) < 0) return 'מטרה הושלמה';
-    return `${(goal.price - (user.saving + user.profit)).toLocaleString()}${
-      currency.NIS
-    } נשארו`;
+    if (goal.price - (user.saving + user.profit) < 0)
+      return 'מטרה הושלמה';
+    return `${(
+      goal.price -
+      (user.saving + user.profit)
+    ).toLocaleString()}${currency.NIS} נשארו`;
   };
 
   const progress = calculateProgress();
@@ -67,23 +68,21 @@ export default function Goal({ goal }) {
           </View>
         </View>
         <View>
-          {user.type === 'parent' && (
-            <View style={styles.goalsActions}>
-              <FontAwesome5
-                name="pen"
-                color={colors.primary}
-                size={20}
-                onPress={updateGoal}
-              />
-              <FontAwesome5
-                name="trash"
-                color={colors.primary}
-                size={20}
-                style={{ marginLeft: 15 }}
-                onPress={confirmDelete}
-              />
-            </View>
-          )}
+          <View style={styles.goalsActions}>
+            <FontAwesome5
+              name="pen"
+              color={colors.primary}
+              size={20}
+              onPress={updateGoal}
+            />
+            <FontAwesome5
+              name="trash"
+              color={colors.primary}
+              size={20}
+              style={{ marginLeft: 15 }}
+              onPress={confirmDelete}
+            />
+          </View>
         </View>
       </View>
       <LinearProgress
@@ -94,6 +93,7 @@ export default function Goal({ goal }) {
       />
       <View style={styles.progressNumbers}>
         <Text>{goal.price.toLocaleString()}</Text>
+
         <Text>{(user.saving + user.profit).toLocaleString()}</Text>
       </View>
     </View>

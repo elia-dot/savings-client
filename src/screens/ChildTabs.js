@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { getAllGoals } from '../redux/actions/goals';
-import { getTasks } from '../redux/actions/tasks';
 import { logout } from '../redux/actions/auth';
-import { finishLoading, startLoading } from '../redux/actions/globals';
 import { getHour } from '../utils/getHour';
 import ChildScreens from './ChildScreens';
 import colors from '../globals/styles/colors';
@@ -21,16 +18,6 @@ const ChildTabs = () => {
   const handleLogout = () => {
     dispatch(logout());
   };
-
-  useEffect(() => {
-    const getUserData  = async () => {
-      dispatch(startLoading());
-      await dispatch(getAllGoals());
-      await dispatch(getTasks(user._id));
-      dispatch(finishLoading());
-    }
-   getUserData()
-  }, [dispatch]);
 
   return (
     <View style={styles.body}>
