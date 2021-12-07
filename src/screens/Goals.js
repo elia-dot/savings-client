@@ -9,7 +9,6 @@ import NoGoals from '../components/NoGoals';
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
 import Loader from '../globals/components/Loader';
-import { startLoading, finishLoading } from '../redux/actions/globals';
 import { getAllGoals } from '../redux/actions/goals';
 
 export default function Goals({ route }) {
@@ -22,21 +21,19 @@ export default function Goals({ route }) {
 
   useEffect(() => {
     const id = route.params ? route.params.userId : user._id;
-    const getUserData = async () => {
-      dispatch(startLoading());
-      await dispatch(getAllGoals(id));
-      dispatch(finishLoading());
-    };
-    getUserData();
-  }, [route.params, dispatch]);
+    dispatch(getAllGoals(id));
+  }, [dispatch]);
 
   return (
     <View style={styles.body}>
       <Loader />
-      <GoalForm showModal={showModal} setShowModal={setShowModal} />
-      {!loading && goals.length === 0 && (
-        <NoGoals name={route.params.user.name} />
-      )}
+      <GoalForm
+        showModal={showModal}
+        setShowModal={setShowModal}
+        userGoal={userGoal}
+      />
+
+      {!loading && goals.length === 0 && <NoGoals userGoal={userGoal} />}
 
       <FlatList
         data={goals}
@@ -46,7 +43,7 @@ export default function Goals({ route }) {
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10, marginStart: 15 }}
       />
-      {goals.length > 0 && (
+      {goals.length > 0 && user.type === 'child' && (
         <FAB
           placement="left"
           color={colors.primary}

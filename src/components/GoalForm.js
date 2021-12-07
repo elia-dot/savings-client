@@ -20,7 +20,7 @@ import { createGoal, updateGoal } from '../redux/actions/goals';
 
 const GoalForm = ({ showModal, setShowModal, goal }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, child } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.globals);
   const [formData, setFormData] = useState({
     title: '',
@@ -46,15 +46,12 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
   ];
 
   const createNewGoal = async () => {
-    dispatch(startLoading());
-    await dispatch(createGoal(user._id, formData));
-    dispatch(finishLoading());
+    const userId = user.type === 'child' ? user._id : child._id;
+    dispatch(createGoal(userId, formData));
   };
 
   const update = async () => {
-    dispatch(startLoading());
-    await dispatch(updateGoal(goal._id, formData));
-    dispatch(finishLoading());
+    dispatch(updateGoal(goal._id, formData));
   };
 
   const handlePress = async () => {
@@ -105,7 +102,7 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
       <Text style={styles.label}>מחיר:</Text>
       <TextInput
         style={styles.input}
-        ref = {priceRef}
+        ref={priceRef}
         returnKeyType="done"
         placeholder="מחיר המטרה"
         placeholderTextColor="#cccccc"

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { FAB } from 'react-native-elements';
 
 import { useSelector } from 'react-redux';
@@ -7,7 +8,7 @@ import { useSelector } from 'react-redux';
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
 
-export default function NoGoals({ name }) {
+export default function NoGoals({ userGoal }) {
   const [showModal, setShowModal] = useState(false);
   const { user } = useSelector((state) => state.auth);
   return (
@@ -27,7 +28,7 @@ export default function NoGoals({ name }) {
         </>
       ) : (
         <>
-          <Text style={styles.text}> רשימת המטרות של {name} ריקה</Text>
+          <Text style={styles.text}> רשימת המטרות של {userGoal.name} ריקה</Text>
           <FAB
             color={colors.primary}
             size="large"

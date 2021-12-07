@@ -1,23 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import colors from '../globals/styles/colors';
 import Goals from './Goals';
 import History from '../components/History';
 import Tasks from '../components/Tasks';
+import { finishLoading, startLoading } from '../redux/actions/globals';
+import { getChild } from '../redux/actions/auth';
+import Loader from '../globals/components/Loader';
 
 const Tab = createBottomTabNavigator();
 
 const ParentScreens = ({ route }) => {
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { child } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.globals);
 
-  const child = user.children.filter(
-    (child) => child._id === route.params.userId
-  )[0];
+  useEffect(() => {
+    const getChildData = async () => {
+      dispatch(startLoading());
+      await dispatch(getChild(route.params.userId));
+      dispatch(finishLoading());
+    };
+    getChildData();
+  }, []);
 
+  if (loading) return <Loader />;
   return (
     <Tab.Navigator
       screenOptions={{

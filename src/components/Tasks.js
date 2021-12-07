@@ -18,13 +18,7 @@ const Tasks = ({ route }) => {
 
   useEffect(() => {
     const id = route.params?.userId || user._id;
-    console.log(id);
-    const getUserData = async () => {
-      dispatch(startLoading());
-      await dispatch(getTasks(id));
-      dispatch(finishLoading());
-    };
-    getUserData();
+    dispatch(getTasks(id));
   }, [route.params, dispatch]);
 
   useEffect(() => {

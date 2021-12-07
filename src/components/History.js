@@ -6,7 +6,6 @@ import { getHistory } from '../redux/actions/savings';
 import SavingItem from './SavingItem';
 import { startLoading, finishLoading } from '../redux/actions/globals';
 
-
 const History = ({ route }) => {
   const dispatch = useDispatch();
   const { history } = useSelector((state) => state.savings);
@@ -14,13 +13,8 @@ const History = ({ route }) => {
 
   useEffect(() => {
     const id = route.params?.userId || user._id;
-    const getUserData = async () => {
-      dispatch(startLoading());
-      await dispatch(getHistory(id));
-      dispatch(finishLoading());
-    };
-    getUserData();
-  }, [route.params ,dispatch]);
+    dispatch(getHistory(id));
+  }, [route.params, dispatch]);
 
   return (
     <View style={styles.body}>
