@@ -25,7 +25,11 @@ const SavingItem = ({ item }) => {
       </View>
       <View style={styles.description}>
         <Text style={styles.textDesc}>
-          {item.description ? item.description : 'הפקדה'}
+          {item.description
+            ? item.description
+            : item.amount > 0
+            ? 'הפקדה'
+            : 'משיכה'}
         </Text>
       </View>
       <View style={styles.created}>

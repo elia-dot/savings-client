@@ -7,6 +7,7 @@ import {
   ADD_CHILD_ERROR,
   ADD_CHILD,
   GET_CHILD,
+  UPDATE_TOTAL,
 } from '../actions/types';
 
 const initialState = {
@@ -68,6 +69,11 @@ export default function (state = initialState, action) {
         ...state,
         error: payload,
         loading: false,
+      };
+    case UPDATE_TOTAL:
+      return {
+        ...state,
+        child: { ...state.child, saving: payload },
       };
     case LOGOUT:
       return {

@@ -1,4 +1,4 @@
-import { GET_HISTORY } from '../actions/types';
+import { ADD_SAVING, GET_HISTORY } from '../actions/types';
 
 const initialState = {
   history: [],
@@ -12,6 +12,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         history: payload,
+      };
+    case ADD_SAVING:
+      return {
+        ...state,
+        history: [payload, ...state.history],
       };
     default:
       return state;
