@@ -9,6 +9,7 @@ import {
 const initialState = {
   tasks: [],
   error: null,
+  loding: true,
 };
 
 export default function (state = initialState, action) {
@@ -18,6 +19,21 @@ export default function (state = initialState, action) {
       return {
         ...state,
         tasks: payload,
+        loading: false,
+      };
+    case CREATE_TASK:
+      return {
+        ...state,
+        tasks: [payload, ...state.tasks],
+        loading: false,
+      };
+    case COMPLETE_TASK:
+      return {
+        ...state,
+        tasks: state.tasks.map((t) =>
+          t._id !== payload.taskId ? t : { ...t, completed: true }
+        ),
+        loding: false,
       };
     default:
       return state;

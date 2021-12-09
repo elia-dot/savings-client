@@ -13,50 +13,46 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinearProgress } from 'react-native-elements';
 
 import colors from '../globals/styles/colors';
-import { addSaving } from '../redux/actions/savings';
+import { createTask } from '../redux/actions/tasks';
 
-const SavingModal = ({ openModal, setOpenModal }) => {
-  const [formData, setFormData] = useState({ amount: '', description: '' });
+const TaskModal = ({ openModal, setOpenModal }) => {
+  const [formData, setFormData] = useState({ title: '', price: '' });
   const [loading, setLoading] = useState(false);
   const { child } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const save = async () => {
     setLoading(true);
-    await dispatch(addSaving(child._id, formData));
+    await dispatch(createTask(child._id, formData));
     setLoading(false);
-    setFormData({ amount: '', description: '' });
+    setFormData({ title: '', price: '' });
     setOpenModal(false);
   };
   return (
     <Modal visible={openModal} animationType="slide">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.modalBody}>
-          <Text style={styles.modalTitle}>פרטי ההפקדה או המשיכה</Text>
-          <Text style = {styles.label}>סכום</Text>
+          <Text style={styles.modalTitle}>צור משימה חדשה</Text>
+          <Text style={styles.label}>תיאור</Text>
           <TextInput
             style={styles.input}
-            placeholder="סכום ההפקדה/משיכה"
+            placeholder="תיאור המטלה"
             placeholderTextColor="#cccccc"
-            value={formData.amount.toString()}
-            keyboardType="numbers-and-punctuation"
-            onChangeText={(value) =>
-              setFormData({ ...formData, amount: value })
-            }
+            value={formData.title}
+            onChangeText={(value) => setFormData({ ...formData, title: value })}
           />
-           <Text style = {styles.label}>תיאור</Text>
+          <Text style={styles.label}>סכום</Text>
           <TextInput
             style={styles.input}
-            placeholder="תיאור"
+            placeholder="סכום לתשלום"
             placeholderTextColor="#cccccc"
-            value={formData.description}
-            onChangeText={(value) =>
-              setFormData({ ...formData, description: value })
-            }
+            value={formData.price.toString()}
+            keyboardType="numeric"
+            onChangeText={(value) => setFormData({ ...formData, price: value })}
           />
           <TouchableOpacity style={styles.createBtn} onPress={() => save()}>
             <Text style={styles.btnText}>
-              {loading ? 'מעדכן...' : 'עדכן סכום'}
+              {loading ? 'מעדכן...' : 'עדכן משימה'}
             </Text>
 
             {loading && (
@@ -75,7 +71,7 @@ const SavingModal = ({ openModal, setOpenModal }) => {
   );
 };
 
-export default SavingModal;
+export default TaskModal;
 
 const styles = StyleSheet.create({
   modalBody: {
@@ -88,11 +84,6 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     textAlign: 'center',
   },
-  label: {
-    fontSize: 15,
-    marginBottom: 5,
-    color: colors.primary,
-  },
   input: {
     backgroundColor: '#eee',
     borderBottomColor: colors.primary,
@@ -101,6 +92,11 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'left',
     marginBottom: 50,
+  },
+  label: {
+    fontSize: 15,
+    marginBottom: 5,
+    color: colors.primary,
   },
   createBtn: {
     backgroundColor: colors.primary,

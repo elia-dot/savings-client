@@ -8,6 +8,7 @@ import {
   ADD_CHILD,
   GET_CHILD,
   UPDATE_TOTAL,
+  COMPLETE_TASK,
 } from '../actions/types';
 
 const initialState = {
@@ -75,6 +76,11 @@ export default function (state = initialState, action) {
         ...state,
         child: { ...state.child, saving: payload },
       };
+    // case COMPLETE_TASK:
+    //   return {
+    //     ...state,
+    //     child: { ...state.child, saving: payload.total },
+    //   };
     case LOGOUT:
       return {
         ...state,

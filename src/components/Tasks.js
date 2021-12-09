@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
-import { ButtonGroup } from 'react-native-elements';
+import { ButtonGroup, FAB } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import colors from '../globals/styles/colors';
-import { startLoading, finishLoading } from '../redux/actions/globals';
 import { getTasks } from '../redux/actions/tasks';
 import Task from './Task';
+import TaskModal from './TaskModal';
 
 const Tasks = ({ route }) => {
   const { tasks } = useSelector((state) => state.tasks);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const [filteredTasks, setFilteredTasks] = useState(tasks);
+
+  const [filteredTasks, setFilteredTasks] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+
   const buttons = ['הכל', 'הושלמו', 'לא הושלמו'];
 
   useEffect(() => {
@@ -35,6 +39,7 @@ const Tasks = ({ route }) => {
   }, [tasks, selectedIndex]);
   return (
     <View style={styles.body}>
+      <TaskModal openModal={openModal} setOpenModal={setOpenModal} />
       <ButtonGroup
         buttons={buttons}
         selectedIndex={selectedIndex}
@@ -56,6 +61,13 @@ const Tasks = ({ route }) => {
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10, marginStart: 15 }}
       />
+     { user.type === 'parent' && <FAB
+        color="#9cc95a"
+        size="large"
+        icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
+        onPress={() => setOpenModal(true)}
+        placement="left"
+      />}
     </View>
   );
 };

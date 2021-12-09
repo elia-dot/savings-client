@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import { useSelector } from 'react-redux';
 
 import colors from '../globals/styles/colors';
 import currency from '../globals/styles/currency';
+import TaskMenu from './TaskMenu';
 
 const Task = ({ task }) => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  const handlePress = () => {
+    setShowMenu(true);
+  };
+
   return (
     <View style={styles.body}>
+      <TaskMenu showMenu={showMenu} setShowMenu={setShowMenu} task={task} />
       <View style={[styles.taskColumn]}>
         <CheckBox
+          onPress={handlePress}
           checked={task.completed}
           checkedColor={colors.primary}
           containerStyle={{
