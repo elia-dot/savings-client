@@ -11,6 +11,9 @@ import Tasks from '../components/Tasks';
 import { finishLoading, startLoading } from '../redux/actions/globals';
 import { getChild } from '../redux/actions/auth';
 import Loader from '../globals/components/Loader';
+import { getAllGoals } from '../redux/actions/goals';
+import { getHistory } from '../redux/actions/savings';
+import { getTasks } from '../redux/actions/tasks';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +30,14 @@ const ParentScreens = ({ route }) => {
     };
     getChildData();
   }, []);
+
+  useEffect(() => {
+    if (child) {
+      dispatch(getAllGoals(child._id));
+      dispatch(getHistory(child._id));
+      dispatch(getTasks(child._id));
+    }
+  }, [child]);
 
   if (loading) return <Loader />;
   return (

@@ -15,7 +15,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Alert from '../globals/components/Overlay';
 import colors from '../globals/styles/colors';
-import { finishLoading, startLoading } from '../redux/actions/globals';
 import { createGoal, updateGoal } from '../redux/actions/goals';
 
 const GoalForm = ({ showModal, setShowModal, goal }) => {

@@ -1,3 +1,5 @@
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
+export const SIGNUP_FAILED = 'SIGNUP_FAILED'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOAD_USER = 'LOAD_USER';
@@ -13,6 +15,8 @@ export const CREATE_GOAL = 'CREATE_GOAL';
 export const UPDATE_GOAL = 'UPDATE_GOAL';
 export const DELETE_GOAL = 'DELETE_GOAL';
 export const GOALS_ERROR = 'GOALS_ERROR';
+export const START_GOALS_LOADING = 'START_GOALS_LOADING';
+
 
 export const GET_HISTORY = 'GET_HISTORY';
 export const ADD_SAVING = 'ADD_SAVING';

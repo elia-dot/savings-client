@@ -1,68 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearProgress } from 'react-native-elements';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { useAuth } from '../context/authContext';
 import Alert from '../globals/components/Overlay';
 import colors from '../globals/styles/colors';
+import { signup } from '../redux/actions/auth';
 
 export default function Signup({ navigation }) {
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
     passwordConfirmd: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
+  const [isAlert, setIsAlert] = useState(false);
 
-  const { signup, setIsAuth, loadUser } = useAuth();
+  const { error } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const passwordRef = useRef();
+  const confirmRef = useRef();
+
+  useEffect(() => {
+    if (error === 'User already exist with this email!'){
+      setErrorMsg({
+        title: 'שגיאה',
+        message: 'קיים משתמש המקושר לאימייל זה',
+      });
+     setIsAlert(true);
+    }  
+  }, [error]);
 
   const handleSignup = async () => {
     setLoading(true);
     if (
-      formData.name === '' ||
       formData.email === '' ||
       formData.password === '' ||
       formData.passwordConfirmd === ''
     ) {
-      setErrorMsg('Please fill all the fields!');
-      setIsError(true);
+      setErrorMsg({
+        title: 'חסרים פרטים',
+        message: 'נא מלא את כל השדות',
+      });
+      setIsAlert(true);
       setLoading(false);
       return;
     } else if (formData.password !== formData.passwordConfirmd) {
-      setErrorMsg('Passwords do not match!');
-      setIsError(true);
+      setErrorMsg({
+        title: 'שגיאה בפרטים',
+        message: 'סיסמאות לא תואמות',
+      });
+      setIsAlert(true);
       setLoading(false);
       return;
     } else if (formData.password.length < 6) {
-      setErrorMsg('Password must be at least 6 characters!');
-      setIsError(true);
+      setErrorMsg({
+        title: 'שגיאה בפרטים',
+        message: 'הסיסמא חייבת להיות לפחות 6 תווים',
+      });
+      setIsAlert(true);
       setLoading(false);
       return;
     }
-    const res = await signup(formData);
-    if (res.data) {
-      await AsyncStorage.multiSet([
-        ['token', res.data.token],
-        ['userId', res.data.data.user._id],
-      ]);
-      setIsAuth(true);
-    } else {
-      setErrorMsg(res.errors);
-      setIsError(true);
-    }
-    loadUser();
+    await dispatch(signup(formData));
     setLoading(false);
   };
 
@@ -70,51 +86,56 @@ export default function Signup({ navigation }) {
     navigation.navigate('Login');
   };
 
-  return (
-    <View style={styles.body}>
-      <Alert errorMsg={errorMsg} isError={isError} setIsError={setIsError} />
-      <Text style={styles.label}>Name:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={formData.name}
-        onChangeText={(value) =>
-          setFormData({ ...formData, name: value.toLowerCase() })
-        }
+  const renderInputs = () => (
+    <ScrollView>
+      <Alert
+        message={errorMsg.message}
+        title={errorMsg.title}
+        type="fail"
+        isAlert={isAlert}
+        setIsAlert={setIsAlert}
       />
-      <Text style={styles.label}>Email:</Text>
+      <Text style={styles.label}>אימייל:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="אימייל"
+        returnKeyType="next"
+        autoFocus
+        onSubmitEditing={() => passwordRef.current.focus()}
         value={formData.email}
         onChangeText={(value) =>
           setFormData({ ...formData, email: value.toLowerCase() })
         }
       />
-      <Text style={styles.label}>Password:</Text>
+      <Text style={styles.label}>סיסמא:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="סיסמא"
+        ref={passwordRef}
+        onSubmitEditing={() => confirmRef.current.focus()}
         value={formData.password}
+        returnKeyType="next"
         textContentType="password"
         secureTextEntry={!showPassword}
         onChangeText={(value) =>
           setFormData({ ...formData, password: value.toLowerCase() })
         }
       />
-      <Text style={styles.label}>Confirm Password:</Text>
+      <Text style={styles.label}>אשר סיסמא:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Confirm Password"
+        placeholder="אשר סיסמא"
         value={formData.passwordConfirmd}
+        returnKeyType="done"
         textContentType="password"
+        ref={confirmRef}
         secureTextEntry={!showPassword}
         onChangeText={(value) =>
           setFormData({ ...formData, passwordConfirmd: value.toLowerCase() })
         }
       />
       <CheckBox
-        title="Show Password"
+        title="הצג סיסמא"
         checked={showPassword}
         checkedColor="#9cc95a"
         containerStyle={{ backgroundColor: 'none', padding: 0, borderWidth: 0 }}
@@ -122,19 +143,32 @@ export default function Signup({ navigation }) {
       />
       <TouchableOpacity style={styles.btn} onPress={() => handleSignup()}>
         <Text style={styles.btnText}>
-          {loading ? 'Please wait...' : 'Sign Up'}
+          {loading ? 'יוצר חשבון' : 'צור חשבון'}
         </Text>
         {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
       </TouchableOpacity>
+    </ScrollView>
+  );
 
+  return (
+    <View style={styles.body}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        {Platform.OS === 'android' ? (
+          renderInputs()
+        ) : (
+          <KeyboardAvoidingView behavior="padding">
+            {renderInputs()}
+          </KeyboardAvoidingView>
+        )}
+      </TouchableWithoutFeedback>
       <Text style={styles.text}>
-        Allready have an account?
+        יש לך כבר חשבון?
         <TouchableOpacity
           onPress={() => {
             navigateToLogin();
           }}
         >
-          <Text style={styles.link}> Log In</Text>
+          <Text style={styles.link}> התחבר</Text>
         </TouchableOpacity>
         !
       </Text>

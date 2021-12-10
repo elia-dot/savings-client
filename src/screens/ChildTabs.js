@@ -19,6 +19,8 @@ const ChildTabs = () => {
     dispatch(logout());
   };
 
+  if (user === null) return null;
+
   return (
     <View style={styles.body}>
       <View>

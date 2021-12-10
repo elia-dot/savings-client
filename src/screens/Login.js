@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { LinearProgress } from 'react-native-elements';
@@ -15,6 +17,7 @@ import validator from 'validator';
 import Alert from '../globals/components/Overlay';
 import { login } from '../redux/actions/auth';
 import colors from '../globals/styles/colors';
+import { useEffect } from 'react';
 
 export default function Login({ navigation }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -24,13 +27,18 @@ export default function Login({ navigation }) {
   const [isAlert, setIsAlert] = useState(false);
 
   const dispacth = useDispatch();
-  const { error} = useSelector((state) => state.auth);
+  const { error } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (error) setIsAlert(true);
+  }, [error]);
+
   const handleLogin = async () => {
     setLoading(true);
     if (formData.email === '' || formData.password === '') {
       setErrorMsg({
-        title: 'Missing Details',
-        message: 'Please fill all the fields!',
+        title: 'חסרים פרטים',
+        message: 'נא מלא את כל השדות',
       });
       setIsAlert(true);
       setLoading(false);
@@ -46,8 +54,8 @@ export default function Login({ navigation }) {
     await dispacth(login(data));
     if (error) {
       setErrorMsg({
-        title: 'Incorent Details',
-        message: 'Please check your input and try again',
+        title: 'שגיאה בפרטים',
+        message: 'בדוק את פרטי המשתמש ונסה שוב',
       });
       setIsAlert(true);
     }
@@ -58,57 +66,66 @@ export default function Login({ navigation }) {
     navigation.navigate('Signup');
   };
   return (
-    <View style={styles.body}>
-      <Image source={require('../../assets/logo.png')} style={styles.img} />
-      <Alert
-        message={errorMsg.message}
-        title={errorMsg.title}
-        type="fail"
-        isAlert={isAlert}
-        setIsAlert={setIsAlert}
-      />
-      <Text style={styles.label}>שם משתמש/מייל</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="שם משתמש או מייל"
-        value={formData.email}
-        onChangeText={(value) =>
-          setFormData({ ...formData, email: value.toLowerCase() })
-        }
-      />
-      <Text style={styles.label}>סיסמא:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="סיסמא"
-        value={formData.password}
-        textContentType="password"
-        secureTextEntry={!showPassword}
-        onChangeText={(value) =>
-          setFormData({ ...formData, password: value.toLowerCase() })
-        }
-      />
-      <CheckBox
-        title="הצג סיסמא"
-        checked={showPassword}
-        checkedColor="#9cc95a"
-        containerStyle={{ backgroundColor: 'none', padding: 0, borderWidth: 0 }}
-        onPress={() => setShowPassword(!showPassword)}
-      />
-      <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
-        <Text style={styles.btnText}>{loading ? 'מתחבר...' : 'התחבר'}</Text>
-        {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          navigateToRegister();
-        }}
-      >
-        <Text style={styles.text}>
-        משתמש חדש?{'  '}
-          <Text style={styles.link}>הירשם{'  '}</Text>
-        </Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.body}>
+        <Image source={require('../../assets/logo.png')} style={styles.img} />
+        <Alert
+          message={errorMsg.message}
+          title={errorMsg.title}
+          type="fail"
+          isAlert={isAlert}
+          setIsAlert={setIsAlert}
+        />
+
+        <Text style={styles.label}>שם משתמש/מייל</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="שם משתמש או מייל"
+          value={formData.email}
+          returnKeyType="next"
+          onChangeText={(value) =>
+            setFormData({ ...formData, email: value.toLowerCase() })
+          }
+        />
+        <Text style={styles.label}>סיסמא:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="סיסמא"
+          value={formData.password}
+          returnKeyType="done"
+          textContentType="password"
+          secureTextEntry={!showPassword}
+          onChangeText={(value) =>
+            setFormData({ ...formData, password: value.toLowerCase() })
+          }
+        />
+        <CheckBox
+          title="הצג סיסמא"
+          checked={showPassword}
+          checkedColor="#9cc95a"
+          containerStyle={{
+            backgroundColor: 'none',
+            padding: 0,
+            borderWidth: 0,
+          }}
+          onPress={() => setShowPassword(!showPassword)}
+        />
+        <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
+          <Text style={styles.btnText}>{loading ? 'מתחבר...' : 'התחבר'}</Text>
+          {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigateToRegister();
+          }}
+        >
+          <Text style={styles.text}>
+            משתמש חדש?{'  '}
+            <Text style={styles.link}>הירשם{'  '}</Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -159,7 +176,7 @@ const styles = StyleSheet.create({
   link: {
     color: colors.primary,
     fontSize: 23,
-    fontWeight: '600'
+    fontWeight: '600',
   },
   checkboxContainer: {
     flexDirection: 'row',

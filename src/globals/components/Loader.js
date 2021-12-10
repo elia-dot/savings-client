@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 
@@ -9,8 +9,17 @@ const Loader = () => {
   const { loading } = useSelector((state) => state.globals);
 
   return (
-    <Overlay isVisible={loading} overlayStyle={{ backgroundColor: 'none' }}>
+    <Overlay
+      isVisible={loading}
+      overlayStyle={{
+        backgroundColor: '#000',
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+      }}
+      backdropStyle={{ backgroundColor: 'none' }}
+    >
       <ActivityIndicator size="large" color={colors.primary} />
+      <Text style={{ color: colors.primary, marginTop: 5 }}>טוען מידע</Text>
     </Overlay>
   );
 };

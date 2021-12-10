@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FAB } from 'react-native-elements';
+import { Menu, MenuItem } from 'react-native-material-menu';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { logout } from '../redux/actions/auth';
@@ -19,6 +20,7 @@ const ParentTab = ({ navigation }) => {
   const { user } = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState(false);
   const [children, setChildren] = useState([]);
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -30,7 +32,37 @@ const ParentTab = ({ navigation }) => {
 
   return (
     <View style={styles.body}>
-      {<AddChild showModal={showModal} setShowModal={setShowModal} />}
+      <View style={{ position: 'absolute', left: 5, top: 5 }}>
+        <Menu
+          visible={showMenu}
+          onRequestClose={() => setShowMenu(false)}
+          style={{ position: 'absolute', left: -80, top: 120 }}
+          anchor={
+            <TouchableOpacity
+              style={styles.cogBtn}
+              onPress={() => setShowMenu(true)}
+            >
+              <FontAwesome5 name="cog" color={colors.secondary} size={25} />
+            </TouchableOpacity>
+          }
+        >
+          <MenuItem
+            onPress={handleLogout}
+            textStyle={{
+              color: colors.primary,
+              fontSize: 20,
+              fontWeight: '600',
+              textAlign: 'center',
+            }}
+          >
+            התנתק
+          </MenuItem>
+        </Menu>
+      </View>
+      <AddChild showModal={showModal} setShowModal={setShowModal} />
+      {children.length === 0 && (
+        <Text>לא נמצאו חשבונות ילד המקושרות לחשבונך</Text>
+      )}
       <FlatList
         data={children}
         renderItem={({ item }) => (
@@ -58,9 +90,6 @@ const ParentTab = ({ navigation }) => {
           setShowModal(true);
         }}
       />
-      <TouchableOpacity onPress={handleLogout}>
-        <Text>logout</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -69,6 +98,7 @@ export default ParentTab;
 const styles = StyleSheet.create({
   body: {
     flex: 1,
+    position: 'relative',
     alignItems: 'center',
     paddingTop: 200,
   },
@@ -85,5 +115,15 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '500',
     textAlign: 'center',
+  },
+  cogBtn: {
+    position: 'absolute',
+    left: 35,
+    top: 60,
+    backgroundColor: colors.primary,
+    padding: 10,
+    borderWidth: 0.5,
+    borderColor: colors.secondary,
+    borderRadius: 25,
   },
 });

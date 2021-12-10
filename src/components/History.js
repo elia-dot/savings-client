@@ -12,7 +12,7 @@ import currency from '../globals/styles/currency';
 
 const History = ({ route }) => {
   const dispatch = useDispatch();
-  const { history } = useSelector((state) => state.savings);
+  const { history, loading } = useSelector((state) => state.savings);
   const { user, child } = useSelector((state) => state.auth);
 
   const [openModal, setOpenModal] = useState(false);
@@ -34,10 +34,10 @@ const History = ({ route }) => {
   }, [history, selectedIndex]);
 
   useEffect(() => {
-    const id = route.params?.userId || user._id;
-    dispatch(getHistory(id));
-  }, [route.params, dispatch]);
+    if (user.type === 'child') dispatch(getHistory(user._id));
+  }, [dispatch]);
 
+  if (loading) return null;
   return (
     <View style={styles.body}>
       <SavingModal openModal={openModal} setOpenModal={setOpenModal} />

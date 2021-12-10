@@ -6,10 +6,12 @@ import {
   LOAD_USER,
   LOGIN_FAILED,
   LOGIN_SUCCESS,
+  SIGNUP_FAILED,
   LOGOUT,
   ADD_CHILD,
   GET_CHILD,
   ADD_CHILD_ERROR,
+  SIGNUP_SUCCESS,
 } from './types';
 
 const baseUrl = 'https://goals-65106.herokuapp.com';
@@ -39,10 +41,26 @@ export const login = (data) => async (dispatch) => {
       payload: res.data.data,
     });
   } catch (error) {
-    console.error(error.response.data.error);
     dispatch({
       type: LOGIN_FAILED,
       payload: error.response.data.error,
+    });
+  }
+};
+
+export const signup = (data) => async (dispatch) => {
+  try {
+    const res = await axios.post(`${baseUrl}/users/signup`, data, config);
+    const userType = res.data.data.user.type;
+    setStorage(res.data.data.user._id, userType);
+    dispatch({
+      type: SIGNUP_SUCCESS,
+      payload: res.data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SIGNUP_FAILED,
+      payload: error.response.data.errors,
     });
   }
 };

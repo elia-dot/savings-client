@@ -15,18 +15,18 @@ export default function Goals({ route }) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { goals, loading } = useSelector((state) => state.goals);
-  const { user } = useSelector((state) => state.auth);
+  const { user, child } = useSelector((state) => state.auth);
 
-  const userGoal = route.params ? route.params.user : user;
+  const userGoal = user.type === 'child' ? user : child;
 
   useEffect(() => {
-    const id = route.params ? route.params.userId : user._id;
-    dispatch(getAllGoals(id));
+    if (user.type === 'child') dispatch(getAllGoals(user._id));
   }, [dispatch]);
+
+  if (loading) return null;
 
   return (
     <View style={styles.body}>
-      <Loader />
       <GoalForm
         showModal={showModal}
         setShowModal={setShowModal}

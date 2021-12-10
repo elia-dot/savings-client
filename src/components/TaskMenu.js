@@ -25,6 +25,18 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
     setLoading(false);
     setShowMenu(false);
   };
+
+  const uncompleteTask = async () => {
+    const data = { amount: task.price * -1, description: 'ביטול השלמת משימה' };
+    setLoading(true);
+    await dispatch(completeTask(task._id, task.assignTo, data));
+    setLoading(false);
+    setShowMenu(false);
+  };
+
+  const sendReminder = () => {
+    //TODO: send notification
+  };
   return (
     <Portal>
       <Modal
@@ -35,13 +47,22 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
       >
         {user.type === 'parent' && (
           <>
-            <TouchableOpacity style={styles.btn} onPress={handleComplete}>
-              <Text style={styles.btnText}> אשר השלמת משימה</Text>
-              {loading && (
-                <LinearProgress color="#fff" style={{ marginTop: 1 }} />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btn}>
+            {!task.completed ? (
+              <TouchableOpacity style={styles.btn} onPress={handleComplete}>
+                <Text style={styles.btnText}> אשר השלמת משימה</Text>
+                {loading && (
+                  <LinearProgress color="#fff" style={{ marginTop: 1 }} />
+                )}
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.btn} onPress={uncompleteTask}>
+                <Text style={styles.btnText}> בטל השלמת משימה</Text>
+                {loading && (
+                  <LinearProgress color="#fff" style={{ marginTop: 1 }} />
+                )}
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity style={styles.btn} onPress={sendReminder}>
               <Text style={styles.btnText}> שלח תזכורת</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelBtn}>
@@ -63,13 +84,13 @@ const styles = StyleSheet.create({
   },
   btn: {
     backgroundColor: colors.primary,
+    paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
     marginTop: 10,
   },
   cancelBtn: {
     backgroundColor: '#f4f9ec',
-    paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
     marginTop: 10,

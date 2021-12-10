@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff1a1a',
   },
   textDesc: {
-    fontSize: 20,
+    fontSize: 15,
     textAlign: 'center',
   },
   description: {

@@ -10,7 +10,7 @@ import Task from './Task';
 import TaskModal from './TaskModal';
 
 const Tasks = ({ route }) => {
-  const { tasks } = useSelector((state) => state.tasks);
+  const { tasks, loading } = useSelector((state) => state.tasks);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -21,9 +21,8 @@ const Tasks = ({ route }) => {
   const buttons = ['הכל', 'הושלמו', 'לא הושלמו'];
 
   useEffect(() => {
-    const id = route.params?.userId || user._id;
-    dispatch(getTasks(id));
-  }, [route.params, dispatch]);
+    if (user.type === 'child') dispatch(getTasks(user._id));
+  }, [dispatch]);
 
   useEffect(() => {
     let filtered;
@@ -37,6 +36,7 @@ const Tasks = ({ route }) => {
       setFilteredTasks(filtered);
     }
   }, [tasks, selectedIndex]);
+  if (loading) return null;
   return (
     <View style={styles.body}>
       <TaskModal openModal={openModal} setOpenModal={setOpenModal} />
@@ -61,13 +61,15 @@ const Tasks = ({ route }) => {
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10, marginStart: 15 }}
       />
-     { user.type === 'parent' && <FAB
-        color="#9cc95a"
-        size="large"
-        icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
-        onPress={() => setOpenModal(true)}
-        placement="left"
-      />}
+      {user.type === 'parent' && (
+        <FAB
+          color="#9cc95a"
+          size="large"
+          icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
+          onPress={() => setOpenModal(true)}
+          placement="left"
+        />
+      )}
     </View>
   );
 };

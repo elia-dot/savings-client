@@ -7,6 +7,7 @@ import {
   UPDATE_GOAL,
   DELETE_GOAL,
   GOALS_ERROR,
+  START_GOALS_LOADING,
 } from './types';
 
 const baseUrl = 'https://goals-65106.herokuapp.com';
@@ -19,11 +20,14 @@ export const getAllGoals = (userId) => async (dispatch) => {
   try {
     const res = await axios(`${baseUrl}/goals/users/${userId}`);
     dispatch({
+      type: START_GOALS_LOADING,
+    });
+    dispatch({
       type: GET_ALL_GOALS,
       payload: res.data.data.data,
     });
   } catch (error) {
-    console.log('error:',error);
+    console.log('error:', error);
     dispatch({
       type: GOALS_ERROR,
       payload: error.response.data.error,
@@ -33,7 +37,7 @@ export const getAllGoals = (userId) => async (dispatch) => {
 
 export const createGoal = (userId, data) => async (dispatch) => {
   try {
-    const res = await axios.post(`${baseUrl}/goals/${userId}`,data, config);
+    const res = await axios.post(`${baseUrl}/goals/${userId}`, data, config);
     dispatch({
       type: CREATE_GOAL,
       payload: res.data.data,

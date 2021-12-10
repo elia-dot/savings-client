@@ -66,7 +66,7 @@ export const Router = () => {
             component={Login}
             options={{
               headerBackTitleVisible: false,
-              title: 'Log In',
+              title: 'התחברות',
               headerTitleAlign: 'center',
             }}
           />
@@ -75,8 +75,9 @@ export const Router = () => {
             component={Signup}
             options={{
               headerBackTitleVisible: false,
-              title: 'Sign Up',
+              title: 'הרשמה',
               headerTitleAlign: 'center',
+              headerLeft: () => <GoBackButton />,
             }}
           />
         </Stack.Navigator>

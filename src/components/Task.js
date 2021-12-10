@@ -9,9 +9,13 @@ import TaskMenu from './TaskMenu';
 
 const Task = ({ task }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const { user } = useSelector((state) => state.auth);
 
+  const markAsCompleted = () => {
+    //TODO: send notification
+  };
   const handlePress = () => {
-    setShowMenu(true);
+    user.type === 'parent' ? setShowMenu(true) : markAsCompleted();
   };
 
   return (
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   taskDesc: {
-    width: '68%',
+    width: '65%',
   },
   taskText: {
     textAlign: 'left',
