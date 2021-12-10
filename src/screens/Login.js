@@ -30,10 +30,19 @@ export default function Login({ navigation }) {
   const { error } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (error) setIsAlert(true);
+    if (error) {
+      setIsAlert(true);
+      setErrorMsg({
+        title: 'שגיאה בפרטים',
+        message: 'בדוק את פרטי המשתמש ונסה שוב',
+      });
+      
+    }
   }, [error]);
 
   const handleLogin = async () => {
+    setIsAlert(false);
+    setErrorMsg({ title: '', message: '' });
     setLoading(true);
     if (formData.email === '' || formData.password === '') {
       setErrorMsg({
@@ -52,13 +61,6 @@ export default function Login({ navigation }) {
       : (data.username = formData.email);
 
     await dispacth(login(data));
-    if (error) {
-      setErrorMsg({
-        title: 'שגיאה בפרטים',
-        message: 'בדוק את פרטי המשתמש ונסה שוב',
-      });
-      setIsAlert(true);
-    }
     setLoading(false);
   };
 
