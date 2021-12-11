@@ -26,17 +26,22 @@ const ParentTab = ({ navigation }) => {
     dispatch(logout());
   };
 
+  const goToDetails = () => {
+    navigation.navigate('ChildrenDetails');
+    setShowMenu(false);
+  };
+
   useEffect(() => {
     user && setChildren(user.children);
   }, [user]);
 
   return (
     <View style={styles.body}>
-      <View style={{ position: 'absolute', left: 5, top: 5 }}>
+      <View style={{ position: 'absolute', left: -20, top: 5 }}>
         <Menu
           visible={showMenu}
           onRequestClose={() => setShowMenu(false)}
-          style={{ position: 'absolute', left: -80, top: 120 }}
+          style={{ position: 'absolute', left: -105, top: 120 }}
           anchor={
             <TouchableOpacity
               style={styles.cogBtn}
@@ -50,12 +55,27 @@ const ParentTab = ({ navigation }) => {
             onPress={handleLogout}
             textStyle={{
               color: colors.primary,
-              fontSize: 20,
+              fontSize: 15,
               fontWeight: '600',
-              textAlign: 'center',
+              textAlign: 'left',
+            }}
+            style={{
+              borderBottomColor: colors.secondary,
+              borderBottomWidth: 1,
             }}
           >
             התנתק
+          </MenuItem>
+          <MenuItem
+            onPress={goToDetails}
+            textStyle={{
+              color: colors.primary,
+              fontSize: 15,
+              fontWeight: '600',
+              textAlign: 'left',
+            }}
+          >
+            פרטי ילדים
           </MenuItem>
         </Menu>
       </View>

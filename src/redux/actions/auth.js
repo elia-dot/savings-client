@@ -130,3 +130,11 @@ export const getChild = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
+// export const updateChildPassword = (pass, id) => async (dispatch) => {
+//   try {
+//     await axios.patch(`${baseUrl}/child/${id}`, pass, config)
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }

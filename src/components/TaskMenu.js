@@ -65,7 +65,10 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
             <TouchableOpacity style={styles.btn} onPress={sendReminder}>
               <Text style={styles.btnText}> שלח תזכורת</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelBtn}>
+            <TouchableOpacity
+              style={styles.cancelBtn}
+              onPress={() => setShowMenu(false)}
+            >
               <Text style={styles.cancelBtnText}> ביטול</Text>
             </TouchableOpacity>
           </>

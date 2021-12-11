@@ -11,6 +11,7 @@ import Login from '../screens/Login';
 import Signup from '../screens/Signup';
 import { loadUser } from '../redux/actions/auth';
 import GoBackButton from '../globals/components/GoBackButton';
+import ChildrenDetails from '../screens/ChildrenDetails';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,15 @@ export const Router = () => {
             options={{
               headerShown: false,
               headerLeft: () => null,
+            }}
+          />
+          <Stack.Screen
+            name="ChildrenDetails"
+            component={ChildrenDetails}
+            options={{
+              headerBackTitleVisible: false,
+              headerTitle: '',
+              headerLeft: () => <GoBackButton />,
             }}
           />
           <Stack.Screen
