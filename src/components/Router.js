@@ -12,6 +12,7 @@ import Signup from '../screens/Signup';
 import { loadUser } from '../redux/actions/auth';
 import GoBackButton from '../globals/components/GoBackButton';
 import ChildrenDetails from '../screens/ChildrenDetails';
+import ForgotPassword from '../screens/ForgotPassword';
 
 const Stack = createStackNavigator();
 
@@ -78,6 +79,16 @@ export const Router = () => {
               headerBackTitleVisible: false,
               title: 'התחברות',
               headerTitleAlign: 'center',
+            }}
+          />
+          <Stack.Screen
+            name="forgot password"
+            component={ForgotPassword}
+            options={{
+              headerBackTitleVisible: false,
+              title: 'שחזור סיסמא',
+              headerTitleAlign: 'center',
+              headerLeft: () => <GoBackButton />,
             }}
           />
           <Stack.Screen

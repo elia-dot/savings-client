@@ -9,7 +9,7 @@ export const ADD_CHILD = 'ADD_CHILD';
 export const GET_CHILD = 'GET_CHILD';
 export const ADD_CHILD_ERROR = 'ADD_CHILD_ERROR';
 export const START_AUTH_LOADING = 'START_AUTH_LOADING';
-export const UPDATE_CHILD_PASSWORD = 'UPDATE_CHILD_PASSWORD';
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 
 export const GET_ALL_GOALS = 'GET_ALL_GOALS';
 export const CREATE_GOAL = 'CREATE_GOAL';

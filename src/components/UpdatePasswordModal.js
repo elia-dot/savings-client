@@ -67,7 +67,7 @@ const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
         <TextInput
           style={styles.input}
           autoFocus
-          value={formData.email}
+          value={formData.password}
           returnKeyType="done"
           onChangeText={(value) => setFormData({ password: value })}
         />

@@ -36,7 +36,6 @@ export default function Login({ navigation }) {
         title: 'שגיאה בפרטים',
         message: 'בדוק את פרטי המשתמש ונסה שוב',
       });
-      
     }
   }, [error]);
 
@@ -112,6 +111,11 @@ export default function Login({ navigation }) {
           }}
           onPress={() => setShowPassword(!showPassword)}
         />
+        <TouchableOpacity
+          onPress={() => navigation.navigate('forgot password')}
+        >
+          <Text style={styles.forgot}> שכחתי סיסמא</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
           <Text style={styles.btnText}>{loading ? 'מתחבר...' : 'התחבר'}</Text>
           {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
@@ -189,5 +193,10 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     margin: 8,
+  },
+  forgot: {
+    textAlign: 'center',
+    color: colors.primary,
+    fontSize: 20,
   },
 });

@@ -12,6 +12,7 @@ import {
   GET_CHILD,
   ADD_CHILD_ERROR,
   SIGNUP_SUCCESS,
+  UPDATE_PASSWORD,
 } from './types';
 
 const baseUrl = 'https://goals-65106.herokuapp.com';
@@ -131,10 +132,22 @@ export const getChild = (id) => async (dispatch) => {
   }
 };
 
-// export const updateChildPassword = (pass, id) => async (dispatch) => {
-//   try {
-//     await axios.patch(`${baseUrl}/child/${id}`, pass, config)
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+export const updatePassword = (data, id) => async (dispatch) => {
+  try {
+    const res = await axios.post(
+      `${baseUrl}/users//update-password/parent/${id}`
+    );
+    const userType = res.data.data.user.type;
+    setStorage(res.data.data.user._id, userType);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data.data,
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: LOGIN_FAILED,
+      payload: error.response.data.error,
+    });
+  }
+};
