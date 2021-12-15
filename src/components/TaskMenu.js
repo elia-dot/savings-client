@@ -6,6 +6,7 @@ import { LinearProgress } from 'react-native-elements';
 
 import colors from '../globals/styles/colors';
 import { completeTask } from '../redux/actions/tasks';
+import { sendPushNotification } from '../utils/sendNotification';
 
 const TaskMenu = ({ showMenu, setShowMenu, task }) => {
   const { user } = useSelector((state) => state.auth);
@@ -34,8 +35,13 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
     setShowMenu(false);
   };
 
-  const sendReminder = () => {
-    //TODO: send notification
+  const sendReminder = async () => {
+    const body = {
+      userId: user._id,
+      title: 'תזכורת',
+      body: `:זוהי תזכורת להשלמת המשימה ${task.title}`,
+    };
+    await sendPushNotification(body);
   };
   return (
     <Portal>

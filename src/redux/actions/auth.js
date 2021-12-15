@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
 
 import {
   LOAD_ERROR,
@@ -12,7 +13,6 @@ import {
   GET_CHILD,
   ADD_CHILD_ERROR,
   SIGNUP_SUCCESS,
-  UPDATE_PASSWORD,
 } from './types';
 
 const baseUrl = 'https://goals-65106.herokuapp.com';
@@ -34,6 +34,9 @@ const setStorage = async (userId, userType) => {
 
 export const login = (data) => async (dispatch) => {
   try {
+    let token = await Notifications.getExpoPushTokenAsync();
+    data.pushToken = token.data;
+    console.log(data);
     const res = await axios.post(`${baseUrl}/users/login`, data, config);
     const userType = res.data.data.user.type;
     setStorage(res.data.data.user._id, userType);
@@ -51,6 +54,8 @@ export const login = (data) => async (dispatch) => {
 
 export const signup = (data) => async (dispatch) => {
   try {
+    let token = await Notifications.getExpoPushTokenAsync();
+    data.pushToken = token;
     const res = await axios.post(`${baseUrl}/users/signup`, data, config);
     const userType = res.data.data.user.type;
     setStorage(res.data.data.user._id, userType);
