@@ -8,7 +8,6 @@ import Goal from '../components/Goal';
 import NoGoals from '../components/NoGoals';
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
-import Loader from '../globals/components/Loader';
 import { getAllGoals } from '../redux/actions/goals';
 
 export default function Goals({ route }) {

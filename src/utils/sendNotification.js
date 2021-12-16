@@ -14,6 +14,6 @@ export const sendPushNotification = async (data) => {
       'Accept-encoding': 'gzip, deflate',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(message),
+    message,
   });
 };

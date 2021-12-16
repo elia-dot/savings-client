@@ -58,6 +58,7 @@ const Tasks = ({ route }) => {
       <FlatList
         data={filteredTasks}
         renderItem={({ item }) => <Task task={item} />}
+        initialNumToRender={10}
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10, marginStart: 15 }}
       />

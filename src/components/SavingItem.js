@@ -4,7 +4,6 @@ import moment from 'moment';
 import colors from '../globals/styles/colors';
 
 const SavingItem = ({ item }) => {
-  const created = moment(item.createdAt).format('DD/MM/YYYY');
   return (
     <View style={styles.item}>
       <View style={styles.amount}>
@@ -33,7 +32,9 @@ const SavingItem = ({ item }) => {
         </Text>
       </View>
       <View style={styles.created}>
-        <Text style={styles.createdText}>{created}</Text>
+        <Text style={styles.createdText}>
+          {moment(item.createdAt).format('DD/MM/YYYY')}
+        </Text>
       </View>
     </View>
   );

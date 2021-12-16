@@ -52,7 +52,7 @@ export default function Goal({ goal, user }) {
   return (
     <View style={styles.body}>
       <GoalForm showModal={showModal} setShowModal={setShowModal} goal={goal} />
-      <Loader />
+      <Loader title = "מוחק מטרה.."/>
       <View style={styles.goalDetails}>
         <View style={styles.goalName}>
           <View style={styles.icon}>

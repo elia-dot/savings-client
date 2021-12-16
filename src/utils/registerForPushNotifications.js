@@ -20,12 +20,6 @@ const registerForPushNotifications = async () => {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
-    try {
-      const res = await axios.post(PUSH_ENDPOINT, { token });
-      console.log(res);
-    } catch (error) {
-      console.log(error.response.data);
-    }
   } else {
     alert('Must use physical device for Push Notifications');
   }

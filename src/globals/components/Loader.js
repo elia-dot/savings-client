@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import colors from '../styles/colors';
 
-const Loader = () => {
+const Loader = ({title}) => {
   const { loading } = useSelector((state) => state.globals);
 
   return (
@@ -19,7 +19,7 @@ const Loader = () => {
       backdropStyle={{ backgroundColor: 'none' }}
     >
       <ActivityIndicator size="large" color={colors.primary} />
-      <Text style={{ color: colors.primary, marginTop: 5 }}>טוען מידע</Text>
+      <Text style={{ color: colors.primary, marginTop: 5 }}>{title}</Text>
     </Overlay>
   );
 };

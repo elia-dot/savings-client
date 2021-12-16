@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import colors from '../globals/styles/colors';
 import currency from '../globals/styles/currency';
+import { sendPushNotification } from '../utils/sendNotification';
 import TaskMenu from './TaskMenu';
+import { startLoading, finishLoading } from '../redux/actions/globals';
+import Loader from '../globals/components/Loader';
 
 const Task = ({ task }) => {
   const [showMenu, setShowMenu] = useState(false);
   const { user } = useSelector((state) => state.auth);
-
-  const markAsCompleted = () => {
-    //TODO: send notification
+  const dispatch = useDispatch();
+  const markAsCompleted = async () => {
+    dispatch(startLoading());
+    const body = {
+      userId: user.parent,
+      title: 'משימה הושלמה!',
+      body: `${user.name} סיים את המשימה: ${task.title}`,
+    };
+    await sendPushNotification(body);
+    dispatch(finishLoading());
   };
   const handlePress = () => {
     user.type === 'parent' ? setShowMenu(true) : markAsCompleted();
@@ -20,6 +30,7 @@ const Task = ({ task }) => {
 
   return (
     <View style={styles.body}>
+      <Loader title="שולח להורה.." />
       <TaskMenu showMenu={showMenu} setShowMenu={setShowMenu} task={task} />
       <View style={[styles.taskColumn]}>
         <CheckBox

@@ -39,7 +39,7 @@ const ParentScreens = ({ route }) => {
     }
   }, [child]);
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader title={"טוען מידע.."}/>;
   return (
     <Tab.Navigator
       screenOptions={{

@@ -11,6 +11,7 @@ import { sendPushNotification } from '../utils/sendNotification';
 const TaskMenu = ({ showMenu, setShowMenu, task }) => {
   const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
+  const [remindLoading, setRemindLoading] = useState(false);
   const dispatch = useDispatch();
   const containerStyle = {
     backgroundColor: 'white',
@@ -36,12 +37,14 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
   };
 
   const sendReminder = async () => {
+    setRemindLoading(true);
     const body = {
       userId: user._id,
       title: 'תזכורת',
-      body: `:זוהי תזכורת להשלמת המשימה ${task.title}`,
+      body: ` ${task.title}:זוהי תזכורת להשלמת המשימה `,
     };
-    await sendPushNotification(body);
+    sendPushNotification(body);
+    setRemindLoading(false);
   };
   return (
     <Portal>
@@ -70,6 +73,9 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
             )}
             <TouchableOpacity style={styles.btn} onPress={sendReminder}>
               <Text style={styles.btnText}> שלח תזכורת</Text>
+              {remindLoading && (
+                <LinearProgress color="#fff" style={{ marginTop: 1 }} />
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cancelBtn}

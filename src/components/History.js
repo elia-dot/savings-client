@@ -69,6 +69,7 @@ const History = ({ route }) => {
       <FlatList
         data={filteredHistory}
         renderItem={({ item }) => <SavingItem item={item} />}
+        initialNumToRender={10}
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10, marginStart: 15 }}
       />
