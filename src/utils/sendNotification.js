@@ -6,14 +6,17 @@ export const sendPushNotification = async (data) => {
     title,
     body,
   };
-
-  await axios.post('https://goals-65106.herokuapp.com/message', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
-    },
-    message,
-  });
+  try {
+    await axios.post('https://goals-65106.herokuapp.com/message', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      message,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

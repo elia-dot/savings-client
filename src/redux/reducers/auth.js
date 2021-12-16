@@ -27,7 +27,7 @@ export default function (state = initialState, action) {
     case SIGNUP_SUCCESS:
       return {
         ...state,
-        user: payload.user,
+        user: payload,
         isAuthenticated: true,
         loading: false,
       };

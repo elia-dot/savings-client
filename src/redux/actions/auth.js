@@ -22,6 +22,7 @@ const config = {
 };
 
 const setStorage = async (userId, userType) => {
+  console.log(userId, userType);
   try {
     await AsyncStorage.multiSet([
       ['userId', userId],
@@ -42,7 +43,7 @@ export const login = (data) => async (dispatch) => {
     setStorage(res.data.data.user._id, userType);
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: res.data.data,
+      payload: res.data.data.user,
     });
   } catch (error) {
     dispatch({
@@ -61,7 +62,7 @@ export const signup = (data) => async (dispatch) => {
     setStorage(res.data.data.user._id, userType);
     dispatch({
       type: SIGNUP_SUCCESS,
-      payload: res.data.data,
+      payload: res.data.data.user,
     });
   } catch (error) {
     dispatch({
@@ -140,10 +141,11 @@ export const getChild = (id) => async (dispatch) => {
 export const updatePassword = (data, id) => async (dispatch) => {
   try {
     const res = await axios.post(
-      `${baseUrl}/users//update-password/parent/${id}`
+      `${baseUrl}/users/update-password/parent/${id}`,
+      data
     );
-    const userType = res.data.data.user.type;
-    setStorage(res.data.data.user._id, userType);
+    const userType = res.data.data.type;
+    await setStorage(res.data.data._id, userType);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data.data,

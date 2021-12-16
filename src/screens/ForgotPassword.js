@@ -14,6 +14,7 @@ import axios from 'axios';
 
 import Alert from '../globals/components/Overlay';
 import colors from '../globals/styles/colors';
+import { updatePassword } from '../redux/actions/auth';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -38,26 +39,30 @@ export default function ForgotPassword() {
         message: 'אנא הכנס אימייל תקין',
         type: 'fail',
       });
+      return;
     }
     setLoading(true);
     const data = { email };
-    const res = await axios.post(
-      `https://goals-65106.herokuapp.com/users/forgot-password`,
-      data
-    );
-    if (res.data.status === 'fail') {
+    try {
+      const res = await axios.post(
+        `https://goals-65106.herokuapp.com/users/forgot-password`,
+        data
+      );
+      console.log(res.data.status);
+      setIsAlert(true);
+      setAlertMsg({
+        title: 'אימייל נשלח',
+        message: 'בדוק את האימייל שלך להמשך ',
+        type: 'success',
+      });
+      setStage('token');
+    } catch (error) {
+      console.log(error);
       setIsAlert(true);
       setAlertMsg({
         title: 'אירעה שגיאה',
         message: 'לא הצלחנו לשלוח את האימייל, אנא בדוק את הפרטים ונסה שנית',
         type: 'fail',
-      });
-    } else {
-      setStage('token');
-      setAlertMsg({
-        title: 'אימייל נשלח',
-        message: 'בדוק את האימייל שלך להמשך ',
-        type: 'success',
       });
     }
     setLoading(false);
@@ -78,25 +83,25 @@ export default function ForgotPassword() {
       `https://goals-65106.herokuapp.com/users/reset-password`,
       data
     );
-    if (res.data.status === 'fail') {
+    try {
+      setUser(res.data.data);
+      setStage('password');
+    } catch (error) {
       setIsAlert(true);
       setAlertMsg({
         title: 'אירעה שגיאה',
         message: 'לא הצלחנו לאמת את החשבון שלך, נסה שוב',
         type: 'fail',
       });
-    } else {
-      setUser(res.data.data);
-      setStage('password');
     }
     setLoading(false);
   };
 
-  const updatePassword = async () => {
-    setIsLoading(true);
+  const update = async () => {
+    setLoading(true);
     const data = { password };
-    dispatch(updatePassword(data));
-    setIsLoading(false);
+    await dispatch(updatePassword(data, user._id));
+    setLoading(false);
   };
 
   return (
@@ -164,7 +169,7 @@ export default function ForgotPassword() {
               returnKeyType="done"
               onChangeText={(value) => setPassword(value)}
             />
-            <TouchableOpacity style={styles.btn} onPress={sendToken}>
+            <TouchableOpacity style={styles.btn} onPress={update}>
               <Text style={styles.btnText}>
                 {loading ? 'מעדכן...' : 'עדכן סיסמא'}
               </Text>

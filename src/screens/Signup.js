@@ -38,13 +38,13 @@ export default function Signup({ navigation }) {
   const confirmRef = useRef();
 
   useEffect(() => {
-    if (error === 'User already exist with this email!'){
+    if (error === 'User already exist with this email!') {
       setErrorMsg({
         title: 'שגיאה',
         message: 'קיים משתמש המקושר לאימייל זה',
       });
-     setIsAlert(true);
-    }  
+      setIsAlert(true);
+    }
   }, [error]);
 
   const handleSignup = async () => {
@@ -117,9 +117,7 @@ export default function Signup({ navigation }) {
         returnKeyType="next"
         textContentType="password"
         secureTextEntry={!showPassword}
-        onChangeText={(value) =>
-          setFormData({ ...formData, password: value.toLowerCase() })
-        }
+        onChangeText={(value) => setFormData({ ...formData, password: value })}
       />
       <Text style={styles.label}>אשר סיסמא:</Text>
       <TextInput
@@ -131,7 +129,7 @@ export default function Signup({ navigation }) {
         ref={confirmRef}
         secureTextEntry={!showPassword}
         onChangeText={(value) =>
-          setFormData({ ...formData, passwordConfirmd: value.toLowerCase() })
+          setFormData({ ...formData, passwordConfirmd: value })
         }
       />
       <CheckBox

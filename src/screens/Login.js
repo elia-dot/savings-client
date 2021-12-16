@@ -97,7 +97,7 @@ export default function Login({ navigation }) {
           textContentType="password"
           secureTextEntry={!showPassword}
           onChangeText={(value) =>
-            setFormData({ ...formData, password: value.toLowerCase() })
+            setFormData({ ...formData, password: value })
           }
         />
         <CheckBox
