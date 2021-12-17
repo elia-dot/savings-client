@@ -57,7 +57,7 @@ const History = ({ route }) => {
         containerStyle={{
           width: '70%',
           marginStart: '50%',
-          transform: [{ translateX: '130%' }],
+          transform: [{ translateX: 130 }],
           marginBottom: 20,
           marginTop: 20,
         }}
