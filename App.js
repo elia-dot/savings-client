@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import * as Notifications from 'expo-notifications';
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
 
 import { he, en } from './src/utils/languages';
 import { Router } from './src/components/Router';
@@ -17,6 +19,13 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+i18n.fallbacks = true;
+i18n.translations = { en, he };
+i18n.locale =
+  Localization.locale.search(/-|_/) !== -1
+    ? Localization.locale.slice(0, 2)
+    : Localization.locale;
 
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');

@@ -56,7 +56,7 @@ export const login = (data) => async (dispatch) => {
 export const signup = (data) => async (dispatch) => {
   try {
     let token = await Notifications.getExpoPushTokenAsync();
-    data.pushToken = token;
+    data.pushToken = token.data;
     const res = await axios.post(`${baseUrl}/users/signup`, data, config);
     const userType = res.data.data.user.type;
     setStorage(res.data.data.user._id, userType);

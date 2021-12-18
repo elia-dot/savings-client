@@ -14,8 +14,9 @@ import { CheckBox } from 'react-native-elements';
 import { LinearProgress } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import i18n from 'i18n-js';
 
-import Alert from '../globals/components/Overlay';
+import Alert from '../globals/components/Alert';
 import colors from '../globals/styles/colors';
 import { signup } from '../redux/actions/auth';
 
@@ -27,8 +28,7 @@ export default function Signup({ navigation }) {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
-  const [isAlert, setIsAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const { error } = useSelector((state) => state.auth);
 
@@ -39,42 +39,27 @@ export default function Signup({ navigation }) {
 
   useEffect(() => {
     if (error === 'User already exist with this email!') {
-      setErrorMsg({
-        title: 'שגיאה',
-        message: 'קיים משתמש המקושר לאימייל זה',
-      });
-      setIsAlert(true);
+      setErrorMsg(i18n.t('signupScreen.userExists'));
     }
   }, [error]);
 
   const handleSignup = async () => {
+    setErrorMsg('');
     setLoading(true);
     if (
       formData.email === '' ||
       formData.password === '' ||
       formData.passwordConfirmd === ''
     ) {
-      setErrorMsg({
-        title: 'חסרים פרטים',
-        message: 'נא מלא את כל השדות',
-      });
-      setIsAlert(true);
+      setErrorMsg(i18n.t('signupScreen.missingFields'));
       setLoading(false);
       return;
     } else if (formData.password !== formData.passwordConfirmd) {
-      setErrorMsg({
-        title: 'שגיאה בפרטים',
-        message: 'סיסמאות לא תואמות',
-      });
-      setIsAlert(true);
+      setErrorMsg(i18n.t('signupScreen.wrongPasswords'));
       setLoading(false);
       return;
     } else if (formData.password.length < 6) {
-      setErrorMsg({
-        title: 'שגיאה בפרטים',
-        message: 'הסיסמא חייבת להיות לפחות 6 תווים',
-      });
-      setIsAlert(true);
+      setErrorMsg(i18n.t('signupScreen.shortPassword'));
       setLoading(false);
       return;
     }
@@ -88,17 +73,13 @@ export default function Signup({ navigation }) {
 
   const renderInputs = () => (
     <ScrollView>
-      <Alert
-        message={errorMsg.message}
-        title={errorMsg.title}
-        type="fail"
-        isAlert={isAlert}
-        setIsAlert={setIsAlert}
-      />
-      <Text style={styles.label}>אימייל:</Text>
+      <Text style={{ alignSelf: 'center' }}>
+        {errorMsg && <Alert msg={errorMsg} type="error" />}
+      </Text>
+      <Text style={styles.label}>{i18n.t('signupScreen.emailLabel')}</Text>
       <TextInput
         style={styles.input}
-        placeholder="אימייל"
+        placeholder={i18n.t('signupScreen.emailPlaceholder')}
         returnKeyType="next"
         autoFocus
         onSubmitEditing={() => passwordRef.current.focus()}
@@ -107,10 +88,10 @@ export default function Signup({ navigation }) {
           setFormData({ ...formData, email: value.toLowerCase() })
         }
       />
-      <Text style={styles.label}>סיסמא:</Text>
+      <Text style={styles.label}>{i18n.t('signupScreen.passwordLabel')}</Text>
       <TextInput
         style={styles.input}
-        placeholder="סיסמא"
+        placeholder={i18n.t('signupScreen.passwordPlaceholder')}
         ref={passwordRef}
         onSubmitEditing={() => confirmRef.current.focus()}
         value={formData.password}
@@ -119,10 +100,12 @@ export default function Signup({ navigation }) {
         secureTextEntry={!showPassword}
         onChangeText={(value) => setFormData({ ...formData, password: value })}
       />
-      <Text style={styles.label}>אשר סיסמא:</Text>
+      <Text style={styles.label}>
+        {i18n.t('signupScreen.confirmPasswordLabel')}
+      </Text>
       <TextInput
         style={styles.input}
-        placeholder="אשר סיסמא"
+        placeholder={i18n.t('signupScreen.confirmPasswordPlaceholder')}
         value={formData.passwordConfirmd}
         returnKeyType="done"
         textContentType="password"
@@ -133,7 +116,7 @@ export default function Signup({ navigation }) {
         }
       />
       <CheckBox
-        title="הצג סיסמא"
+        title={i18n.t('signupScreen.showPassword')}
         checked={showPassword}
         checkedColor="#9cc95a"
         containerStyle={{ backgroundColor: 'none', padding: 0, borderWidth: 0 }}
@@ -141,7 +124,9 @@ export default function Signup({ navigation }) {
       />
       <TouchableOpacity style={styles.btn} onPress={() => handleSignup()}>
         <Text style={styles.btnText}>
-          {loading ? 'יוצר חשבון' : 'צור חשבון'}
+          {loading
+            ? i18n.t('signupScreen.loadingSignupBtn')
+            : i18n.t('signupScreen.signupBtn')}
         </Text>
         {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
       </TouchableOpacity>
@@ -160,15 +145,14 @@ export default function Signup({ navigation }) {
         )}
       </TouchableWithoutFeedback>
       <Text style={styles.text}>
-        יש לך כבר חשבון?
+        {i18n.t('signupScreen.signupTextLink')}
         <TouchableOpacity
           onPress={() => {
             navigateToLogin();
           }}
         >
-          <Text style={styles.link}> התחבר</Text>
+          <Text style={styles.link}> {i18n.t('signupScreen.signupLink')}</Text>
         </TouchableOpacity>
-        !
       </Text>
     </View>
   );

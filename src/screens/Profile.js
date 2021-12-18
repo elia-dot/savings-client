@@ -32,7 +32,7 @@ export default function Profile() {
       <EditProfile showEdit={showEdit} setShowEdit={setShowEdit} type={type} />
       <TouchableOpacity style={styles.centeredRow} onPress={handleLogout}>
         <Text style={styles.rowText}>
-          <FontAwesome5 name="user" color="#9cc95a" size={20} /> Logged in with:{' '}
+          <FontAwesome5 name="user" color="#9cc95a" size={20} /> Logged in with:
           {user.email}
         </Text>
       </TouchableOpacity>

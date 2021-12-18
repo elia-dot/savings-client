@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   StyleSheet,
@@ -13,42 +13,32 @@ import {
 import { CheckBox } from 'react-native-elements';
 import { LinearProgress } from 'react-native-elements';
 import validator from 'validator';
+import i18n from 'i18n-js';
 
-import Alert from '../globals/components/Overlay';
+import Alert from '../globals/components/Alert';
 import { login } from '../redux/actions/auth';
 import colors from '../globals/styles/colors';
-import { useEffect } from 'react';
 
 export default function Login({ navigation }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
-  const [isAlert, setIsAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const dispacth = useDispatch();
   const { error } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (error) {
-      setIsAlert(true);
-      setErrorMsg({
-        title: 'שגיאה בפרטים',
-        message: 'בדוק את פרטי המשתמש ונסה שוב',
-      });
+      setErrorMsg(i18n.t('loginScreen.loginError'));
     }
   }, [error]);
 
   const handleLogin = async () => {
-    setIsAlert(false);
-    setErrorMsg({ title: '', message: '' });
+    setErrorMsg('');
     setLoading(true);
     if (formData.email === '' || formData.password === '') {
-      setErrorMsg({
-        title: 'חסרים פרטים',
-        message: 'נא מלא את כל השדות',
-      });
-      setIsAlert(true);
+      setErrorMsg(i18n.t('loginScreen.missingFields'));
       setLoading(false);
       return;
     }
@@ -70,28 +60,23 @@ export default function Login({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.body}>
         <Image source={require('../../assets/logo.png')} style={styles.img} />
-        <Alert
-          message={errorMsg.message}
-          title={errorMsg.title}
-          type="fail"
-          isAlert={isAlert}
-          setIsAlert={setIsAlert}
-        />
-
-        <Text style={styles.label}>שם משתמש/מייל</Text>
+        <Text style={{ alignSelf: 'center' }}>
+          {errorMsg && <Alert msg={errorMsg} type="error" />}
+        </Text>
+        <Text style={styles.label}>{i18n.t('loginScreen.nameLabel')}</Text>
         <TextInput
           style={styles.input}
-          placeholder="שם משתמש או מייל"
+          placeholder={i18n.t('loginScreen.namePlaceholder')}
           value={formData.email}
           returnKeyType="next"
           onChangeText={(value) =>
             setFormData({ ...formData, email: value.toLowerCase() })
           }
         />
-        <Text style={styles.label}>סיסמא:</Text>
+        <Text style={styles.label}>{i18n.t('loginScreen.passwordLabel')}</Text>
         <TextInput
           style={styles.input}
-          placeholder="סיסמא"
+          placeholder={i18n.t('loginScreen.passwordPlaceholder')}
           value={formData.password}
           returnKeyType="done"
           textContentType="password"
@@ -101,7 +86,7 @@ export default function Login({ navigation }) {
           }
         />
         <CheckBox
-          title="הצג סיסמא"
+          title={i18n.t('loginScreen.showPassword')}
           checked={showPassword}
           checkedColor="#9cc95a"
           containerStyle={{
@@ -114,10 +99,16 @@ export default function Login({ navigation }) {
         <TouchableOpacity
           onPress={() => navigation.navigate('forgot password')}
         >
-          <Text style={styles.forgot}> שכחתי סיסמא</Text>
+          <Text style={styles.forgot}>
+            {i18n.t('loginScreen.forgotPassword')}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
-          <Text style={styles.btnText}>{loading ? 'מתחבר...' : 'התחבר'}</Text>
+          <Text style={styles.btnText}>
+            {loading
+              ? i18n.t('loginScreen.loadingLoginBtn')
+              : i18n.t('loginScreen.loginBtn')}
+          </Text>
           {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
         </TouchableOpacity>
         <TouchableOpacity
@@ -126,8 +117,8 @@ export default function Login({ navigation }) {
           }}
         >
           <Text style={styles.text}>
-            משתמש חדש?{'  '}
-            <Text style={styles.link}>הירשם{'  '}</Text>
+            {i18n.t('loginScreen.loginTextLink')}
+            <Text style={styles.link}> {i18n.t('loginScreen.loginLink')}</Text>
           </Text>
         </TouchableOpacity>
       </View>

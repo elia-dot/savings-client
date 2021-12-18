@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
+import i18n from 'i18n-js';
 
 import Splash from '../screens/Splash';
 import ParentTabs from '../screens/ParentTabs';
@@ -77,7 +78,7 @@ export const Router = () => {
             component={Login}
             options={{
               headerBackTitleVisible: false,
-              title: 'התחברות',
+              title: i18n.t('loginScreen.title'),
               headerTitleAlign: 'center',
             }}
           />
@@ -96,7 +97,7 @@ export const Router = () => {
             component={Signup}
             options={{
               headerBackTitleVisible: false,
-              title: 'הרשמה',
+              title: i18n.t('signupScreen.title'),
               headerTitleAlign: 'center',
               headerLeft: () => <GoBackButton />,
             }}
