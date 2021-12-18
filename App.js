@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import * as Notifications from 'expo-notifications';
 
+import { he, en } from './src/utils/languages';
 import { Router } from './src/components/Router';
 import store from './src/redux/store';
 import registerForPushNotifications from './src/utils/registerForPushNotifications';

@@ -47,7 +47,7 @@ const Tasks = ({ route }) => {
         containerStyle={{
           width: '70%',
           marginStart: '50%',
-          transform: [{ translateX: '130%' }],
+          transform: [{ translateX: -100 }],
           marginBottom: 20,
         }}
         textStyle={{
