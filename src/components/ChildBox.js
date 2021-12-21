@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import I18n from 'i18n-js';
 
 import UpdatePasswordModal from '../components/UpdatePasswordModal';
 import colors from '../globals/styles/colors';
@@ -14,18 +15,20 @@ const ChildBox = ({ item }) => {
         id={item._id}
       />
       <View style={styles.row}>
-        <Text style={styles.text}>שם הילד:</Text>
+        <Text style={styles.text}>{I18n.t('childrenDetails.name')}</Text>
         <Text style={styles.text}>{item.name}</Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.text}>שם משתמש: </Text>
+        <Text style={styles.text}>{I18n.t('childrenDetails.username')} </Text>
         <Text style={styles.text}>{item.username}</Text>
       </View>
       <TouchableOpacity
         style={styles.centeredRow}
         onPress={() => setShowModal(true)}
       >
-        <Text style={styles.centeredText}>עדכן סיסמא</Text>
+        <Text style={styles.centeredText}>
+          {I18n.t('childrenDetails.updatePassword')}{' '}
+        </Text>
       </TouchableOpacity>
     </View>
   );

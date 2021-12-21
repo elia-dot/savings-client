@@ -11,8 +11,9 @@ import {
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import axios from 'axios';
+import i18n from 'i18n-js';
 
-import Alert from '../globals/components/Overlay';
+import Alert from '../globals/components/Alert';
 import colors from '../globals/styles/colors';
 import { updatePassword } from '../redux/actions/auth';
 
@@ -22,77 +23,67 @@ export default function ForgotPassword() {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [alertMsg, setAlertMsg] = useState({
-    title: '',
-    message: '',
-    type: '',
-  });
+  const [alertMsg, setAlertMsg] = useState({ msg: '', type: '' });
   const dispatch = useDispatch();
-  const [isAlert, setIsAlert] = useState(false);
   const [stage, setStage] = useState('email');
 
   const getToken = async () => {
+    setAlertMsg({ msg: '', type: '' });
     if (email === '') {
-      setIsAlert(true);
       setAlertMsg({
-        title: 'חסרים פרטים',
-        message: 'אנא הכנס אימייל תקין',
-        type: 'fail',
+        msg: i18n.t('forgotPasswordScreen.noEmailError'),
+        type: 'error',
       });
       return;
     }
     setLoading(true);
     const data = { email };
     try {
-      const res = await axios.post(
+      await axios.post(
         `https://goals-65106.herokuapp.com/users/forgot-password`,
         data
       );
-      console.log(res.data.status);
-      setIsAlert(true);
       setAlertMsg({
-        title: 'אימייל נשלח',
-        message: 'בדוק את האימייל שלך להמשך ',
+        msg: i18n.t('forgotPasswordScreen.emailSent'),
         type: 'success',
       });
       setStage('token');
     } catch (error) {
       console.log(error);
-      setIsAlert(true);
       setAlertMsg({
-        title: 'אירעה שגיאה',
-        message: 'לא הצלחנו לשלוח את האימייל, אנא בדוק את הפרטים ונסה שנית',
-        type: 'fail',
+        msg: i18n.t('forgotPasswordScreen.emailError'),
+        type: 'error',
       });
     }
     setLoading(false);
   };
 
   const sendToken = async () => {
-    if (token === '') {
-      setIsAlert(true);
-      setAlertMsg({
-        title: 'חסרים פרטים',
-        message: 'אנא הכנס את הקוד שקיבלת באימייל',
-        type: 'fail',
-      });
-    }
     setLoading(true);
-    const data = { token };
-    const res = await axios.post(
-      `https://goals-65106.herokuapp.com/users/reset-password`,
-      data
-    );
+    setAlertMsg({ msg: '', type: '' });
+    if (token === '') {
+      setAlertMsg({
+        msg: i18n.t('forgotPasswordScreen.noTokenError'),
+        type: 'error',
+      });
+      setLoading(false);
+    }
+
     try {
+      const data = { token };
+      const res = await axios.post(
+        `https://goals-65106.herokuapp.com/users/reset-password`,
+        data
+      );
       setUser(res.data.data);
       setStage('password');
     } catch (error) {
-      setIsAlert(true);
+      console.log(error);
       setAlertMsg({
-        title: 'אירעה שגיאה',
-        message: 'לא הצלחנו לאמת את החשבון שלך, נסה שוב',
-        type: 'fail',
+        msg: i18n.t('forgotPasswordScreen.tokenError'),
+        type: 'error',
       });
+      setLoading(false);
     }
     setLoading(false);
   };
@@ -107,28 +98,29 @@ export default function ForgotPassword() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.body}>
-        <Alert
-          message={alertMsg.message}
-          title={alertMsg.title}
-          type={alertMsg.type}
-          isAlert={isAlert}
-          setIsAlert={setIsAlert}
-        />
-
         {stage === 'email' && (
           <>
-            <Text style={styles.title}>הכנס את האימייל שלך</Text>
+            <Text style={styles.title}>
+              {i18n.t('forgotPasswordScreen.emailTitle')}
+            </Text>
+            {alertMsg.msg !== '' && (
+              <View style={{ marginBottom: 30 }}>
+                <Alert type={alertMsg.type} msg={alertMsg.msg} />
+              </View>
+            )}
             <TextInput
               style={styles.input}
-              placeholder="אימייל"
               value={email}
+              keyboardType="email-address"
               autoFocus
               returnKeyType="done"
               onChangeText={(value) => setEmail(value.toLowerCase())}
             />
             <TouchableOpacity style={styles.btn} onPress={getToken}>
               <Text style={styles.btnText}>
-                {loading ? 'שולח...' : 'שלח סיסמא'}
+                {loading
+                  ? i18n.t('forgotPasswordScreen.loadingTextBtn')
+                  : i18n.t('forgotPasswordScreen.textBtn')}
               </Text>
               {loading && (
                 <LinearProgress color="#fff" style={{ marginTop: 1 }} />
@@ -138,7 +130,14 @@ export default function ForgotPassword() {
         )}
         {stage === 'token' && (
           <>
-            <Text style={styles.title}>הכנס את הקוד שקיבלת</Text>
+            <Text style={styles.title}>
+              {i18n.t('forgotPasswordScreen.tokenTitle')}
+            </Text>
+            {alertMsg.msg !== '' && (
+              <View style={{ marginBottom: 30 }}>
+                <Alert type={alertMsg.type} msg={alertMsg.msg} />
+              </View>
+            )}
             <TextInput
               style={styles.input}
               value={token}
@@ -149,7 +148,9 @@ export default function ForgotPassword() {
             />
             <TouchableOpacity style={styles.btn} onPress={sendToken}>
               <Text style={styles.btnText}>
-                {loading ? 'שולח...' : 'שלח קוד'}
+                {loading
+                  ? i18n.t('forgotPasswordScreen.loadingTextBtn')
+                  : i18n.t('forgotPasswordScreen.textBtn')}
               </Text>
               {loading && (
                 <LinearProgress color="#fff" style={{ marginTop: 1 }} />
@@ -160,10 +161,11 @@ export default function ForgotPassword() {
 
         {stage === 'password' && (
           <>
-            <Text style={styles.title}>בחר סיסמא חדשה</Text>
+            <Text style={styles.title}>
+              {i18n.t('forgotPasswordScreen.passwordTitle')}
+            </Text>
             <TextInput
               style={styles.input}
-              placeholder="סיסמא חדשה"
               value={password}
               autoFocus
               returnKeyType="done"
@@ -171,7 +173,9 @@ export default function ForgotPassword() {
             />
             <TouchableOpacity style={styles.btn} onPress={update}>
               <Text style={styles.btnText}>
-                {loading ? 'מעדכן...' : 'עדכן סיסמא'}
+                {loading
+                  ? i18n.t('forgotPasswordScreen.loadingTextBtn')
+                  : i18n.t('forgotPasswordScreen.textBtn')}
               </Text>
               {loading && (
                 <LinearProgress color="#fff" style={{ marginTop: 1 }} />

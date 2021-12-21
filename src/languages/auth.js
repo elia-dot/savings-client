@@ -119,3 +119,50 @@ export const signup = {
     he: 'הסיסמא צריכה להיות לפחות 6 תווים',
   },
 };
+
+export const forgotPassword = {
+  title: {
+    en: 'Forgot Password',
+    he: 'שחזור סיסמא',
+  },
+  emailTitle: {
+    en: 'Enter your email',
+    he: 'הכנס את האימייל שלך',
+  },
+  textBtn: {
+    en: 'Submit',
+    he: 'שלח',
+  },
+  loadingTextBtn: {
+    en: 'Please Wait...',
+    he: 'שולח...',
+  },
+  tokenTitle: {
+    en: 'Enter your 6 digits code',
+    he: 'הכנס את הקוד שקיבלת',
+  },
+  passwordTitle: {
+    en: 'New Password',
+    he: 'בחר סיסמא חדשה',
+  },
+  noEmailError: {
+    en: 'Please enter your email',
+    he: 'נא הכנס אימייל',
+  },
+  emailSent: {
+    en: 'Check your email',
+    he: 'בדוק את האימייל שלך',
+  },
+  emailError: {
+    en: "Sorry, We couldn't send the email, check the details and try again",
+    he: 'לא הצלחנו לשלוח את האימייל, אנא בדוק את הפרטים ונסה שנית',
+  },
+  noTokenError: {
+    en: 'Please enter the code',
+    he: 'נא הכנס את הקוד שנשלח אליך',
+  },
+  tokenError: {
+    en: "Sorry, We couldn't verify your account, please try again",
+    he: 'לא הצלחנו לאמת את החשבון שלך, אנא נסה שנית',
+  },
+};

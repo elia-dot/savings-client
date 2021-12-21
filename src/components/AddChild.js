@@ -13,8 +13,9 @@ import {
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
+import I18n from 'i18n-js';
 
-import Alert from '../globals/components/Overlay';
+import Alert from '../globals/components/Alert';
 import colors from '../globals/styles/colors';
 import { addChild } from '../redux/actions/auth';
 import { finishLoading, startLoading } from '../redux/actions/globals';
@@ -23,12 +24,7 @@ const AddChild = ({ showModal, setShowModal }) => {
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.globals);
-  const [isAlert, setIsAlert] = useState(false);
-  const [addChildRes, setAddChildRes] = useState({
-    message: '',
-    type: '',
-    title: '',
-  });
+  const [addChildRes, setAddChildRes] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -42,21 +38,11 @@ const AddChild = ({ showModal, setShowModal }) => {
 
   useEffect(() => {
     if (error === 'this username already exsits') {
-      setIsAlert(true);
-      setAddChildRes({
-        title: 'שגיאה!',
-        message: 'שם המשתמש תפוס. נא בחר שם משתמש אחר',
-        type: 'fail',
-      });
+      setAddChildRes(I18n.t('addChildScreen.usernameError'));
     } else if (
       error === 'Child password must be different from the parent password'
     ) {
-      setIsAlert(true);
-      setAddChildRes({
-        title: 'שגיאה!',
-        message: 'אנא בחר סיסמא שונה מהסיסמא שלך',
-        type: 'fail',
-      });
+      setAddChildRes(I18n.t('addChildScreen.passwordError'));
     } else {
       setFormData({
         name: '',
@@ -69,6 +55,15 @@ const AddChild = ({ showModal, setShowModal }) => {
   }, [error]);
 
   const handlePress = async () => {
+    setAddChildRes('');
+    if (
+      formData.name === '' ||
+      formData.username === '' ||
+      formData.password === ''
+    ) {
+      setAddChildRes(I18n.t('addChildScreen.missingFields'));
+      return;
+    }
     dispatch(startLoading());
     await dispatch(addChild(formData));
     dispatch(finishLoading());
@@ -76,26 +71,24 @@ const AddChild = ({ showModal, setShowModal }) => {
 
   const renderInputs = () => (
     <ScrollView style={styles.form}>
-      <Text style={styles.label}>שם:</Text>
+      <Text style={styles.label}>{I18n.t('addChildScreen.nameLabel')}</Text>
       <TextInput
         style={styles.input}
         ref={nameRef}
         autoFocus
         onSubmitEditing={() => usernameRef.current.focus()}
         blurOnSubmit={false}
-        placeholder="שם הילד"
         returnKeyType="next"
         placeholderTextColor="#cccccc"
         value={formData.name}
         onChangeText={(value) => setFormData({ ...formData, name: value })}
       />
-      <Text style={styles.label}>בחר שם משתמש:</Text>
+      <Text style={styles.label}>{I18n.t('addChildScreen.usernameLabel')}</Text>
       <TextInput
         style={styles.input}
         ref={usernameRef}
         onSubmitEditing={() => passwordRef.current.focus()}
         blurOnSubmit={false}
-        placeholder="שם משתמש"
         returnKeyType="next"
         placeholderTextColor="#cccccc"
         value={formData.username}
@@ -104,13 +97,12 @@ const AddChild = ({ showModal, setShowModal }) => {
         }
       />
 
-      <Text style={styles.label}>בחר סיסמא:</Text>
+      <Text style={styles.label}>{I18n.t('addChildScreen.passwordLabel')}</Text>
       <TextInput
         style={styles.input}
         ref={passwordRef}
         onSubmitEditing={() => profitRef.current.focus()}
         blurOnSubmit={false}
-        placeholder="סיסמא"
         placeholderTextColor="#cccccc"
         textContentType="password"
         returnKeyType="next"
@@ -118,7 +110,7 @@ const AddChild = ({ showModal, setShowModal }) => {
         onChangeText={(value) => setFormData({ ...formData, password: value })}
       />
 
-      <Text style={styles.label}>אחוז ריבית חודשית:</Text>
+      <Text style={styles.label}>{I18n.t('addChildScreen.profitLabel')}</Text>
       <TextInput
         style={styles.input}
         placeholder="0-100"
@@ -132,7 +124,9 @@ const AddChild = ({ showModal, setShowModal }) => {
 
       <TouchableOpacity style={styles.createBtn} onPress={handlePress}>
         <Text style={styles.btnText}>
-          {loading ? 'מעדכן חשבון...' : 'עדכן'}
+          {loading
+            ? I18n.t('addChildScreen.loadingAddBtn')
+            : I18n.t('addChildScreen.addBtn')}
         </Text>
 
         {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
@@ -141,7 +135,9 @@ const AddChild = ({ showModal, setShowModal }) => {
         style={styles.cancelBtn}
         onPress={() => setShowModal(false)}
       >
-        <Text style={[styles.btnText, styles.cancelBtnText]}>ביטול</Text>
+        <Text style={[styles.btnText, styles.cancelBtnText]}>
+          {I18n.t('addChildScreen.cancelBtn')}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -149,16 +145,16 @@ const AddChild = ({ showModal, setShowModal }) => {
   return (
     <View>
       <Modal visible={showModal} animationType="slide">
-        <Alert
-          isAlert={isAlert}
-          setIsAlert={setIsAlert}
-          title={addChildRes.title}
-          message={addChildRes.message}
-          type={addChildRes.type}
-        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.modalBody}>
-            <Text style={styles.modalTitle}>הוסף חשבון ילד</Text>
+            <Text style={styles.modalTitle}>
+              {I18n.t('addChildScreen.title')}
+            </Text>
+            {addChildRes !== '' && (
+              <View style={{ marginTop: 25, marginBottom: -25 }}>
+                <Alert msg={addChildRes} type="error" />
+              </View>
+            )}
             {Platform.OS === 'android' ? (
               renderInputs()
             ) : (

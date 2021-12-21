@@ -1,3 +1,4 @@
+import I18n from 'i18n-js';
 import React from 'react';
 import {
   FlatList,
@@ -13,7 +14,7 @@ const ChildrenDetails = () => {
 
   return (
     <View style={styles.body}>
-      <Text style={styles.title}>פרטי הילדים</Text>
+      <Text style={styles.title}> {I18n.t('childrenDetails.title')}</Text>
       <FlatList
         data={user.children}
         renderItem={({ item }) => <ChildBox item={item} />}

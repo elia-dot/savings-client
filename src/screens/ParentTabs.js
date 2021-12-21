@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FAB } from 'react-native-elements';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import I18n from 'i18n-js';
 
 import { logout } from '../redux/actions/auth';
 import colors from '../globals/styles/colors';
@@ -64,7 +65,7 @@ const ParentTab = ({ navigation }) => {
               borderBottomWidth: 1,
             }}
           >
-            התנתק
+            {I18n.t('menu.logout')}
           </MenuItem>
           <MenuItem
             onPress={goToDetails}
@@ -75,14 +76,12 @@ const ParentTab = ({ navigation }) => {
               textAlign: 'left',
             }}
           >
-            פרטי ילדים
+            {I18n.t('menu.details')}
           </MenuItem>
         </Menu>
       </View>
       <AddChild showModal={showModal} setShowModal={setShowModal} />
-      {children.length === 0 && (
-        <Text>לא נמצאו חשבונות ילד המקושרות לחשבונך</Text>
-      )}
+      {children.length === 0 && <Text>{I18n.t('menu.noChildren')}</Text>}
       <FlatList
         data={children}
         renderItem={({ item }) => (

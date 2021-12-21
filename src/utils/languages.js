@@ -1,4 +1,5 @@
-import { login, signup } from '../languages/auth';
+import { login, signup, forgotPassword } from '../languages/auth';
+import { addChild, menu, childrenDetails } from '../languages/parent';
 export const en = {
   loginScreen: {
     title: login.title.en,
@@ -32,7 +33,51 @@ export const en = {
     shortPassword: signup.shortPassword.en,
     userExists: signup.userExists.en,
   },
+  forgotPasswordScreen: {
+    title: forgotPassword.title.en,
+    emailTitle: forgotPassword.emailTitle.en,
+    textBtn: forgotPassword.textBtn.en,
+    loadingTextBtn: forgotPassword.loadingTextBtn.en,
+    tokenTitle: forgotPassword.tokenTitle.en,
+    passwordTitle: forgotPassword.passwordTitle.en,
+    noEmailError: forgotPassword.noEmailError.en,
+    emailSent: forgotPassword.emailSent.en,
+    emailError: forgotPassword.emailError.en,
+    noTokenError: forgotPassword.noTokenError.en,
+    tokenError: forgotPassword.tokenError.en,
+  },
+  addChildScreen: {
+    title: addChild.title.en,
+    nameLabel: addChild.nameLabel.en,
+    usernameLabel: addChild.usernameLabel.en,
+    passwordLabel: addChild.passwordLabel.en,
+    profitLabel: addChild.profitLabel.en,
+    addBtn: addChild.addBtn.en,
+    loadingAddBtn: addChild.loadingAddBtn.en,
+    missingFields: addChild.missingFields.en,
+    cancelBtn: addChild.cancelBtn.en,
+    usernameError: addChild.usernameError.en,
+    passwordError: addChild.passwordError.en,
+  },
+  menu: {
+    logout: menu.logout.en,
+    details: menu.details.en,
+    noChildren: menu.noChildren.en,
+  },
+  childrenDetails: {
+    title: childrenDetails.title.en,
+    name: childrenDetails.name.en,
+    username: childrenDetails.username.en,
+    updatePassword: childrenDetails.updatePassword.en,
+    newPasswordLabel: childrenDetails.newPasswordLabel.en,
+    updateBtn: childrenDetails.updateBtn.en,
+    loadingUpdateBtn: childrenDetails.loadingUpdateBtn.en,
+    cancelBtn: childrenDetails.cancelBtn.en,
+    missingFields: childrenDetails.missingFields.en,
+    updateError: childrenDetails.updateError.en,
+  },
 };
+
 export const he = {
   loginScreen: {
     title: login.title.he,
@@ -66,5 +111,48 @@ export const he = {
     wrongPasswords: signup.wrongPasswords.he,
     shortPassword: signup.shortPassword.he,
     userExists: signup.userExists.he,
+  },
+  forgotPasswordScreen: {
+    title: forgotPassword.title.he,
+    emailTitle: forgotPassword.emailTitle.he,
+    textBtn: forgotPassword.textBtn.he,
+    loadingTextBtn: forgotPassword.loadingTextBtn.he,
+    tokenTitle: forgotPassword.tokenTitle.he,
+    passwordTitle: forgotPassword.passwordTitle.he,
+    noEmailError: forgotPassword.noEmailError.he,
+    emailSent: forgotPassword.emailSent.he,
+    emailError: forgotPassword.emailError.he,
+    noTokenError: forgotPassword.noTokenError.he,
+    tokenError: forgotPassword.tokenError.he,
+  },
+  addChildScreen: {
+    title: addChild.title.he,
+    nameLabel: addChild.nameLabel.he,
+    usernameLabel: addChild.usernameLabel.he,
+    passwordLabel: addChild.passwordLabel.he,
+    profitLabel: addChild.profitLabel.he,
+    addBtn: addChild.addBtn.he,
+    loadingAddBtn: addChild.loadingAddBtn.he,
+    cancelBtn: addChild.cancelBtn.he,
+    missingFields: addChild.missingFields.he,
+    usernameError: addChild.usernameError.he,
+    passwordError: addChild.passwordError.he,
+  },
+  menu: {
+    logout: menu.logout.he,
+    details: menu.details.he,
+    noChildren: menu.noChildren.he,
+  },
+  childrenDetails: {
+    title: childrenDetails.title.he,
+    name: childrenDetails.name.he,
+    username: childrenDetails.username.he,
+    updatePassword: childrenDetails.updatePassword.he,
+    newPasswordLabel: childrenDetails.newPasswordLabel.he,
+    updateBtn: childrenDetails.updateBtn.he,
+    loadingUpdateBtn: childrenDetails.loadingUpdateBtn.he,
+    cancelBtn: childrenDetails.cancelBtn.he,
+    missingFields: childrenDetails.missingFields.he,
+    updateError: childrenDetails.updateError.he,
   },
 };

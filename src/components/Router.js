@@ -87,7 +87,7 @@ export const Router = () => {
             component={ForgotPassword}
             options={{
               headerBackTitleVisible: false,
-              title: 'שחזור סיסמא',
+              title: i18n.t('forgotPasswordScreen.title'),
               headerTitleAlign: 'center',
               headerLeft: () => <GoBackButton />,
             }}

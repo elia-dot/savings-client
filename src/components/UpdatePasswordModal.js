@@ -4,16 +4,16 @@ import { Modal, Portal } from 'react-native-paper';
 import axios from 'axios';
 import { LinearProgress } from 'react-native-elements';
 
-import Alert from '../globals/components/Overlay';
+import Alert from '../globals/components/Alert';
 import colors from '../globals/styles/colors';
+import I18n from 'i18n-js';
 
 const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
   const [formData, setFormData] = useState({ password: '' });
   const [isAlert, setIsAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMsg, setAlertMsg] = useState({
-    title: '',
-    message: '',
+    msg: '',
     type: '',
   });
   const containerStyle = {
@@ -24,25 +24,24 @@ const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
   };
 
   const updateChildPassword = async () => {
+    if (formData.password === '') {
+      setAlertMsg({
+        msg: I18n.t('childrenDetails.missingFields'),
+        type: 'error',
+      });
+      return;
+    }
+
     setIsLoading(true);
     const res = await axios.post(
       `https://goals-65106.herokuapp.com/users/update-password/child/${id}`,
       formData
     );
     setIsLoading(false);
-    if (res.data.status === 'success') {
-      setIsAlert(true);
+    if (res.data.status !== 'success') {
       setAlertMsg({
-        title: '',
-        message: 'סיסמא שונתה בהצלחה!',
-        type: 'success',
-      });
-    } else {
-      setIsAlert(true);
-      setAlertMsg({
-        title: 'אירעה שגיאה',
-        message: 'לא הצלחנו לשנות את הסיסמא. אנא נסה שנית.',
-        type: 'fail',
+        msg: I18n.t('childrenDetails.updateError'),
+        type: 'error',
       });
     }
     setShowModal(false);
@@ -56,14 +55,12 @@ const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
         contentContainerStyle={containerStyle}
         style={{ flex: 1, alignItems: 'center' }}
       >
-        <Alert
-          message={alertMsg.message}
-          title={alertMsg.title}
-          type={alertMsg.type}
-          isAlert={isAlert}
-          setIsAlert={setIsAlert}
-        />
-        <Text style={styles.label}>סיסמא חדשה:</Text>
+        {alertMsg.msg !== '' && (
+          <Alert msg={alertMsg.msg} type={alertMsg.type} />
+        )}
+        <Text style={styles.label}>
+          {I18n.t('childrenDetails.newPasswordLabel')}
+        </Text>
         <TextInput
           style={styles.input}
           autoFocus
@@ -72,7 +69,12 @@ const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
           onChangeText={(value) => setFormData({ password: value })}
         />
         <TouchableOpacity style={styles.btn} onPress={updateChildPassword}>
-          <Text style={styles.btnText}> {isLoading ? 'מעדכן' : 'עדכן'}</Text>
+          <Text style={styles.btnText}>
+            {' '}
+            {isLoading
+              ? I18n.t('childrenDetails.loadingUpdateBtn')
+              : I18n.t('childrenDetails.updateBtn')}
+          </Text>
           {isLoading && (
             <LinearProgress color="#fff" style={{ marginTop: 1 }} />
           )}
@@ -81,7 +83,10 @@ const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
           style={styles.cancelBtn}
           onPress={() => setShowModal(false)}
         >
-          <Text style={styles.cancelBtnText}> ביטול</Text>
+          <Text style={styles.cancelBtnText}>
+            {' '}
+            {I18n.t('childrenDetails.cancelBtn')}
+          </Text>
         </TouchableOpacity>
       </Modal>
     </Portal>
