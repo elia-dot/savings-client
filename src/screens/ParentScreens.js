@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector, useDispatch } from 'react-redux';
+import I18n from 'i18n-js'
 
 import colors from '../globals/styles/colors';
 import Goals from './Goals';
@@ -39,7 +40,7 @@ const ParentScreens = ({ route }) => {
     }
   }, [child]);
 
-  if (loading) return <Loader title={"טוען מידע.."}/>;
+  if (loading) return <Loader title={'טוען מידע..'} />;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -49,7 +50,7 @@ const ParentScreens = ({ route }) => {
         tabBarActiveTintColor: colors.primary,
         tabBarIcon: ({ focused, size, color }) => {
           let iconName;
-          if (route.name === 'מטרות') {
+          if (route.name === I18n.t('goals.title')) {
             iconName = 'bullseye';
             size = focused ? 25 : 20;
           } else if (route.name === 'עובר ושב') {
@@ -64,7 +65,7 @@ const ParentScreens = ({ route }) => {
       })}
     >
       <Tab.Screen
-        name="מטרות"
+        name={I18n.t('goals.title')}
         component={Goals}
         initialParams={{ userId: route.params.userId, user: child }}
         options={{ headerShown: false, headerLeft: () => null }}

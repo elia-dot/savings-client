@@ -1,5 +1,6 @@
 import { login, signup, forgotPassword } from '../languages/auth';
 import { addChild, menu, childrenDetails } from '../languages/parent';
+import { goals } from '../languages/tabs';
 export const en = {
   loginScreen: {
     title: login.title.en,
@@ -75,6 +76,17 @@ export const en = {
     cancelBtn: childrenDetails.cancelBtn.en,
     missingFields: childrenDetails.missingFields.en,
     updateError: childrenDetails.updateError.en,
+  },
+  goals: {
+    title: goals.title.en,
+    noGoalsParent: goals.noGoalsParent.en,
+    noGoalsBtnParent: goals.noGoalsBtnParent.en,
+    noGoalsChild: goals.noGoalsChild.en,
+    noGoalsBtnChild: goals.noGoalsBtnChild.en,
+    amountLeft: goals.amountLeft.en,
+    completed: goals.completed.en,
+    deleteTitle: goals.deleteTitle.en,
+    deleteText: goals.deleteText.en,
   },
 };
 

@@ -3,10 +3,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { FAB } from 'react-native-elements';
 import { LinearProgress } from 'react-native-elements';
 import { useSelector } from 'react-redux';
+import i18n from 'i18n-js';
 
 import GoalForm from '../components/GoalForm';
 import colors from '../globals/styles/colors';
 import { sendPushNotification } from '../utils/sendNotification';
+
 
 export default function NoGoals({ userGoal }) {
   const [showModal, setShowModal] = useState(false);
@@ -29,11 +31,11 @@ export default function NoGoals({ userGoal }) {
       <GoalForm showModal={showModal} setShowModal={setShowModal} />
       {user.type === 'child' ? (
         <>
-          <Text style={styles.text}> רשימת המטרות שלך ריקה</Text>
+          <Text style={styles.text}> {i18n.t('goals.noGoalsChild')}</Text>
           <FAB
             color={colors.primary}
             size="large"
-            title="צור מטרה ראשונה"
+            title={i18n.t('goals.noGoalsBtnChild')}
             onPress={() => {
               setShowModal(true);
             }}
@@ -41,11 +43,11 @@ export default function NoGoals({ userGoal }) {
         </>
       ) : (
         <>
-          <Text style={styles.text}> רשימת המטרות של {userGoal.name} ריקה</Text>
+          <Text style={styles.text}>{i18n.t('goals.noGoalsParent', {name : userGoal.name})}</Text>
           <FAB
             color={colors.primary}
             size="large"
-            title="שלח תזכורת"
+            title={i18n.t('goals.noGoalsBtnParent')}
             onPress={sendMessage}
           >
             {loading && (

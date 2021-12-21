@@ -11,6 +11,7 @@ import { deleteGoal } from '../redux/actions/goals';
 import Loader from '../globals/components/Loader';
 import { startLoading, finishLoading } from '../redux/actions/globals';
 import currency from '../globals/styles/currency';
+import i18n from 'i18n-js';
 
 export default function Goal({ goal, user }) {
   const [showModal, setShowModal] = useState(false);
@@ -23,17 +24,16 @@ export default function Goal({ goal, user }) {
 
   const moneyLeft = () => {
     if (goal.price - (user.saving + user.profit) < 0)
-      return 'מטרה הושלמה';
-    return `${(
-      goal.price -
-      (user.saving + user.profit)
-    ).toLocaleString()}${currency.NIS} נשארו`;
+      return i18n.t('goals.completed');
+    return i18n.t('goals.amountLeft', {
+      amount: (goal.price - (user.saving + user.profit)).toLocaleString(),
+    });
   };
 
   const progress = calculateProgress();
 
   const confirmDelete = () => {
-    Alert.alert('Delete Goal', 'Are you sure you want to delete this goal?', [
+    Alert.alert(i18n.t('goals.deleteTitle'), i18n.t('goals.deleteText'), [
       { text: 'Cancel' },
       { text: 'Delete', onPress: () => handleDelete() },
     ]);
@@ -52,7 +52,7 @@ export default function Goal({ goal, user }) {
   return (
     <View style={styles.body}>
       <GoalForm showModal={showModal} setShowModal={setShowModal} goal={goal} />
-      <Loader title = "מוחק מטרה.."/>
+      <Loader title="מוחק מטרה.." />
       <View style={styles.goalDetails}>
         <View style={styles.goalName}>
           <View style={styles.icon}>
