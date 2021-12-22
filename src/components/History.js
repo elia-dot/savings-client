@@ -9,8 +9,9 @@ import SavingItem from './SavingItem';
 import SavingModal from './SavingModal';
 import colors from '../globals/styles/colors';
 import currency from '../globals/styles/currency';
+import i18n from 'i18n-js';
 
-const History = ({ route }) => {
+const History = () => {
   const dispatch = useDispatch();
   const { history, loading } = useSelector((state) => state.savings);
   const { user, child } = useSelector((state) => state.auth);
@@ -18,7 +19,11 @@ const History = ({ route }) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [filteredHistory, setFilteredHistory] = useState(history);
-  const buttons = ['הכל', 'הפקדות', 'משיכות'];
+  const buttons = [
+    i18n.t('history.allBtn'),
+    i18n.t('history.depositBtn'),
+    i18n.t('history.withdrawBtn'),
+  ];
 
   useEffect(() => {
     let filtered;
@@ -43,7 +48,7 @@ const History = ({ route }) => {
       <SavingModal openModal={openModal} setOpenModal={setOpenModal} />
       {user.type === 'parent' && (
         <View style={styles.historyTop}>
-          <Text style={styles.historyText}>היתרה של {child.name}: </Text>
+          <Text style={styles.historyText}>{i18n.t('history.topTextParent', {name: child.name})}</Text>
           <Text style={styles.historyNumber}>
             <Text style={styles.historyText}>{currency.NIS}</Text>
             {(child.saving + child.profit).toLocaleString()}

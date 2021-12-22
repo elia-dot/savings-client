@@ -1,3 +1,4 @@
+import i18n from 'i18n-js';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
@@ -8,12 +9,14 @@ import {
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Alert from '../globals/components/Overlay';
+import Alert from '../globals/components/Alert';
 import colors from '../globals/styles/colors';
 import { createGoal, updateGoal } from '../redux/actions/goals';
 
@@ -34,8 +37,7 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
 
   const priceRef = useRef();
 
-  const [errorMsg, setErrorMsg] = useState({ title: '', message: '' });
-  const [isAlert, setIsAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const categories = [
     { label: 'Other', value: 'question', key: '0' },
@@ -59,11 +61,7 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
       formData.price === '' ||
       formData.icon === ''
     ) {
-      setErrorMsg({
-        title: 'חסרים פרטים',
-        message: 'נא מלא את כל השדות',
-      });
-      setIsAlert(true);
+      setErrorMsg(i18n.t('goals.missingFields'));
       return;
     }
     setErrorMsg('');
@@ -85,46 +83,49 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
 
   const renderInputs = () => (
     <ScrollView style={styles.form}>
-      <Text style={styles.label}>שם:</Text>
+      <Text style={styles.label}>{i18n.t('goals.nameLabel')}</Text>
       <TextInput
         style={styles.input}
-        placeholder="שם המטרה"
         autoFocus
         onSubmitEditing={() => priceRef.current.focus()}
         returnKeyType="next"
-        placeholderTextColor="#cccccc"
         value={formData.title}
         onChangeText={(value) =>
           setFormData({ ...formData, title: value.toLowerCase() })
         }
       />
-      <Text style={styles.label}>מחיר:</Text>
+      <Text style={styles.label}>{i18n.t('goals.priceLabel')}</Text>
       <TextInput
         style={styles.input}
         ref={priceRef}
         returnKeyType="done"
-        placeholder="מחיר המטרה"
-        placeholderTextColor="#cccccc"
         value={formData.price.toString()}
         keyboardType="number-pad"
         onChangeText={(value) => setFormData({ ...formData, price: value })}
       />
-      <Text style={styles.label}>קטגוריה:</Text>
+      <Text style={styles.label}>{i18n.t('goals.categoryLabel')}</Text>
       <RNPickerSelect
         items={categories}
         onValueChange={(value) => setFormData({ ...formData, icon: value })}
-        placeholder={{ label: 'בחר קטגוריה', value: null }}
+        placeholder={{
+          label: i18n.t('goals.categoryPlaceholder'),
+          value: null,
+        }}
         style={pickerSelectStyles}
       />
 
       <TouchableOpacity style={styles.createBtn} onPress={() => handlePress()}>
         {goal ? (
           <Text style={styles.btnText}>
-            {loading ? 'מעדכן מטרה...' : 'עדכן מטרה'}
+            {loading
+              ? i18n.t('goals.loadingUpdateBtn')
+              : i18n.t('goals.updateBtn')}
           </Text>
         ) : (
           <Text style={styles.btnText}>
-            {loading ? 'יוצר מטרה...' : 'צור מטרה'}
+            {loading
+              ? i18n.t('goals.loadingCreateBtn')
+              : i18n.t('goals.createBtn')}
           </Text>
         )}
         {loading && <LinearProgress color="#fff" style={{ marginTop: 1 }} />}
@@ -133,7 +134,9 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
         style={styles.cancelBtn}
         onPress={() => setShowModal(false)}
       >
-        <Text style={[styles.btnText, styles.cancelBtnText]}>ביטול</Text>
+        <Text style={[styles.btnText, styles.cancelBtnText]}>
+          {i18n.t('goals.cancelBtn')}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -141,25 +144,25 @@ const GoalForm = ({ showModal, setShowModal, goal }) => {
   return (
     <View>
       <Modal visible={showModal} animationType="slide">
-        <Alert
-          message={errorMsg.message}
-          title={errorMsg.title}
-          type="fail"
-          isAlert={isAlert}
-          setIsAlert={setIsAlert}
-        />
-        <View style={styles.modalBody}>
-          <Text style={styles.modalTitle}>
-            {goal ? 'עדכן פרטי מטרה' : 'צור מטרה חדשה'}
-          </Text>
-          {Platform.OS === 'android' ? (
-            renderInputs()
-          ) : (
-            <KeyboardAvoidingView behavior="padding">
-              {renderInputs()}
-            </KeyboardAvoidingView>
-          )}
-        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.modalBody}>
+            <Text style={styles.modalTitle}>
+              {goal
+                ? i18n.t('goals.updateGoalTitle')
+                : i18n.t('goals.createGoalTitle')}
+            </Text>
+            <Text style={{ marginTop: 50 }}>
+              {errorMsg && <Alert msg={errorMsg} type="error" />}
+            </Text>
+            {Platform.OS === 'android' ? (
+              renderInputs()
+            ) : (
+              <KeyboardAvoidingView behavior="padding">
+                {renderInputs()}
+              </KeyboardAvoidingView>
+            )}
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   form: {
-    marginTop: 100,
+    marginTop: 50,
   },
   label: {
     fontSize: 15,

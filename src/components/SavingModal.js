@@ -14,6 +14,7 @@ import { LinearProgress } from 'react-native-elements';
 
 import colors from '../globals/styles/colors';
 import { addSaving } from '../redux/actions/savings';
+import I18n from 'i18n-js';
 
 const SavingModal = ({ openModal, setOpenModal }) => {
   const [formData, setFormData] = useState({ amount: '', description: '' });
@@ -32,11 +33,10 @@ const SavingModal = ({ openModal, setOpenModal }) => {
     <Modal visible={openModal} animationType="slide">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.modalBody}>
-          <Text style={styles.modalTitle}>פרטי ההפקדה או המשיכה</Text>
-          <Text style = {styles.label}>סכום</Text>
+          <Text style={styles.modalTitle}>{I18n.t('history.savingTitle')}</Text>
+          <Text style={styles.label}>{I18n.t('history.amountLabel')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="סכום ההפקדה/משיכה"
             placeholderTextColor="#cccccc"
             value={formData.amount.toString()}
             keyboardType="numbers-and-punctuation"
@@ -44,10 +44,9 @@ const SavingModal = ({ openModal, setOpenModal }) => {
               setFormData({ ...formData, amount: value })
             }
           />
-           <Text style = {styles.label}>תיאור</Text>
+          <Text style={styles.label}>{I18n.t('history.descriptionLabel')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="תיאור"
             placeholderTextColor="#cccccc"
             value={formData.description}
             onChangeText={(value) =>
@@ -56,7 +55,9 @@ const SavingModal = ({ openModal, setOpenModal }) => {
           />
           <TouchableOpacity style={styles.createBtn} onPress={() => save()}>
             <Text style={styles.btnText}>
-              {loading ? 'מעדכן...' : 'עדכן סכום'}
+              {loading
+                ? I18n.t('history.loadingCreateBtn')
+                : I18n.t('history.createBtn')}
             </Text>
 
             {loading && (
@@ -67,7 +68,9 @@ const SavingModal = ({ openModal, setOpenModal }) => {
             style={styles.cancelBtn}
             onPress={() => setOpenModal(false)}
           >
-            <Text style={[styles.btnText, styles.cancelBtnText]}>ביטול</Text>
+            <Text style={[styles.btnText, styles.cancelBtnText]}>
+              {I18n.t('history.cancelBtn')}
+            </Text>
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>

@@ -70,7 +70,6 @@ const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
         />
         <TouchableOpacity style={styles.btn} onPress={updateChildPassword}>
           <Text style={styles.btnText}>
-            {' '}
             {isLoading
               ? I18n.t('childrenDetails.loadingUpdateBtn')
               : I18n.t('childrenDetails.updateBtn')}
@@ -84,7 +83,6 @@ const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
           onPress={() => setShowModal(false)}
         >
           <Text style={styles.cancelBtnText}>
-            {' '}
             {I18n.t('childrenDetails.cancelBtn')}
           </Text>
         </TouchableOpacity>

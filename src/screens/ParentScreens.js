@@ -53,7 +53,7 @@ const ParentScreens = ({ route }) => {
           if (route.name === I18n.t('goals.title')) {
             iconName = 'bullseye';
             size = focused ? 25 : 20;
-          } else if (route.name === 'עובר ושב') {
+          } else if (route.name ===  I18n.t('history.title')) {
             iconName = 'exchange-alt';
             size = focused ? 25 : 20;
           } else if (route.name === 'משימות') {
@@ -71,7 +71,7 @@ const ParentScreens = ({ route }) => {
         options={{ headerShown: false, headerLeft: () => null }}
       />
       <Tab.Screen
-        name="עובר ושב"
+        name={ I18n.t('history.title')}
         component={History}
         initialParams={{ userId: route.params.userId, user: child }}
         options={{ headerShown: false, headerLeft: () => null }}

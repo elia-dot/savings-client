@@ -7,6 +7,7 @@ import Goals from './Goals';
 import Tasks from '../components/Tasks';
 import colors from '../globals/styles/colors';
 import History from '../components/History';
+import i18n from 'i18n-js';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -33,7 +34,7 @@ const ChildScreens = () => {
         tabBarLabelStyle: { fontWeight: '700', fontSize: 18 },
       }}
     >
-      <Tab.Screen name="מטרות" component={Goals} />
+      <Tab.Screen name={i18n.t('goals.title')} component={Goals} />
       <Tab.Screen
         name="משימות"
         component={Tasks}
@@ -45,7 +46,7 @@ const ChildScreens = () => {
           ),
         }}
       />
-      <Tab.Screen name="עובר ושב" component={History} />
+      <Tab.Screen name={ I18n.t('history.title')} component={History} />
     </Tab.Navigator>
   );
 };

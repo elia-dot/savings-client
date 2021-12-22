@@ -27,7 +27,7 @@ const ChildBox = ({ item }) => {
         onPress={() => setShowModal(true)}
       >
         <Text style={styles.centeredText}>
-          {I18n.t('childrenDetails.updatePassword')}{' '}
+          {I18n.t('childrenDetails.updatePassword')}
         </Text>
       </TouchableOpacity>
     </View>

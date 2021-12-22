@@ -1,6 +1,6 @@
 import { login, signup, forgotPassword } from '../languages/auth';
 import { addChild, menu, childrenDetails } from '../languages/parent';
-import { goals } from '../languages/tabs';
+import { goals, history } from '../languages/tabs';
 export const en = {
   loginScreen: {
     title: login.title.en,
@@ -87,6 +87,33 @@ export const en = {
     completed: goals.completed.en,
     deleteTitle: goals.deleteTitle.en,
     deleteText: goals.deleteText.en,
+    deleteBtn: goals.deleteBtn.en,
+    cancelBtn: goals.cancelBtn.en,
+    createGoalTitle: goals.createGoalTitle.en,
+    updateGoalTitle: goals.updateGoalTitle.en,
+    nameLabel: goals.nameLabel.en,
+    priceLabel: goals.priceLabel.en,
+    categoryLabel: goals.categoryLabel.en,
+    categoryPlaceholder: goals.categoryPlaceholder.en,
+    createBtn: goals.createBtn.en,
+    loadingCreateBtn: goals.loadingCreateBtn.en,
+    updateBtn: goals.updateBtn.en,
+    loadingUpdateBtn: goals.loadingUpdateBtn.en,
+    missingFields: goals.missingFields.en,
+  },
+  history: {
+    title: history.title.en,
+    topTextParent: history.topTextParent.en,
+    allBtn: history.allBtn.en,
+    depositBtn: history.depositBtn.en,
+    withdrawBtn: history.withdrawBtn.en,
+    deposit: history.deposit.en,
+    savingTitle: history.savingTitle.en,
+    amountLabel: history.amountLabel.en,
+    descriptionLabel: history.descriptionLabel.en,
+    cancelBtn: history.cancelBtn.en,
+    createBtn: history.createBtn.en,
+    loadingCreateBtn: history.loadingCreateBtn.en,
   },
 };
 
@@ -166,5 +193,29 @@ export const he = {
     cancelBtn: childrenDetails.cancelBtn.he,
     missingFields: childrenDetails.missingFields.he,
     updateError: childrenDetails.updateError.he,
+  },
+  goals: {
+    title: goals.title.he,
+    noGoalsParent: goals.noGoalsParent.he,
+    noGoalsBtnParent: goals.noGoalsBtnParent.he,
+    noGoalsChild: goals.noGoalsChild.he,
+    noGoalsBtnChild: goals.noGoalsBtnChild.he,
+    amountLeft: goals.amountLeft.he,
+    completed: goals.completed.he,
+    deleteTitle: goals.deleteTitle.he,
+    deleteText: goals.deleteText.he,
+    deleteBtn: goals.deleteBtn.he,
+    cancelBtn: goals.cancelBtn.he,
+    createGoalTitle: goals.createGoalTitle.he,
+    updateGoalTitle: goals.updateGoalTitle.he,
+    nameLabel: goals.nameLabel.he,
+    priceLabel: goals.priceLabel.he,
+    categoryLabel: goals.categoryLabel.he,
+    categoryPlaceholder: goals.categoryPlaceholder.he,
+    createBtn: goals.createBtn.he,
+    loadingCreateBtn: goals.loadingCreateBtn.he,
+    updateBtn: goals.updateBtn.he,
+    loadingUpdateBtn: goals.loadingUpdateBtn.he,
+    missingFields: goals.missingFields.he,
   },
 };

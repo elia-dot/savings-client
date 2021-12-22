@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import colors from '../globals/styles/colors';
+import i18n from 'i18n-js';
 
 const SavingItem = ({ item }) => {
   return (
@@ -27,8 +28,8 @@ const SavingItem = ({ item }) => {
           {item.description
             ? item.description
             : item.amount > 0
-            ? 'הפקדה'
-            : 'משיכה'}
+            ? i18n.t('history.deposit')
+            : i18n.t('history.withdraw')}
         </Text>
       </View>
       <View style={styles.created}>
