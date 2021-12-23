@@ -10,7 +10,6 @@ import I18n from 'i18n-js';
 
 const UpdatePasswordModal = ({ showModal, setShowModal, id }) => {
   const [formData, setFormData] = useState({ password: '' });
-  const [isAlert, setIsAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMsg, setAlertMsg] = useState({
     msg: '',

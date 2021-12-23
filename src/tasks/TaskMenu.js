@@ -7,6 +7,7 @@ import { LinearProgress } from 'react-native-elements';
 import colors from '../globals/styles/colors';
 import { completeTask } from '../redux/actions/tasks';
 import { sendPushNotification } from '../utils/sendNotification';
+import I18n from 'i18n-js';
 
 const TaskMenu = ({ showMenu, setShowMenu, task }) => {
   const { user } = useSelector((state) => state.auth);
@@ -21,7 +22,10 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
   };
 
   const handleComplete = async () => {
-    const data = { amount: task.price, description: 'השלמת משימה' };
+    const data = {
+      amount: task.price,
+      description: I18n.t('tasks.completeTaskTitle'),
+    };
     setLoading(true);
     await dispatch(completeTask(task._id, task.assignTo, data));
     setLoading(false);
@@ -29,7 +33,10 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
   };
 
   const uncompleteTask = async () => {
-    const data = { amount: task.price * -1, description: 'ביטול השלמת משימה' };
+    const data = {
+      amount: task.price * -1,
+      description: I18n.t('tasks.completeTaskTitle'),
+    };
     setLoading(true);
     await dispatch(completeTask(task._id, task.assignTo, data));
     setLoading(false);
@@ -40,8 +47,8 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
     setRemindLoading(true);
     const body = {
       userId: user._id,
-      title: 'תזכורת',
-      body: ` ${task.title}:זוהי תזכורת להשלמת המשימה `,
+      title: I18n.t('tasks.pushTitle'),
+      body: I18n.t('tasks.pushBody', { task: task.title }),
     };
     sendPushNotification(body);
     setRemindLoading(false);
@@ -58,21 +65,30 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
           <>
             {!task.completed ? (
               <TouchableOpacity style={styles.btn} onPress={handleComplete}>
-                <Text style={styles.btnText}> אשר השלמת משימה</Text>
+                <Text style={styles.btnText}>
+                  {' '}
+                  {I18n.t('tasks.confirmCompleteTask')}{' '}
+                </Text>
                 {loading && (
                   <LinearProgress color="#fff" style={{ marginTop: 1 }} />
                 )}
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.btn} onPress={uncompleteTask}>
-                <Text style={styles.btnText}> בטל השלמת משימה</Text>
+                <Text style={styles.btnText}>
+                  {' '}
+                  {I18n.t('tasks.cancelCompleteTask')}
+                </Text>
                 {loading && (
                   <LinearProgress color="#fff" style={{ marginTop: 1 }} />
                 )}
               </TouchableOpacity>
             )}
             <TouchableOpacity style={styles.btn} onPress={sendReminder}>
-              <Text style={styles.btnText}> שלח תזכורת</Text>
+              <Text style={styles.btnText}>
+                {' '}
+                {I18n.t('tasks.sendReminder')}{' '}
+              </Text>
               {remindLoading && (
                 <LinearProgress color="#fff" style={{ marginTop: 1 }} />
               )}
@@ -81,7 +97,10 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
               style={styles.cancelBtn}
               onPress={() => setShowMenu(false)}
             >
-              <Text style={styles.cancelBtnText}> ביטול</Text>
+              <Text style={styles.cancelBtnText}>
+                {' '}
+                {I18n.t('tasks.cancelBtn')}
+              </Text>
             </TouchableOpacity>
           </>
         )}

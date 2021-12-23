@@ -9,6 +9,7 @@ import { sendPushNotification } from '../utils/sendNotification';
 import TaskMenu from './TaskMenu';
 import { startLoading, finishLoading } from '../redux/actions/globals';
 import Loader from '../globals/components/Loader';
+import i18n from 'i18n-js';
 
 const Task = ({ task }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -18,8 +19,11 @@ const Task = ({ task }) => {
     dispatch(startLoading());
     const body = {
       userId: user.parent,
-      title: 'משימה הושלמה!',
-      body: `${user.name} סיים את המשימה: ${task.title}`,
+      title: i18n.t('tasks.completedPushTitle'),
+      body: i18n.t('tasks.completedPushBody', {
+        name: user.name,
+        task: task.title,
+      }),
     };
     await sendPushNotification(body);
     dispatch(finishLoading());
@@ -30,7 +34,7 @@ const Task = ({ task }) => {
 
   return (
     <View style={styles.body}>
-      <Loader title="שולח להורה.." />
+      <Loader title={i18n.t('tasks.loaderTitle')} />
       <TaskMenu showMenu={showMenu} setShowMenu={setShowMenu} task={task} />
       <View style={[styles.taskColumn]}>
         <CheckBox

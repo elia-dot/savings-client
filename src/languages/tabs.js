@@ -87,6 +87,10 @@ export const goals = {
     en: 'Please fill all the fields',
     he: 'נא מלא את כל השדןת',
   },
+  deletingGoal: {
+    en: 'Deleting Goal...',
+    he: 'מוחק מטרה...',
+  },
 };
 export const history = {
   title: {
@@ -140,5 +144,88 @@ export const history = {
   loadingCreateBtn: {
     en: 'Please Wait...',
     he: 'מעדכן...',
+  },
+};
+
+export const tasks = {
+  title: {
+    en: 'Tasks',
+    he: 'משימות',
+  },
+  allBtn: {
+    en: 'All',
+    he: 'הכל',
+  },
+  completedBtn: {
+    en: 'Completed',
+    he: 'הושלמו',
+  },
+  unCompletedBtn: {
+    en: 'In Progress',
+    he: 'לא הושלמו',
+  },
+  createTaskTitle: {
+    en: 'Create New Task',
+    he: 'צור משימה חדשה',
+  },
+  descriptionLabel: {
+    en: 'Task Description',
+    he: 'תיאור המשימה',
+  },
+  priceLabel: {
+    en: 'Task Price',
+    he: 'סכום לתשלום',
+  },
+  cancelBtn: {
+    en: 'Cancel',
+    he: 'ביטול',
+  },
+  createBtn: {
+    en: 'Create Task',
+    he: 'צור משימה',
+  },
+  loadingCreateBtn: {
+    en: 'Please Wait...',
+    he: 'יוצר משימה...',
+  },
+  confirmCompleteTask: {
+    en: 'Accept task completion',
+    he: 'אשר השלמת משימה',
+  },
+  cancelCompleteTask: {
+    en: 'Cancel task completion',
+    he: 'בטל השלמת משימה',
+  },
+  sendReminder: {
+    en: 'Send Reminder',
+    he: 'שלח תזכורת',
+  },
+  completeTaskTitle: {
+    en: 'Task completion',
+    he: 'השלמת משימה',
+  },
+  uncompleteTaskTitle: {
+    en: 'Task ompletion canceled',
+    he: 'ביטול השלמת משימה',
+  },
+  pushTitle: {
+    en: 'Reminder',
+    he: 'תזכורת',
+  },
+  pushBody: {
+    en: 'Just a reminder to complete the task: {{task}}',
+    he: ' {{task}}:זוהי תזכורת להשלמת המשימה',
+  },
+  loaderTitle: {
+    en: 'Sending...',
+    he: 'שולח להורה...',
+  },
+  completedPushTitle: {
+    en: 'Tasl Completed!',
+    he: 'משימה הושלמה!',
+  },
+  completedPushBody: {
+    en: '{{name}} just complete his task : {{task}}',
+    he: 'סיים את המשימה: {{task}} {{name}}',
   },
 };

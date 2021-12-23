@@ -1,6 +1,7 @@
 import { login, signup, forgotPassword } from '../languages/auth';
 import { addChild, menu, childrenDetails } from '../languages/parent';
-import { goals, history } from '../languages/tabs';
+import { goals, history, tasks } from '../languages/tabs';
+import { misc } from '../languages/misc';
 export const en = {
   loginScreen: {
     title: login.title.en,
@@ -100,6 +101,7 @@ export const en = {
     updateBtn: goals.updateBtn.en,
     loadingUpdateBtn: goals.loadingUpdateBtn.en,
     missingFields: goals.missingFields.en,
+    deletingGoal: goals.deletingGoal.en,
   },
   history: {
     title: history.title.en,
@@ -107,6 +109,7 @@ export const en = {
     allBtn: history.allBtn.en,
     depositBtn: history.depositBtn.en,
     withdrawBtn: history.withdrawBtn.en,
+    withdraw: history.withdraw.en,
     deposit: history.deposit.en,
     savingTitle: history.savingTitle.en,
     amountLabel: history.amountLabel.en,
@@ -114,6 +117,33 @@ export const en = {
     cancelBtn: history.cancelBtn.en,
     createBtn: history.createBtn.en,
     loadingCreateBtn: history.loadingCreateBtn.en,
+  },
+  tasks: {
+    title: tasks.title.en,
+    allBtn: tasks.allBtn.en,
+    completedBtn: tasks.completedBtn.en,
+    unCompletedBtn: tasks.unCompletedBtn.en,
+    createTaskTitle: tasks.createTaskTitle.en,
+    descriptionLabel: tasks.descriptionLabel.en,
+    priceLabel: tasks.priceLabel.en,
+    cancelBtn: tasks.cancelBtn.en,
+    createBtn: tasks.createBtn.en,
+    loadingCreateBtn: tasks.loadingCreateBtn.en,
+    confirmCompleteTask: tasks.confirmCompleteTask.en,
+    cancelCompleteTask: tasks.cancelCompleteTask.en,
+    sendReminder: tasks.sendReminder.en,
+    completeTaskTitle: tasks.completeTaskTitle.en,
+    uncompleteTaskTitle: tasks.uncompleteTaskTitle.en,
+    pushTitle: tasks.pushTitle.en,
+    pushBody: tasks.pushBody.en,
+    loaderTitle: tasks.loaderTitle.en,
+    completedPushTitle: tasks.completedPushTitle.en,
+    completedPushBody: tasks.completedPushBody.en,
+  },
+  misc: {
+    childGreetings: misc.childGreetings.en,
+    balance: misc.balance.en,
+    loading: misc.loading.en,
   },
 };
 
@@ -217,5 +247,49 @@ export const he = {
     updateBtn: goals.updateBtn.he,
     loadingUpdateBtn: goals.loadingUpdateBtn.he,
     missingFields: goals.missingFields.he,
+    deletingGoal: goals.deletingGoal.he,
+
+  },
+  history: {
+    title: history.title.he,
+    topTextParent: history.topTextParent.he,
+    allBtn: history.allBtn.he,
+    depositBtn: history.depositBtn.he,
+    withdrawBtn: history.withdrawBtn.he,
+    deposit: history.deposit.he,
+    withdraw: history.withdraw.he,
+    savingTitle: history.savingTitle.he,
+    amountLabel: history.amountLabel.he,
+    descriptionLabel: history.descriptionLabel.he,
+    cancelBtn: history.cancelBtn.he,
+    createBtn: history.createBtn.he,
+    loadingCreateBtn: history.loadingCreateBtn.he,
+  },
+  tasks: {
+    title: tasks.title.he,
+    allBtn: tasks.allBtn.he,
+    completedBtn: tasks.completedBtn.he,
+    unCompletedBtn: tasks.unCompletedBtn.he,
+    createTaskTitle: tasks.createTaskTitle.he,
+    descriptionLabel: tasks.descriptionLabel.he,
+    priceLabel: tasks.priceLabel.he,
+    cancelBtn: tasks.cancelBtn.he,
+    createBtn: tasks.createBtn.he,
+    loadingCreateBtn: tasks.loadingCreateBtn.he,
+    confirmCompleteTask: tasks.confirmCompleteTask.he,
+    cancelCompleteTask: tasks.cancelCompleteTask.he,
+    sendReminder: tasks.sendReminder.he,
+    completeTaskTitle: tasks.completeTaskTitle.he,
+    uncompleteTaskTitle: tasks.uncompleteTaskTitle.he,
+    pushTitle: tasks.pushTitle.he,
+    pushBody: tasks.pushBody.he,
+    loaderTitle: tasks.loaderTitle.he,
+    completedPushTitle: tasks.completedPushTitle.he,
+    completedPushBody: tasks.completedPushBody.he,
+  },
+  misc: {
+    childGreetings: misc.childGreetings.he,
+    balance: misc.balance.he,
+    loading: misc.loading.he,
   },
 };

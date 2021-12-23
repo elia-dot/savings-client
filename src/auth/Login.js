@@ -66,7 +66,6 @@ export default function Login({ navigation }) {
         <Text style={styles.label}>{i18n.t('loginScreen.nameLabel')}</Text>
         <TextInput
           style={styles.input}
-          placeholder={i18n.t('loginScreen.namePlaceholder')}
           value={formData.email}
           returnKeyType="next"
           onChangeText={(value) =>
@@ -76,7 +75,6 @@ export default function Login({ navigation }) {
         <Text style={styles.label}>{i18n.t('loginScreen.passwordLabel')}</Text>
         <TextInput
           style={styles.input}
-          placeholder={i18n.t('loginScreen.passwordPlaceholder')}
           value={formData.password}
           returnKeyType="done"
           textContentType="password"

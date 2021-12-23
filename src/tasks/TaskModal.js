@@ -13,51 +13,54 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinearProgress } from 'react-native-elements';
 
 import colors from '../globals/styles/colors';
-import { addSaving } from '../redux/actions/savings';
-import I18n from 'i18n-js';
+import { createTask } from '../redux/actions/tasks';
+import i18n from 'i18n-js';
 
-const SavingModal = ({ openModal, setOpenModal }) => {
-  const [formData, setFormData] = useState({ amount: '', description: '' });
+const TaskModal = ({ openModal, setOpenModal }) => {
+  const [formData, setFormData] = useState({ title: '', price: '' });
   const [loading, setLoading] = useState(false);
   const { child } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const save = async () => {
     setLoading(true);
-    await dispatch(addSaving(child._id, formData));
+    await dispatch(createTask(child._id, formData));
     setLoading(false);
-    setFormData({ amount: '', description: '' });
+    setFormData({ title: '', price: '' });
     setOpenModal(false);
   };
   return (
     <Modal visible={openModal} animationType="slide">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.modalBody}>
-          <Text style={styles.modalTitle}>{I18n.t('history.savingTitle')}</Text>
-          <Text style={styles.label}>{I18n.t('history.amountLabel')}</Text>
+          <Text style={styles.modalTitle}>
+            {' '}
+            {i18n.t('tasks.createTaskTitle')}
+          </Text>
+          <Text style={styles.label}>{i18n.t('tasks.descriptionLabel')}</Text>
           <TextInput
             style={styles.input}
             placeholderTextColor="#cccccc"
-            value={formData.amount.toString()}
-            keyboardType="numbers-and-punctuation"
-            onChangeText={(value) =>
-              setFormData({ ...formData, amount: value })
-            }
+            value={formData.title}
+            onChangeText={(value) => setFormData({ ...formData, title: value })}
           />
-          <Text style={styles.label}>{I18n.t('history.descriptionLabel')}</Text>
+          <Text style={styles.label}>{i18n.t('tasks.priceLabel')}</Text>
           <TextInput
             style={styles.input}
             placeholderTextColor="#cccccc"
-            value={formData.description}
-            onChangeText={(value) =>
-              setFormData({ ...formData, description: value })
-            }
+            value={formData.price.toString()}
+            keyboardType="numeric"
+            onChangeText={(value) => setFormData({ ...formData, price: value })}
           />
-          <TouchableOpacity style={styles.createBtn} onPress={() => save()}>
+          <TouchableOpacity
+            style={styles.createBtn}
+            disabled={formData.title === '' || formData.price === ''}
+            onPress={() => save()}
+          >
             <Text style={styles.btnText}>
               {loading
-                ? I18n.t('history.loadingCreateBtn')
-                : I18n.t('history.createBtn')}
+                ? i18n.t('tasks.loadingCreateBtn')
+                : i18n.t('tasks.createBtn')}
             </Text>
 
             {loading && (
@@ -69,7 +72,7 @@ const SavingModal = ({ openModal, setOpenModal }) => {
             onPress={() => setOpenModal(false)}
           >
             <Text style={[styles.btnText, styles.cancelBtnText]}>
-              {I18n.t('history.cancelBtn')}
+              {i18n.t('tasks.cancelBtn')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -78,7 +81,7 @@ const SavingModal = ({ openModal, setOpenModal }) => {
   );
 };
 
-export default SavingModal;
+export default TaskModal;
 
 const styles = StyleSheet.create({
   modalBody: {
@@ -91,11 +94,6 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     textAlign: 'center',
   },
-  label: {
-    fontSize: 15,
-    marginBottom: 5,
-    color: colors.primary,
-  },
   input: {
     backgroundColor: '#eee',
     borderBottomColor: colors.primary,
@@ -104,6 +102,11 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'left',
     marginBottom: 50,
+  },
+  label: {
+    fontSize: 15,
+    marginBottom: 5,
+    color: colors.primary,
   },
   createBtn: {
     backgroundColor: colors.primary,

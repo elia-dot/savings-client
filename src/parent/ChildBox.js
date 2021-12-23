@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import I18n from 'i18n-js';
 
-import UpdatePasswordModal from '../components/UpdatePasswordModal';
+import UpdatePasswordModal from '../auth/UpdatePasswordModal';
 import colors from '../globals/styles/colors';
 
 const ChildBox = ({ item }) => {

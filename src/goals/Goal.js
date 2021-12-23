@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { capitalize } from '../utils/capitalize';
-import GoalForm from '../components/GoalForm';
+import GoalForm from './GoalForm';
 import colors from '../globals/styles/colors';
 import { deleteGoal } from '../redux/actions/goals';
 import Loader from '../globals/components/Loader';
 import { startLoading, finishLoading } from '../redux/actions/globals';
-import currency from '../globals/styles/currency';
 import i18n from 'i18n-js';
+import { isRTL } from 'expo-localization';
 
 export default function Goal({ goal, user }) {
   const [showModal, setShowModal] = useState(false);
@@ -52,7 +52,7 @@ export default function Goal({ goal, user }) {
   return (
     <View style={styles.body}>
       <GoalForm showModal={showModal} setShowModal={setShowModal} goal={goal} />
-      <Loader title="מוחק מטרה.." />
+      <Loader title={i18n.t('goals.deletingGoal')} />
       <View style={styles.goalDetails}>
         <View style={styles.goalName}>
           <View style={styles.icon}>
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   progressNumbers: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: `${isRTL ? 'row' : 'row-reverse'}`,
     justifyContent: 'space-between',
   },
 });

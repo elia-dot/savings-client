@@ -2,12 +2,12 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
 
-import colors from '../globals/styles/colors';
+import colors from './globals/styles/colors';
 
-export default function Splash({ navigation }) {
+export default function Splash() {
   return (
     <View style={styles.body}>
-      <Image source={require('../../assets/logo.png')} style={styles.img} />
+      <Image source={require('../assets/logo.png')} style={styles.img} />
       <LinearProgress color="#9cc95a" style={{ width: '50%', marginTop: 20 }} />
     </View>
   );

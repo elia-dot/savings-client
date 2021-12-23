@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useSelector } from 'react-redux';
 
-import Goals from './Goals';
-import Tasks from '../components/Tasks';
+import Goals from '../goals/Goals';
+import Tasks from '../tasks/Tasks';
 import colors from '../globals/styles/colors';
-import History from '../components/History';
+import History from '../saving/History';
 import i18n from 'i18n-js';
 
 const Tab = createMaterialTopTabNavigator();
@@ -31,12 +31,12 @@ const ChildScreens = () => {
         },
         tabBarActiveTintColor: colors.secondary,
         tabBarIndicatorStyle: { backgroundColor: colors.secondary },
-        tabBarLabelStyle: { fontWeight: '700', fontSize: 18 },
+        tabBarLabelStyle: { fontWeight: '700', fontSize: 16 },
       }}
     >
       <Tab.Screen name={i18n.t('goals.title')} component={Goals} />
       <Tab.Screen
-        name="משימות"
+        name={i18n.t('tasks.title')}
         component={Tasks}
         options={{
           tabBarBadge: () => (
@@ -46,7 +46,7 @@ const ChildScreens = () => {
           ),
         }}
       />
-      <Tab.Screen name={ I18n.t('history.title')} component={History} />
+      <Tab.Screen name={i18n.t('history.title')} component={History} />
     </Tab.Navigator>
   );
 };

@@ -3,13 +3,14 @@ import { StyleSheet, FlatList, View } from 'react-native';
 import { ButtonGroup, FAB } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import i18n from 'i18n-js';
 
 import colors from '../globals/styles/colors';
 import { getTasks } from '../redux/actions/tasks';
 import Task from './Task';
 import TaskModal from './TaskModal';
 
-const Tasks = ({ route }) => {
+const Tasks = () => {
   const { tasks, loading } = useSelector((state) => state.tasks);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -18,7 +19,11 @@ const Tasks = ({ route }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [openModal, setOpenModal] = useState(false);
 
-  const buttons = ['הכל', 'הושלמו', 'לא הושלמו'];
+  const buttons = [
+    i18n.t('tasks.allBtn'),
+    i18n.t('tasks.completedBtn'),
+    i18n.t('tasks.unCompletedBtn'),
+  ];
 
   useEffect(() => {
     if (user.type === 'child') dispatch(getTasks(user._id));
@@ -46,8 +51,7 @@ const Tasks = ({ route }) => {
         onPress={(i) => setSelectedIndex(i)}
         containerStyle={{
           width: '70%',
-          marginStart: '50%',
-          transform: [{ translateX: 130 }],
+          marginStart: '15%',
           marginBottom: 20,
         }}
         textStyle={{
@@ -60,7 +64,7 @@ const Tasks = ({ route }) => {
         renderItem={({ item }) => <Task task={item} />}
         initialNumToRender={10}
         keyExtractor={(item) => item._id}
-        style={{ paddingHorizontal: 10, marginStart: 15 }}
+        style={{ paddingHorizontal: 10 }}
       />
       {user.type === 'parent' && (
         <FAB

@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, I18nManager } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import * as Notifications from 'expo-notifications';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
+import { isRTL } from 'expo-localization';
 
 import { he, en } from './src/utils/languages';
-import { Router } from './src/components/Router';
+import { Router } from './src/Router';
 import store from './src/redux/store';
 import registerForPushNotifications from './src/utils/registerForPushNotifications';
 
@@ -26,6 +27,10 @@ i18n.locale =
   Localization.locale.search(/-|_/) !== -1
     ? Localization.locale.slice(0, 2)
     : Localization.locale;
+
+const currentLocale = i18n.currentLocale();
+
+I18nManager.allowRTL(isRTL);
 
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -59,7 +64,7 @@ export default function App() {
       <PaperProvider>
         <StatusBar />
         <View style={styles.app}>
-          <Router />
+          <Router isRTL={isRTL}/>
         </View>
       </PaperProvider>
     </Provider>
@@ -69,6 +74,5 @@ export default function App() {
 const styles = StyleSheet.create({
   app: {
     flex: 1,
-    direction: 'rtl',
   },
 });

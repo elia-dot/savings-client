@@ -3,17 +3,18 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import i18n from 'i18n-js';
+import { isRTL } from 'expo-localization';
 
-import Splash from '../screens/Splash';
-import ParentTabs from '../screens/ParentTabs';
-import ParentScreens from '../screens/ParentScreens';
-import ChildTabs from '../screens/ChildTabs';
-import Login from '../screens/Login';
-import Signup from '../screens/Signup';
-import { loadUser } from '../redux/actions/auth';
-import GoBackButton from '../globals/components/GoBackButton';
-import ChildrenDetails from '../screens/ChildrenDetails';
-import ForgotPassword from '../screens/ForgotPassword';
+import Splash from './Splash';
+import ParentTabs from './parent/ParentTabs';
+import ParentScreens from './parent/ParentScreens';
+import ChildTabs from './child/ChildTabs';
+import Login from './auth/Login';
+import Signup from './auth/Signup';
+import { loadUser } from './redux/actions/auth';
+import GoBackButton from './globals/components/GoBackButton';
+import ChildrenDetails from './parent/ChildrenDetails';
+import ForgotPassword from './auth/ForgotPassword';
 
 const Stack = createStackNavigator();
 
@@ -47,7 +48,8 @@ export const Router = () => {
             options={{
               headerBackTitleVisible: false,
               headerTitle: '',
-              headerLeft: () => <GoBackButton />,
+              headerRight: isRTL ? null : () => <GoBackButton />,
+              headerLeft: isRTL ? () => <GoBackButton /> : null,
             }}
           />
           <Stack.Screen
@@ -56,7 +58,8 @@ export const Router = () => {
             options={{
               headerBackTitleVisible: false,
               headerTitle: '',
-              headerLeft: () => <GoBackButton />,
+              headerRight: isRTL ? null : () => <GoBackButton />,
+              headerLeft: isRTL ? () => <GoBackButton /> : null,
             }}
           />
         </Stack.Navigator>
@@ -89,7 +92,8 @@ export const Router = () => {
               headerBackTitleVisible: false,
               title: i18n.t('forgotPasswordScreen.title'),
               headerTitleAlign: 'center',
-              headerLeft: () => <GoBackButton />,
+              headerRight: isRTL ? null : () => <GoBackButton />,
+              headerLeft: isRTL ? () => <GoBackButton /> : null,
             }}
           />
           <Stack.Screen
@@ -99,7 +103,8 @@ export const Router = () => {
               headerBackTitleVisible: false,
               title: i18n.t('signupScreen.title'),
               headerTitleAlign: 'center',
-              headerLeft: () => <GoBackButton />,
+              headerRight: isRTL ? null : () => <GoBackButton />,
+              headerLeft: isRTL ? () => <GoBackButton /> : null,
             }}
           />
         </Stack.Navigator>

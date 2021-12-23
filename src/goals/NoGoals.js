@@ -5,7 +5,7 @@ import { LinearProgress } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import i18n from 'i18n-js';
 
-import GoalForm from '../components/GoalForm';
+import GoalForm from './GoalForm';
 import colors from '../globals/styles/colors';
 import { sendPushNotification } from '../utils/sendNotification';
 

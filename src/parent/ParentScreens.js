@@ -3,18 +3,19 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector, useDispatch } from 'react-redux';
-import I18n from 'i18n-js'
+import I18n from 'i18n-js';
 
 import colors from '../globals/styles/colors';
-import Goals from './Goals';
-import History from '../components/History';
-import Tasks from '../components/Tasks';
+import Goals from '../goals/Goals';
+import History from '../saving/History';
+import Tasks from '../tasks/Tasks';
 import { finishLoading, startLoading } from '../redux/actions/globals';
 import { getChild } from '../redux/actions/auth';
 import Loader from '../globals/components/Loader';
 import { getAllGoals } from '../redux/actions/goals';
 import { getHistory } from '../redux/actions/savings';
 import { getTasks } from '../redux/actions/tasks';
+import i18n from 'i18n-js';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +41,7 @@ const ParentScreens = ({ route }) => {
     }
   }, [child]);
 
-  if (loading) return <Loader title={'טוען מידע..'} />;
+  if (loading) return <Loader title={i18n.t('misc.loading')} />;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -53,10 +54,10 @@ const ParentScreens = ({ route }) => {
           if (route.name === I18n.t('goals.title')) {
             iconName = 'bullseye';
             size = focused ? 25 : 20;
-          } else if (route.name ===  I18n.t('history.title')) {
+          } else if (route.name === I18n.t('history.title')) {
             iconName = 'exchange-alt';
             size = focused ? 25 : 20;
-          } else if (route.name === 'משימות') {
+          } else if (route.name === I18n.t('tasks.title')) {
             iconName = 'tasks';
             size = focused ? 25 : 20;
           }
@@ -71,13 +72,13 @@ const ParentScreens = ({ route }) => {
         options={{ headerShown: false, headerLeft: () => null }}
       />
       <Tab.Screen
-        name={ I18n.t('history.title')}
+        name={I18n.t('history.title')}
         component={History}
         initialParams={{ userId: route.params.userId, user: child }}
         options={{ headerShown: false, headerLeft: () => null }}
       />
       <Tab.Screen
-        name="משימות"
+        name={I18n.t('tasks.title')}
         component={Tasks}
         initialParams={{ userId: route.params.userId, user: child }}
         options={{ headerShown: false, headerLeft: () => null }}

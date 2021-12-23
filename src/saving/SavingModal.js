@@ -13,46 +13,55 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinearProgress } from 'react-native-elements';
 
 import colors from '../globals/styles/colors';
-import { createTask } from '../redux/actions/tasks';
+import { addSaving } from '../redux/actions/savings';
+import I18n from 'i18n-js';
 
-const TaskModal = ({ openModal, setOpenModal }) => {
-  const [formData, setFormData] = useState({ title: '', price: '' });
+const SavingModal = ({ openModal, setOpenModal }) => {
+  const [formData, setFormData] = useState({ amount: '', description: '' });
   const [loading, setLoading] = useState(false);
   const { child } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const save = async () => {
     setLoading(true);
-    await dispatch(createTask(child._id, formData));
+    await dispatch(addSaving(child._id, formData));
     setLoading(false);
-    setFormData({ title: '', price: '' });
+    setFormData({ amount: '', description: '' });
     setOpenModal(false);
   };
   return (
     <Modal visible={openModal} animationType="slide">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.modalBody}>
-          <Text style={styles.modalTitle}>צור משימה חדשה</Text>
-          <Text style={styles.label}>תיאור</Text>
+          <Text style={styles.modalTitle}>{I18n.t('history.savingTitle')}</Text>
+          <Text style={styles.label}>{I18n.t('history.amountLabel')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="תיאור המטלה"
             placeholderTextColor="#cccccc"
-            value={formData.title}
-            onChangeText={(value) => setFormData({ ...formData, title: value })}
+            value={formData.amount.toString()}
+            keyboardType="numbers-and-punctuation"
+            onChangeText={(value) =>
+              setFormData({ ...formData, amount: value })
+            }
           />
-          <Text style={styles.label}>סכום</Text>
+          <Text style={styles.label}>{I18n.t('history.descriptionLabel')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="סכום לתשלום"
             placeholderTextColor="#cccccc"
-            value={formData.price.toString()}
-            keyboardType="numeric"
-            onChangeText={(value) => setFormData({ ...formData, price: value })}
+            value={formData.description}
+            onChangeText={(value) =>
+              setFormData({ ...formData, description: value })
+            }
           />
-          <TouchableOpacity style={styles.createBtn} onPress={() => save()}>
+          <TouchableOpacity
+            style={styles.createBtn}
+            disabled={formData.amount === '' || formData.description === ''}
+            onPress={() => save()}
+          >
             <Text style={styles.btnText}>
-              {loading ? 'מעדכן...' : 'עדכן משימה'}
+              {loading
+                ? I18n.t('history.loadingCreateBtn')
+                : I18n.t('history.createBtn')}
             </Text>
 
             {loading && (
@@ -63,7 +72,9 @@ const TaskModal = ({ openModal, setOpenModal }) => {
             style={styles.cancelBtn}
             onPress={() => setOpenModal(false)}
           >
-            <Text style={[styles.btnText, styles.cancelBtnText]}>ביטול</Text>
+            <Text style={[styles.btnText, styles.cancelBtnText]}>
+              {I18n.t('history.cancelBtn')}
+            </Text>
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>
@@ -71,7 +82,7 @@ const TaskModal = ({ openModal, setOpenModal }) => {
   );
 };
 
-export default TaskModal;
+export default SavingModal;
 
 const styles = StyleSheet.create({
   modalBody: {
@@ -84,6 +95,11 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     textAlign: 'center',
   },
+  label: {
+    fontSize: 15,
+    marginBottom: 5,
+    color: colors.primary,
+  },
   input: {
     backgroundColor: '#eee',
     borderBottomColor: colors.primary,
@@ -92,11 +108,6 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'left',
     marginBottom: 50,
-  },
-  label: {
-    fontSize: 15,
-    marginBottom: 5,
-    color: colors.primary,
   },
   createBtn: {
     backgroundColor: colors.primary,

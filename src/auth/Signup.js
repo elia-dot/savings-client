@@ -79,7 +79,6 @@ export default function Signup({ navigation }) {
       <Text style={styles.label}>{i18n.t('signupScreen.emailLabel')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={i18n.t('signupScreen.emailPlaceholder')}
         returnKeyType="next"
         autoFocus
         onSubmitEditing={() => passwordRef.current.focus()}
@@ -91,7 +90,6 @@ export default function Signup({ navigation }) {
       <Text style={styles.label}>{i18n.t('signupScreen.passwordLabel')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={i18n.t('signupScreen.passwordPlaceholder')}
         ref={passwordRef}
         onSubmitEditing={() => confirmRef.current.focus()}
         value={formData.password}
@@ -105,7 +103,6 @@ export default function Signup({ navigation }) {
       </Text>
       <TextInput
         style={styles.input}
-        placeholder={i18n.t('signupScreen.confirmPasswordPlaceholder')}
         value={formData.passwordConfirmd}
         returnKeyType="done"
         textContentType="password"

@@ -4,13 +4,13 @@ import { FAB } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Goal from '../components/Goal';
-import NoGoals from '../components/NoGoals';
-import GoalForm from '../components/GoalForm';
+import Goal from './Goal';
+import NoGoals from './NoGoals';
+import GoalForm from './GoalForm';
 import colors from '../globals/styles/colors';
 import { getAllGoals } from '../redux/actions/goals';
 
-export default function Goals({ route }) {
+export default function Goals() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { goals, loading } = useSelector((state) => state.goals);
@@ -40,11 +40,11 @@ export default function Goals({ route }) {
           return <Goal goal={item} user={userGoal} />;
         }}
         keyExtractor={(item) => item._id}
-        style={{ paddingHorizontal: 10, marginStart: 15 }}
+        style={{ paddingHorizontal: 10 }}
       />
       {goals.length > 0 && user.type === 'child' && (
         <FAB
-          placement="left"
+          placement="end"
           color={colors.primary}
           size="large"
           icon={<FontAwesome5 name="plus" color="#fff" size={20} />}

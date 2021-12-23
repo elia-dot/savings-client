@@ -7,7 +7,8 @@ import {
   View,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import ChildBox from '../components/ChildBox';
+
+import ChildBox from './ChildBox';
 
 const ChildrenDetails = () => {
   const { user } = useSelector((state) => state.auth);

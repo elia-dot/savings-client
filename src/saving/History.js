@@ -61,8 +61,7 @@ const History = () => {
         onPress={(i) => setSelectedIndex(i)}
         containerStyle={{
           width: '70%',
-          marginStart: '50%',
-          transform: [{ translateX: 130 }],
+          marginStart: '15%',
           marginBottom: 20,
           marginTop: 20,
         }}
@@ -76,7 +75,7 @@ const History = () => {
         renderItem={({ item }) => <SavingItem item={item} />}
         initialNumToRender={10}
         keyExtractor={(item) => item._id}
-        style={{ paddingHorizontal: 10, marginStart: 15 }}
+        style={{ paddingHorizontal: 10 }}
       />
       {user.type === 'parent' && (
         <FAB
@@ -84,7 +83,7 @@ const History = () => {
           size="large"
           icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
           onPress={() => setOpenModal(true)}
-          placement="left"
+          placement="end"
         />
       )}
     </View>

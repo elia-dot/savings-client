@@ -5,10 +5,10 @@ import { Menu, MenuItem } from 'react-native-material-menu';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { logout } from '../redux/actions/auth';
-import { getHour } from '../utils/getHour';
 import ChildScreens from './ChildScreens';
 import colors from '../globals/styles/colors';
 import currency from '../globals/styles/currency';
+import i18n from 'i18n-js';
 
 const ChildTabs = () => {
   const dispatch = useDispatch();
@@ -46,16 +46,18 @@ const ChildTabs = () => {
               textAlign: 'center',
             }}
           >
-            התנתק
+            {i18n.t('menu.logout')}
           </MenuItem>
         </Menu>
       </View>
       <View style={styles.top}>
         <Text style={styles.greet}>
-          {getHour()}, {user.name.split(' ')[0]}
+          {i18n.t('misc.childGreetings', { name: user.name })}
         </Text>
         <Text style={styles.topText}>
-          עד עכשיו חסכת {(user.saving + user.profit).toLocaleString()}
+          {i18n.t('misc.balance', {
+            amount: (user.saving + user.profit).toLocaleString(),
+          })}
           {currency.NIS}
         </Text>
       </View>
@@ -77,6 +79,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     paddingTop: 100,
+    paddingHorizontal: 25,
     zIndex: -99,
   },
   cogBtn: {
@@ -99,5 +102,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '500',
     fontSize: 30,
+    textAlign: 'center',
   },
 });

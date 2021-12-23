@@ -14,7 +14,7 @@ import I18n from 'i18n-js';
 
 import { logout } from '../redux/actions/auth';
 import colors from '../globals/styles/colors';
-import AddChild from '../components/AddChild';
+import AddChild from './AddChild';
 
 const ParentTab = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -38,11 +38,11 @@ const ParentTab = ({ navigation }) => {
 
   return (
     <View style={styles.body}>
-      <View style={{ position: 'absolute', left: -20, top: 5 }}>
+      <View style={{ position: 'absolute', left: 0, top: 5 }}>
         <Menu
           visible={showMenu}
           onRequestClose={() => setShowMenu(false)}
-          style={{ position: 'absolute', left: -105, top: 120 }}
+          style={{ position: 'absolute', start: 25, top: 120 }}
           anchor={
             <TouchableOpacity
               style={styles.cogBtn}
@@ -101,7 +101,7 @@ const ParentTab = ({ navigation }) => {
         keyExtractor={(item) => item._id}
       />
       <FAB
-        placement="left"
+        placement="end"
         color={colors.primary}
         size="large"
         icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
   cogBtn: {
     position: 'absolute',
-    left: 35,
+    end: -70,
     top: 60,
     backgroundColor: colors.primary,
     padding: 10,
