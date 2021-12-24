@@ -48,10 +48,12 @@ const History = () => {
       <SavingModal openModal={openModal} setOpenModal={setOpenModal} />
       {user.type === 'parent' && (
         <View style={styles.historyTop}>
-          <Text style={styles.historyText}>{i18n.t('history.topTextParent', {name: child.name})}</Text>
+          <Text style={styles.historyText}>
+            {i18n.t('history.topTextParent', { name: child.name })}
+          </Text>
           <Text style={styles.historyNumber}>
+            {(child.saving + child.profit).toFixed(1).toLocaleString()}
             <Text style={styles.historyText}>{currency.NIS}</Text>
-            {(child.saving + child.profit).toLocaleString()}
           </Text>
         </View>
       )}

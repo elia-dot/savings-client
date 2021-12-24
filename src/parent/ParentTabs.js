@@ -38,11 +38,10 @@ const ParentTab = ({ navigation }) => {
 
   return (
     <View style={styles.body}>
-      <View style={{ position: 'absolute', left: 0, top: 5 }}>
+      <View style={{ position: 'absolute', end: 20, top: 50 }}>
         <Menu
           visible={showMenu}
           onRequestClose={() => setShowMenu(false)}
-          style={{ position: 'absolute', start: 25, top: 120 }}
           anchor={
             <TouchableOpacity
               style={styles.cogBtn}
@@ -136,9 +135,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cogBtn: {
-    position: 'absolute',
-    end: -70,
-    top: 60,
     backgroundColor: colors.primary,
     padding: 10,
     borderWidth: 0.5,

@@ -94,7 +94,7 @@ export default function Goal({ goal, user }) {
       <View style={styles.progressNumbers}>
         <Text>{goal.price.toLocaleString()}</Text>
 
-        <Text>{(user.saving + user.profit).toLocaleString()}</Text>
+        <Text>{(user.saving + user.profit).toFixed(1).toLocaleString()}</Text>
       </View>
     </View>
   );
