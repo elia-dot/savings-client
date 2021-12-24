@@ -52,6 +52,7 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
     };
     sendPushNotification(body);
     setRemindLoading(false);
+    setShowMenu(false);
   };
   return (
     <Portal>

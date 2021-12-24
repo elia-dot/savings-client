@@ -17,6 +17,6 @@ export const sendPushNotification = async (data) => {
       message,
     });
   } catch (error) {
-    console.log(error);
+    console.log('push', error.response.data);
   }
 };

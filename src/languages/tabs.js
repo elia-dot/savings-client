@@ -221,7 +221,7 @@ export const tasks = {
     he: 'שולח להורה...',
   },
   completedPushTitle: {
-    en: 'Tasl Completed!',
+    en: 'Task Completed!',
     he: 'משימה הושלמה!',
   },
   completedPushBody: {

@@ -72,7 +72,7 @@ const Tasks = () => {
           size="large"
           icon={<FontAwesome5 name="plus" color="#fff" size={20} />}
           onPress={() => setOpenModal(true)}
-          placement="left"
+          placement="end"
         />
       )}
     </View>
