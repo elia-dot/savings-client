@@ -91,6 +91,18 @@ export const goals = {
     en: 'Deleting Goal...',
     he: 'מוחק מטרה...',
   },
+  noGoalsPushTitle: {
+    en: 'Goal Reminder',
+    he: 'תזכורת',
+  },
+  noGoalsPushBody: {
+    en: 'This is a reminder to create your first goal',
+    he: 'זוהי תזכורת להצבת המטרה הראשונה שלך',
+  },
+  sending : {
+    en: 'Sending Reminder',
+    he: 'שולח תזכורת'
+  }
 };
 export const history = {
   title: {

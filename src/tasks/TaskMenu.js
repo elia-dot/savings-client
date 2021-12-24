@@ -3,11 +3,12 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Modal, Portal } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearProgress } from 'react-native-elements';
+import axios from 'axios';
+import I18n from 'i18n-js';
 
 import colors from '../globals/styles/colors';
 import { completeTask } from '../redux/actions/tasks';
-import { sendPushNotification } from '../utils/sendNotification';
-import I18n from 'i18n-js';
+
 
 const TaskMenu = ({ showMenu, setShowMenu, task }) => {
   const { user } = useSelector((state) => state.auth);
@@ -46,11 +47,11 @@ const TaskMenu = ({ showMenu, setShowMenu, task }) => {
   const sendReminder = async () => {
     setRemindLoading(true);
     const body = {
-      userId: user._id,
+      to: user._id,
       title: I18n.t('tasks.pushTitle'),
       body: I18n.t('tasks.pushBody', { task: task.title }),
     };
-    sendPushNotification(body);
+    await axios.post('https://goals-65106.herokuapp.com/message/reminder',body)
     setRemindLoading(false);
     setShowMenu(false);
   };

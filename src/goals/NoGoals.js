@@ -4,11 +4,11 @@ import { FAB } from 'react-native-elements';
 import { LinearProgress } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import i18n from 'i18n-js';
+import axios from 'axios';
 
 import GoalForm from './GoalForm';
 import colors from '../globals/styles/colors';
-import { sendPushNotification } from '../utils/sendNotification';
-
+import Loader from '../globals/components/Loader';
 
 export default function NoGoals({ userGoal }) {
   const [showModal, setShowModal] = useState(false);
@@ -18,11 +18,14 @@ export default function NoGoals({ userGoal }) {
   const sendMessage = async () => {
     setLoading(true);
     const body = {
-      userId: child._id,
-      title: 'תזכורת',
-      body: `זוהי תזכורת להצבת המטרה הראשונה שלך`,
+      to: child._id,
+      title: i18n.t('goals.noGoalsPushTitle'),
+      body: i18n.t('goals.noGoalsPushBody'),
     };
-    await sendPushNotification(body);
+    await axios.post(
+      'https://goals-65106.herokuapp.com/message/reminder',
+      body
+    );
     setLoading(false);
   };
 
@@ -43,7 +46,10 @@ export default function NoGoals({ userGoal }) {
         </>
       ) : (
         <>
-          <Text style={styles.text}>{i18n.t('goals.noGoalsParent', {name : userGoal.name})}</Text>
+          <Text style={styles.text}>
+            {i18n.t('goals.noGoalsParent', { name: userGoal.name })}
+          </Text>
+          {loading && <Loader title={i18n.t('tasks.loaderTitle')} />}
           <FAB
             color={colors.primary}
             size="large"

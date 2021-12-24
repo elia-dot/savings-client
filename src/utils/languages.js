@@ -102,6 +102,9 @@ export const en = {
     loadingUpdateBtn: goals.loadingUpdateBtn.en,
     missingFields: goals.missingFields.en,
     deletingGoal: goals.deletingGoal.en,
+    noGoalsPushTitle: goals.noGoalsPushTitle.en,
+    noGoalsPushBody: goals.noGoalsPushBody.en,
+    sending: goals.sending.en,
   },
   history: {
     title: history.title.en,
@@ -248,7 +251,9 @@ export const he = {
     loadingUpdateBtn: goals.loadingUpdateBtn.he,
     missingFields: goals.missingFields.he,
     deletingGoal: goals.deletingGoal.he,
-
+    noGoalsPushTitle: goals.noGoalsPushTitle.he,
+    noGoalsPushBody: goals.noGoalsPushBody.he,
+    sending: goals.sending.he,
   },
   history: {
     title: history.title.he,

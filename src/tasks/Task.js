@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import colors from '../globals/styles/colors';
 import currency from '../globals/styles/currency';
-import { sendPushNotification } from '../utils/sendNotification';
 import TaskMenu from './TaskMenu';
 import { startLoading, finishLoading } from '../redux/actions/globals';
 import Loader from '../globals/components/Loader';
@@ -18,14 +18,14 @@ const Task = ({ task }) => {
   const markAsCompleted = async () => {
     dispatch(startLoading());
     const body = {
-      userId: user.parent,
+      to: user.parent,
       title: i18n.t('tasks.completedPushTitle'),
       body: i18n.t('tasks.completedPushBody', {
         name: user.name,
         task: task.title,
       }),
     };
-    await sendPushNotification(body);
+    await axios.post('https://goals-65106.herokuapp.com/message/task-completed',body)
     dispatch(finishLoading());
   };
   const handlePress = () => {
