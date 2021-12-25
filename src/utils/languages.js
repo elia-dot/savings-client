@@ -147,6 +147,7 @@ export const en = {
     childGreetings: misc.childGreetings.en,
     balance: misc.balance.en,
     loading: misc.loading.en,
+    currency: misc.currency.en,
   },
 };
 
@@ -296,5 +297,6 @@ export const he = {
     childGreetings: misc.childGreetings.he,
     balance: misc.balance.he,
     loading: misc.loading.he,
+    currency: misc.currency.he,
   },
 };

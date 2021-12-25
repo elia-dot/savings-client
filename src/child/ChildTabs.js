@@ -19,20 +19,21 @@ const ChildTabs = () => {
     dispatch(logout());
   };
 
+  const openMenu = () => {
+    setShowMenu(true);
+  };
+
   if (user === null) return null;
 
   return (
     <View style={styles.body}>
-      <View>
+      <View style={{ position: 'absolute', end: 20, top: 50 }}>
         <Menu
           visible={showMenu}
           onRequestClose={() => setShowMenu(false)}
-          style={{ position: 'absolute', left: 35, top: 110, zIndex: 999 }}
+          style={{ zIndex: 999 }}
           anchor={
-            <TouchableOpacity
-              style={styles.cogBtn}
-              onPress={() => setShowMenu(true)}
-            >
+            <TouchableOpacity style={styles.cogBtn} onPress={openMenu}>
               <FontAwesome5 name="cog" color={colors.secondary} size={25} />
             </TouchableOpacity>
           }
@@ -56,8 +57,8 @@ const ChildTabs = () => {
         </Text>
         <Text style={styles.topText}>
           {i18n.t('misc.balance', {
-            amount: (user.saving + user.profit).toLocaleString(),
-          })}
+            amount: (user.saving + user.profit).toFixed(1).toLocaleString(),
+          })}           
           {currency.NIS}
         </Text>
       </View>
@@ -83,9 +84,6 @@ const styles = StyleSheet.create({
     zIndex: -99,
   },
   cogBtn: {
-    position: 'absolute',
-    left: 35,
-    top: 60,
     backgroundColor: colors.primary,
     padding: 10,
     borderWidth: 0.5,

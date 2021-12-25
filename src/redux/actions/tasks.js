@@ -29,6 +29,7 @@ export const getTasks = (userId) => async (dispatch) => {
 export const createTask = (userId, data) => async (dispatch) => {
   try {
     const res = await axios.post(`${baseUrl}/tasks/${userId}`, data, config);
+    console.log(res.data);
     dispatch({
       type: CREATE_TASK,
       payload: res.data.data,
