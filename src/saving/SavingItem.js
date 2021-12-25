@@ -20,7 +20,7 @@ const SavingItem = ({ item }) => {
             item.amount < 0 ? styles.negative : styles.positive,
           ]}
         >
-          {item.amount}
+          {item.amount.toFixed().toLocaleString()}
         </Text>
       </View>
       <View style={styles.description}>

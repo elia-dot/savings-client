@@ -7,6 +7,7 @@ import * as Notifications from 'expo-notifications';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import { isRTL } from 'expo-localization';
+import AppLoading from 'expo-app-loading';
 
 import { he, en } from './src/utils/languages';
 import { Router } from './src/Router';
@@ -35,6 +36,7 @@ I18nManager.allowRTL(isRTL);
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
   useEffect(() => {
@@ -59,12 +61,15 @@ export default function App() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+  if (!isReady) {
+    <AppLoading />;
+  }
   return (
     <Provider store={store}>
       <PaperProvider>
         <StatusBar />
         <View style={styles.app}>
-          <Router isRTL={isRTL}/>
+          <Router isRTL={isRTL} />
         </View>
       </PaperProvider>
     </Provider>
