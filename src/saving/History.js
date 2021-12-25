@@ -19,6 +19,7 @@ const History = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [filteredHistory, setFilteredHistory] = useState(history);
+  const [refreshing, setRefreshing] = useState(false);
   const buttons = [
     i18n.t('history.allBtn'),
     i18n.t('history.depositBtn'),
@@ -41,6 +42,13 @@ const History = () => {
   useEffect(() => {
     if (user.type === 'child') dispatch(getHistory(user._id));
   }, [dispatch]);
+
+  const refresh = async () => {
+    const id = child ? child._id : user._id;
+    setRefreshing(true);
+    await dispatch(getHistory(id));
+    setRefreshing(false);
+  };
 
   if (loading) return null;
   return (
@@ -78,6 +86,8 @@ const History = () => {
         initialNumToRender={10}
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10 }}
+        onRefresh={refresh}
+        refreshing={refreshing}
       />
       {user.type === 'parent' && (
         <FAB

@@ -12,12 +12,13 @@ import TaskModal from './TaskModal';
 
 const Tasks = () => {
   const { tasks, loading } = useSelector((state) => state.tasks);
-  const { user } = useSelector((state) => state.auth);
+  const { user, child } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const buttons = [
     i18n.t('tasks.allBtn'),
@@ -41,6 +42,13 @@ const Tasks = () => {
       setFilteredTasks(filtered);
     }
   }, [tasks, selectedIndex]);
+
+  const refresh = async () => {
+    const id = child ? child._id : user._id;
+    setRefreshing(true);
+    await dispatch(getTasks(id));
+    setRefreshing(false);
+  };
   if (loading) return null;
   return (
     <View style={styles.body}>
@@ -59,13 +67,17 @@ const Tasks = () => {
         }}
         selectedButtonStyle={{ backgroundColor: colors.primary }}
       />
+
       <FlatList
         data={filteredTasks}
         renderItem={({ item }) => <Task task={item} />}
         initialNumToRender={10}
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10 }}
+        onRefresh={refresh}
+        refreshing={refreshing}
       />
+
       {user.type === 'parent' && (
         <FAB
           color="#9cc95a"

@@ -18,8 +18,8 @@ export default function Goal({ goal, user }) {
   const dispatch = useDispatch();
 
   const calculateProgress = () => {
-    if ((user.savings * 1) / (goal.price * 1) >= 1) return 1;
-    return (user.saving * 1) / (goal.price * 1);
+    if ((user && user.savings * 1) / (goal.price * 1) >= 1) return 1;
+    return (user && user.saving * 1) / (goal.price * 1);
   };
 
   const moneyLeft = () => {
