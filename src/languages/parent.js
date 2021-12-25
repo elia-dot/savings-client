@@ -51,7 +51,7 @@ export const menu = {
     he: 'התנתק',
   },
   details: {
-    en: 'Child Details',
+    en: 'Children Details',
     he: 'פרטי הילדים',
   },
   noChildren: {

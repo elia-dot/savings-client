@@ -1,5 +1,5 @@
-import i18n from "i18n-js";
+import { isRTL } from 'expo-localization';
 
 export default {
-  NIS: i18n.t('misc.currency'),
+  NIS: isRTL ? '\u20AA' : 'NIS',
 };

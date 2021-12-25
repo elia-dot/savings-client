@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '800',
     fontSize: 35,
-    marginBottom: 15,
   },
   topText: {
     color: '#fff',
