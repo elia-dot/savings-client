@@ -53,7 +53,7 @@ const Task = ({ task }) => {
       </View>
       <View style={[styles.taskColumn]}>
         <Text>
-          {task.price}
+          {task.price.toLocaleString()}
           {currency.NIS}
         </Text>
       </View>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   taskDesc: {
-    width: '65%',
+    width: '60%',
   },
   taskText: {
     textAlign: 'left',

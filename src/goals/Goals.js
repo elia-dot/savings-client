@@ -32,7 +32,9 @@ export default function Goals() {
         userGoal={userGoal}
       />
 
-      {!loading && goals.length === 0 && <NoGoals userGoal={userGoal} />}
+      {!loading && user && goals.length === 0 && (
+        <NoGoals userGoal={userGoal} />
+      )}
 
       <FlatList
         data={goals}

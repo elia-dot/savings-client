@@ -68,11 +68,13 @@ export default function NoGoals({ userGoal }) {
 
 const styles = StyleSheet.create({
   body: {
-    padding: 30,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   text: {
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 15,
     marginBottom: 50,
   },
 });
