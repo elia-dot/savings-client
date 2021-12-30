@@ -16,7 +16,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "savingoals",
+      "bundleIdentifier": "com.eliadot.savingoals",
       "buildNumber": "1.0.0"
     },
     "android": {
