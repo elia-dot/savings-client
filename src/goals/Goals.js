@@ -12,6 +12,7 @@ import { getAllGoals } from '../redux/actions/goals';
 
 export default function Goals() {
   const [showModal, setShowModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const { goals, loading } = useSelector((state) => state.goals);
   const { user, child } = useSelector((state) => state.auth);
@@ -21,6 +22,13 @@ export default function Goals() {
   useEffect(() => {
     if (user.type === 'child') dispatch(getAllGoals(user._id));
   }, [dispatch]);
+
+  const refresh = async () => {
+    const id = child ? child._id : user._id;
+    setRefreshing(true);
+    await dispatch(getAllGoals(id));
+    setRefreshing(false);
+  };
 
   if (loading) return null;
 
@@ -43,6 +51,8 @@ export default function Goals() {
         }}
         keyExtractor={(item) => item._id}
         style={{ paddingHorizontal: 10 }}
+        onRefresh={refresh}
+        refreshing={refreshing}
       />
       {goals.length > 0 && user.type === 'child' && (
         <FAB

@@ -16,7 +16,7 @@ export const addChild = {
     he: 'סיסמא',
   },
   profitLabel: {
-    en: 'Percentage profit:',
+    en: 'Yield Precent:',
     he: 'אחוז ריבית חודשית:',
   },
   addBtn: {

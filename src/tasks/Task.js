@@ -16,17 +16,23 @@ const Task = ({ task }) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const markAsCompleted = async () => {
-    dispatch(startLoading());
-    const body = {
-      to: user.parent,
-      title: i18n.t('tasks.completedPushTitle'),
-      body: i18n.t('tasks.completedPushBody', {
-        name: user.name,
-        task: task.title,
-      }),
-    };
-    await axios.post('https://goals-65106.herokuapp.com/message/task-completed',body)
-    dispatch(finishLoading());
+    if (!task.completed) {
+      dispatch(startLoading());
+      const body = {
+        to: user.parent,
+        title: i18n.t('tasks.completedPushTitle'),
+        body: i18n.t('tasks.completedPushBody', {
+          name: user.name,
+          task: task.title,
+        }),
+      };
+
+      await axios.post(
+        'https://goals-65106.herokuapp.com/message/task-completed',
+        body
+      );
+      dispatch(finishLoading());
+    }
   };
   const handlePress = () => {
     user.type === 'parent' ? setShowMenu(true) : markAsCompleted();
