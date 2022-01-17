@@ -25,7 +25,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.eliadot.savingoals",
-      "versionCode": 1
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/logo.png"
@@ -34,7 +34,7 @@
       [
         "expo-notifications",
         {
-          "icon": "../assets/logo.png",
+          "icon": "./assets/logo.png",
           "color": "#ffffff"
         }
       ]

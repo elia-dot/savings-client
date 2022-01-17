@@ -13,6 +13,11 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./savingoals-72a8cb7acf7b.json",
+        "track": "internal"
+      }
+    }
   }
 }

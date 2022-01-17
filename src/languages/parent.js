@@ -55,7 +55,7 @@ export const menu = {
     he: 'פרטי הילדים',
   },
   noChildren: {
-    en: "Tou don't have any child account connected",
+    en: "You don't have any child account connected",
     he: 'לא נמצאו חשבונות ילד המקושרות לחשבונך',
   },
 };
